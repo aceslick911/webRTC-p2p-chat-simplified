@@ -1,12 +1,10 @@
 import React, { createContext, FC, useState, useRef, useCallback, useEffect, useContext, useMemo } from 'react';
 import { Subject } from 'rxjs';
 
-import { generateKey, decrypt, encrypt } from '../../util/encryption';
-import { createPeerConnection, CreatePeerConnectionResponse } from '../../typescript-lib';
+import { createPeerConnection, CreatePeerConnectionResponse } from './createPeerConnection';
 
 export type ConnectionDescription = {
   description: string;
-  encryptionKey: string;
 };
 export enum PEER_CONNECTION_MODE {
   HOST = 'HOST',
@@ -41,7 +39,7 @@ const PeerConnectionContext = createContext<PeerConnectionContextValue>({} as Pe
 
 export const PeerConnectionProvider: FC = ({ children }) => {
   const [mode, setMode] = useState<PEER_CONNECTION_MODE | undefined>(undefined);
-  const encryptionKeyRef = useRef(generateKey());
+
   const [localDescription, setLocalDescription] = useState<string | undefined>();
   const [isConnected, setIsConnected] = useState(false);
   const peerConnectionRef = useRef<CreatePeerConnectionResponse>();
@@ -50,8 +48,7 @@ export const PeerConnectionProvider: FC = ({ children }) => {
 
   const onMessageReceived = useCallback((messageString: string) => {
     try {
-      const decryptedMessageString = decrypt(messageString, encryptionKeyRef.current);
-      const message = JSON.parse(decryptedMessageString);
+      const message = JSON.parse(messageString);
       peerConnectionSubject.next(message);
     } catch (error) {
       console.error(error);
@@ -76,7 +73,6 @@ export const PeerConnectionProvider: FC = ({ children }) => {
       if (typeof mode !== 'undefined') return;
 
       setMode(PEER_CONNECTION_MODE.SLAVE);
-      encryptionKeyRef.current = connectionDescription.encryptionKey;
 
       peerConnectionRef.current = await createPeerConnection({
         iceServers,
@@ -100,17 +96,15 @@ export const PeerConnectionProvider: FC = ({ children }) => {
     if (!peerConnectionRef.current) return;
 
     const messageString = JSON.stringify(message);
-    const encryptedMessageString = encrypt(messageString, encryptionKeyRef.current);
 
-    peerConnectionRef.current.sendMessage(encryptedMessageString);
+    peerConnectionRef.current.sendMessage(messageString);
   }, []);
 
   const localConnectionDescription: ConnectionDescription | undefined = useMemo(
     () =>
-      localDescription && encryptionKeyRef.current
+      localDescription
         ? {
             description: localDescription,
-            encryptionKey: encryptionKeyRef.current,
           }
         : undefined,
     [localDescription],

@@ -41,6 +41,6 @@ export const AppHeader: FC = () => (
         😃
       </span>
     </Title>
-    <SubTitle>p2p chat on WebRTC with additional AES256 encryption and file sharing</SubTitle>
+    <SubTitle>p2p chat on WebRTC with file sharing</SubTitle>
   </Container>
 );

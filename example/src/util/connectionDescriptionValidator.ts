@@ -4,5 +4,4 @@ const nonEmptyStringValidator = (d: any) => (typeof d === 'string' && d.length >
 
 export const connectionDescriptionValidator = createValidator({
   description: nonEmptyStringValidator,
-  encryptionKey: nonEmptyStringValidator,
 });
