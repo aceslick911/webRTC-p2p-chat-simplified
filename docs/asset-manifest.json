@@ -1,0 +1,10 @@
+{
+  "files": {
+    "main.js": "/p2p-chat/static/js/main.040f51a6.js",
+    "main.js.map": "/p2p-chat/static/js/main.040f51a6.js.map",
+    "index.html": "/p2p-chat/index.html"
+  },
+  "entrypoints": [
+    "static/js/main.040f51a6.js"
+  ]
+}

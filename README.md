@@ -5,6 +5,9 @@ Based on: - https://github.com/michal-wrzosek/p2p-chat
 Just open
 [index.html on any device](example/build/index.html)
 
+public url via GH Pages:
+https://aceslick911.github.io/webRTC-p2p-chat-simplified/
+
 or dev modes:
 
 ```
