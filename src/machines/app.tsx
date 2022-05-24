@@ -2,7 +2,7 @@ import { createMachine } from 'xstate';
 import { log, sendParent } from 'xstate/lib/actions';
 
 export const AppMachine =
-  /** @xstate-layout N4IgpgJg5mDOIC5QEEAOqB0AbA9gQwgEsA7KAYgGEAlAUWQBUaB9CgCQcVFR1kIBdCOYpxAAPRACYJATgwBWACwAGaQoDsagBwA2AIybdAZgA0IAJ6JphjEoXrD0iUqW6Xc6QF8PptJlwEScgApAHkASQA5FnZ6EW5eASERcQQJRQxtBTldCUNtNRzNaVMLBF05JQxdNQk1B1y1BRkvbxBiHAg4EV9sfCJSOJ5+QWEkMUQmksQdeWUdQyVDApVDTS8fdAxWEIBlWLH44aSxlKbKxwVpbQltbUM5Jd0FKYQZxSV5xeWrNdaenYAMsgAGo0QYJEbJCYSXQ2ZRSOppRQGEzmRC6bRyDAOJ4GTSaOTaTS2dYgXzgo6jUApfQvIyzaSOCSaOp6cpaFoeIA */
+  /** @xstate-layout N4IgpgJg5mDOIC5QEEAOqCyBDAxgCwEsA7MAOgBsB7LCYqAYgGEAlAUWQBVWB9RgCU6JQqSrAIAXApSJCQAD0QBGACwB2UgAYATDrUBmFcoCsBrQBoQAT0SqAbKRMAOI6uVbFj1UYC+3i2kxcQhIKaloiBgApAHkASQA5XgEOWRExSWlZBQQVdW1dVQNlY1MLaxyATi1SZQrbT1UtIw0K5UVW3z8QIkoIOFkA7HxiMioaOlTRCSkZJHlENzKlRXVm5UdbO1t2rQq9X390IeCyPmiAZRS5tOnMuey9bVIKisdHHUcNDVsjW1slnKKRSkVyOZR6DZNNQtVQHECDIIjUjnAAyyAAaqxJukZllEI9qi83h8vj8-gCdOpVN9XIofltdlo4QjhiRsbdZqBsh4AR5Ot4gA */
   createMachine({
     tsTypes: {} as import('./app.typegen').Typegen0,
     id: 'AppMachine',
@@ -11,12 +11,12 @@ export const AppMachine =
       loading: {
         on: {
           CREATE_CHAT: {
-            target: 'HOST',
             actions: [sendParent('UPDATE'), log('GOT CREATE CHAT')],
+            target: 'HOST',
           },
           JOIN_CHAT: {
-            target: 'SLAVE',
             actions: [sendParent('UPDATE'), log('GOT JOIN CHAT')],
+            target: 'SLAVE',
           },
         },
       },

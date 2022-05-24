@@ -62,6 +62,7 @@ export const PeerConnectionProvider: FC = ({ children }) => {
 
   const startAsHost = useCallback(async () => {
     app.startAsHost();
+    onConnecting();
     peerConnectionRef.current = await createPeerConnection({
       iceServers,
       onMessageReceived,
@@ -74,6 +75,7 @@ export const PeerConnectionProvider: FC = ({ children }) => {
   const startAsSlave = useCallback(
     async (connectionDescription: ConnectionDescription) => {
       app.startAsSlave();
+      onConnecting();
 
       peerConnectionRef.current = await createPeerConnection({
         iceServers,

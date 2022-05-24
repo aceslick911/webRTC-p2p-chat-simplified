@@ -8,7 +8,7 @@ import { assign, createMachine, send } from 'xstate';
 inspect({ iframe: false, url: 'https://stately.ai/viz?inspect=true' });
 
 const RootMachine =
-  /** @xstate-layout N4IgpgJg5mDOIC5QCcD2qAuA6WGCGy2AggA4kDEAwgPIBytAopQCqKgmqwCWGXqAdmxAAPRABYADAGYsANjEB2AIxKAHEolKFAJlWqANCACeiKRICsWMbM1Ld2sUqnmFAX1eG0mHPkLkAqgAKACJEzAxCHNy8AkKiCGLmSljashqyyhkOSubmhiYIAJzJmhJ65o6yVVVu7ob8qBBwQl7YuATEZJGcPHyCSCKICgr5iNoKMoXyWbqasoUudSCtPh1YlAL8YADGMf3sPXtxiOZS2imaqhKFhWbWZ6MIqclThdoSCm-qslKqSyvtQjdaJ9Y4IU6PNSqLCFBSqM7aJJKMSw5H-dAYYG9WIDeLaQqQ6GaG7whRZRIZWruIA */
+  /** @xstate-layout N4IgpgJg5mDOIC5QCcD2qAuA6WGCGyGAxAKoAKAIgIIAqAooqAA6qwCWGbqAdoyAB6IALAFYAjFgBMANjEAGaQHYxSyULEiRAGhABPRAE4Jc+QA5TI9dOvXFAXwc7uqCHD5pMOfISxUmTPhZ2Th4+QQRFRR19BElFAGYsA2khVUlTE2kDEXs7HQ9sXAJsAGEebjAAYxDeJBAgji5a0HCReMkpEwyDA3i5VPboxBkJZINJOUVx0xV400cQAq9iwNZG0LrW+KGEMXMkxVN2hQShSQ0hBYLV4Kaw4YMdvawTHoMZ2XGhOcuHOyA */
   createMachine(
     {
       context: { counter: 0 },
@@ -23,11 +23,6 @@ const RootMachine =
                 src: 'AppMachine',
                 id: 'AppMachine',
                 autoForward: true,
-              },
-              on: {
-                CONNECT: {
-                  target: 'Connection',
-                },
               },
             },
             Connection: {
