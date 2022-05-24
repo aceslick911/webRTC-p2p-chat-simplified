@@ -1,17 +1,25 @@
 {
   "compilerOptions": {
-    "declaration": true,
-    "declarationDir": "./dist",
-    "strict": true,
-    "allowSyntheticDefaultImports": true,
-    "sourceMap": true,
-    "noUnusedParameters": true,
-    "strictNullChecks": true,
-    "moduleResolution": "node",
-    "noImplicitAny": true,
-    "outDir": "./dist",
     "target": "es5",
-    "lib": ["es2018", "dom"]
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": false,
+    "forceConsistentCasingInFileNames": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "preserve"
   },
-  "include": ["src/**/*"]
+  "include": [
+    "./src"
+  ]
 }
