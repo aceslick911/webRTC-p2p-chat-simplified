@@ -108,23 +108,19 @@ export const useApp = () => {
 
   const [state, _send, service] = useMachine(RootMachine, machineOptions);
 
-  // useEffect(()=>{
-  //   console.log("DETECTED CHILD CHANGED");
-  // },[state.children.AppMachine.state,state.children.ConnectionMachine.state])
+  const appState = state.value['start']?.['App'];
+  const conState = state.value['start']?.['Connection'];
 
-  console.log('UPDATED', state, state.children.AppMachine.state, state.children.ConnectionMachine.state);
-
-  // const AppData = useMachine(AppMachine, machineOptions);
-  // const ConnectionData = useMachine(ConnectionMachine, machineOptions);
+  console.log('UPDATED', { state, appState, conState });
 
   const Data = useMemo(
     () => ({
       AppData: {
-        state: state.children['AppMachine']?.['state'],
+        state: appState, //state.children['AppMachine']?.['state'],
         send: _send, //(ev) => _send({ type: 'SEND_TO_APP', payload: ev }), //state.children?.['AppMachine']?.['sendTo'], //
       },
       ConnectionData: {
-        state: state.children['ConnectionMachine']?.['state'],
+        state: conState, //state.children['ConnectionMachine']?.['state'],
         send: _send, //(ev) => _send({ type: 'SEND_TO_CONN', payload: ev }), //state.children?.['ConnectionMachine']?.['sendTo'],
       },
 
@@ -143,13 +139,12 @@ export const useApp = () => {
   );
 
   useEffect(() => {
-    console.log({ Data });
     const appSub = Data.service.subscribe((newState: any) => {
-      console.log('appSub', { state: newState.value, newState });
+      console.log('STATE', { state: newState.value, newState });
     });
 
     Data.service.onEvent((ev) => {
-      console.log({ ev });
+      console.log('EV', { ev });
       // eventLogger(ev, undefined);
     });
 
@@ -190,11 +185,11 @@ export const AppProvider: FC = ({ children }) => {
   const context = useMemo(
     () =>
       ({
-        mode: AppData.state.value,
+        mode: AppData.state,
         startAsHost: () => AppData.send('CREATE_CHAT'),
         startAsSlave: () => AppData.send('JOIN_CHAT'),
 
-        isConnected: ConnectionData.state.value === 'connected',
+        isConnected: ConnectionData.state === 'connected',
         onConnecting: () => ConnectionData.send('CONNECT'),
         onChannelOpen: () => ConnectionData.send('CONNECT_SUCCESS'),
         connectionFailed: () => ConnectionData.send('CONNECTION_FAILED'),
