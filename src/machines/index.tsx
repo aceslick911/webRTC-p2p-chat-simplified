@@ -24,9 +24,20 @@ const RootMachine =
                 id: 'AppMachine',
                 autoForward: true,
               },
-              initial: 'new state 1',
+              initial: 'loading',
               states: {
-                'new state 1': {},
+                loading: {
+                  on: {
+                    CREATE_CHAT: {
+                      target: 'HOST',
+                    },
+                    JOIN_CHAT: {
+                      target: 'SLAVE',
+                    },
+                  },
+                },
+                HOST: {},
+                SLAVE: {},
               },
             },
             Connection: {
@@ -35,9 +46,27 @@ const RootMachine =
                 id: 'ConnectionMachine',
                 autoForward: true,
               },
-              initial: 'new state 1',
+              initial: 'idle',
               states: {
-                'new state 1': {},
+                idle: {
+                  on: {
+                    CONNECT: {
+                      target: 'connecting',
+                    },
+                  },
+                },
+                connecting: {
+                  on: {
+                    CONNECT_SUCCESS: {
+                      target: 'connected',
+                    },
+                    CONNECTION_FAILED: {
+                      target: 'failedToConnect',
+                    },
+                  },
+                },
+                connected: {},
+                failedToConnect: {},
               },
             },
           },
