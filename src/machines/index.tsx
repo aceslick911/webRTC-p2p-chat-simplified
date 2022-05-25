@@ -8,7 +8,7 @@ import { assign, createMachine, send } from 'xstate';
 inspect({ iframe: false, url: 'https://stately.ai/viz?inspect=true' });
 
 const RootMachine =
-  /** @xstate-layout N4IgpgJg5mDOIC5QCcD2qAuA6WGCGyGAxAKoAKAIgIIAqAooqAA6qwCWGbqAdoyAB6IALAFYAjFgBMANjEAGaQHYxSyULEiRAGhABPRAE4Jc+QA5TI9dOvXFAXwc7uqCHD5pMOfISxUmTPhZ2Th4+QQRFRR19BElFAGYsA2khVUlTE2kDEXs7HQ9sXAJsAGEebjAAYxDeJBAgji5a0HCReMkpEwyDA3i5VPboxBkJZINJOUVx0xV400cQAq9iwNZG0LrW+KGEMXMkxVN2hQShSQ0hBYLV4Kaw4YMdvawTHoMZ2XGhOcuHOyA */
+  /** @xstate-layout N4IgpgJg5mDOIC5QCcD2qAuA6WGCGyGAxAKoAKAIgIIAqAooqAA6qwCWGbqAdoyAB6IALAFYAjFgBMANjEAGaQHYxSyULEiRAGhABPRAE4Jc+QA5TI9dOvXFAXwc7uqCHD5pMOfISxUmTLG4wAHcAAlw8DDBQsT4Wdk4ePkEEeTEdfQQAZgNFLAMs02lLNUkRA3MsxxAPbAifPyY41g4uXiQBREVFDMRJRSz86SFhrKyhIX6RSWrarwJsAGEeIIBjRO5AkPD8KJjmhLbkxE1pKRNTOQMCuRGsyV6EISv88bkLLLEDEXMRWfQ6t4liswOsjh14q0kh0UiJ7ucxJdrllbtJ7o8ZBIDNIDJIsooLLj+kV-p56hgDlD2qBYVlHojTPkCfchJdTKIDEJSRSIS0NscEJIDPTGXJJHIJXi0eJTOKZg47EA */
   createMachine(
     {
       context: { counter: 0 },
@@ -24,12 +24,20 @@ const RootMachine =
                 id: 'AppMachine',
                 autoForward: true,
               },
+              initial: 'new state 1',
+              states: {
+                'new state 1': {},
+              },
             },
             Connection: {
               invoke: {
                 src: 'ConnectionMachine',
                 id: 'ConnectionMachine',
                 autoForward: true,
+              },
+              initial: 'new state 1',
+              states: {
+                'new state 1': {},
               },
             },
           },

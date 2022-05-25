@@ -2,7 +2,9 @@
 
 export interface Typegen0 {
   '@@xstate/typegen': true;
-  eventsCausingActions: {};
+  eventsCausingActions: {
+    update: 'CREATE_CHAT' | 'JOIN_CHAT';
+  };
   internalEvents: {
     'xstate.init': { type: 'xstate.init' };
   };

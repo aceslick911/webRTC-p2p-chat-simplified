@@ -1,26 +1,33 @@
 import { createMachine } from 'xstate';
-import { log, sendParent } from 'xstate/lib/actions';
+import { log, respond, sendParent } from 'xstate/lib/actions';
 
 export const AppMachine =
-  /** @xstate-layout N4IgpgJg5mDOIC5QEEAOqCyBDAxgCwEsA7MAOgBsB7LCYqAYgGEAlAUWQBVWB9RgCU6JQqSrAIAXApSJCQAD0QBGACwB2UgAYATDrUBmFcoCsBrQBoQAT0SqAbKRMAOI6uVbFj1UYC+3i2kxcQhIKaloiBgApAHkASQA5XgEOWRExSWlZBQQVdW1dVQNlY1MLaxyATi1SZQrbT1UtIw0K5UVW3z8QIkoIOFkA7HxiMioaOlTRCSkZJHlENzKlRXVm5UdbO1t2rQq9X390IeCyPmiAZRS5tOnMuey9bVIKisdHHUcNDVsjW1slnKKRSkVyOZR6DZNNQtVQHECDIIjUjnAAyyAAaqxJukZllEI9qi83h8vj8-gCdOpVN9XIofltdlo4QjhiRsbdZqBsh4AR5Ot4gA */
-  createMachine({
-    tsTypes: {} as import('./app.typegen').Typegen0,
-    id: 'AppMachine',
-    initial: 'loading',
-    states: {
-      loading: {
-        on: {
-          CREATE_CHAT: {
-            actions: [sendParent('UPDATE'), log('GOT CREATE CHAT')],
-            target: 'HOST',
-          },
-          JOIN_CHAT: {
-            actions: [sendParent('UPDATE'), log('GOT JOIN CHAT')],
-            target: 'SLAVE',
+  /** @xstate-layout N4IgpgJg5mDOIC5QEEAOqCyBDAxgCwEsA7MAOgBsB7LCYqAYgGEAlAUWQBVWB9RgCU6JQqSrAIAXApSJCQAD0QBGABwAmUgFYAnMq0A2LYq1aNpvcoA0IAJ6ItABlLH7yvQHY9AFkWedntwC+AVZomLiEJBTUtEQMAFIA8gCSAHK8AhyyImKS0rIKCCrq2roGRiZmljaIqvZ6Tr6qior2AMx6GuaenkHBIESUEHCyodj4xGRUNHRZohJSMkjyiJ6qVraFqm6kiq1abq32nsoaim7eekEh6GMRZHwJAMqZS9nzeUsFra3Kmm6m3nsGlazWUrXWShUTnOelablU3WOLg0VxAo3CE1IjwAMsgAGqsWY5Bb5RDfX4af4aQHA0Hg6oIVStTxOVqqHR1Pamez-VHo8YkInvRagAoqCGFZS9AJAA */
+  createMachine(
+    {
+      tsTypes: {} as import('./app.typegen').Typegen0,
+      id: 'AppMachine',
+      initial: 'loading',
+      states: {
+        loading: {
+          on: {
+            CREATE_CHAT: {
+              actions: 'update',
+              target: 'HOST',
+            },
+            JOIN_CHAT: {
+              actions: 'update',
+              target: 'SLAVE',
+            },
           },
         },
+        HOST: {},
+        SLAVE: {},
       },
-      HOST: {},
-      SLAVE: {},
     },
-  });
+    {
+      actions: {
+        update: sendParent('UPDATE'),
+      },
+    },
+  );
