@@ -62,7 +62,6 @@ const Or = styled.div`
 `;
 
 const Card2 = styled(Card)`
-  width: 100%;
   border-left: 1px solid black;
   display: flex;
   flex-direction: column;

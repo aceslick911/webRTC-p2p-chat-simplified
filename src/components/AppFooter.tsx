@@ -10,12 +10,10 @@ const HomepageLink = styled.a`
 `;
 const Version = styled.div``;
 const Line = styled.div`
-  width: 100%;
   height: 1px;
   background-color: white;
 `;
 const InnerContainer = styled.div`
-  width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;

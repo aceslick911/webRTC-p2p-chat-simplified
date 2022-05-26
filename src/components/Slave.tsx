@@ -28,7 +28,6 @@ const Instruction = styled.div`
   margin-bottom: 4px;
 `;
 const Card = styled.div`
-  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;

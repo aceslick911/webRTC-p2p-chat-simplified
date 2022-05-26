@@ -25,7 +25,6 @@ const Wrapper = styled.div`
   padding: 12px;
   margin: auto auto;
   flex: 1 0 0;
-  min-height: 100%;
 `;
 
 const App: FC = memo(function App() {
