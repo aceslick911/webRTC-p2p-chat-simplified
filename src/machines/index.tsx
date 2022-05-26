@@ -116,12 +116,12 @@ export const useApp = () => {
   const Data = useMemo(
     () => ({
       AppData: {
-        state: appState, //state.children['AppMachine']?.['state'],
-        send: _send, //(ev) => _send({ type: 'SEND_TO_APP', payload: ev }), //state.children?.['AppMachine']?.['sendTo'], //
+        state: appState,
+        send: _send,
       },
       ConnectionData: {
-        state: conState, //state.children['ConnectionMachine']?.['state'],
-        send: _send, //(ev) => _send({ type: 'SEND_TO_CONN', payload: ev }), //state.children?.['ConnectionMachine']?.['sendTo'],
+        state: conState,
+        send: _send,
       },
 
       send: _send,
