@@ -16,6 +16,10 @@ const Header = styled.div`
 const Message = styled.div<{ sender: MESSAGE_SENDER }>`
   padding: 4px;
   background-color: greenyellow;
+  flex-wrap: wrap;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
 
   ${({ sender }) =>
     sender === MESSAGE_SENDER.ME
@@ -32,6 +36,16 @@ interface ChatFileMessageType extends ChatMessageType {
 interface ChatFileMessageProps {
   chatMessage: ChatFileMessageType;
 }
+
+const ImageContainer = styled.div`
+  flex: 1 1;
+  padding: 10px;
+  margin: 0;
+`;
+
+const ImageOb = styled.img`
+  width: 100%;
+`;
 
 const ChatFileMessage: FC<ChatFileMessageProps> = memo(function ChatFileMessage({ chatMessage }) {
   const { fileName, fileSize, receivedSize, receivedBlobUrl } = useFileBuffer(chatMessage.fileId);
@@ -62,12 +76,21 @@ const ChatFileMessage: FC<ChatFileMessageProps> = memo(function ChatFileMessage(
     );
   }
 
+  const isImage = !!/\.(jpg|jpeg|gif|bmp|png|tiff|svg|ico)/.exec(fileName);
+
   return (
     <Message sender={chatMessage.sender}>
       <Header>
         <span>{chatMessage.sender === MESSAGE_SENDER.ME ? 'Me' : 'Friend'}</span> (
         {new Date(chatMessage.timestamp).toLocaleTimeString()})
       </Header>
+      {isImage ? (
+        <ImageContainer>
+          <ImageOb src={receivedBlobUrl} alt="" />
+        </ImageContainer>
+      ) : (
+        <></>
+      )}
       <Text>
         <a href={receivedBlobUrl} download={fileName}>
           {fileName}
