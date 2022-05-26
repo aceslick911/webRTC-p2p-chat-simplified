@@ -12,8 +12,17 @@ export const GlobalStyle = createGlobalStyle`
   }
 
   body{
-    display: flex;
-
+    /* display: flex; */
+    position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  flex:1 0 100%;
+  align-items: stretch;
+  justify-content: stretch;
+  flex-direction: row;
+  display: flex;
   }
 
   html {
@@ -26,5 +35,8 @@ export const GlobalStyle = createGlobalStyle`
   #root{
     display: flex;
     flex: 1 0 0;
+  margin: 0;
+  align-items: stretch;
+  flex-direction: column;
   }
 `;

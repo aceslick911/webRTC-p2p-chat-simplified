@@ -16,16 +16,13 @@ const MessageTextArea = styled(TextArea)`
   text-align: left !important;
 `;
 const MessageForm = styled.form`
-  width: 100%;
   display: flex;
 `;
 const MessagesInnerContainer = styled.div`
-  width: 100%;
   display: flex;
   flex-direction: column;
 `;
 const MessagesContainer = styled.div`
-  width: 100%;
   overflow-y: scroll;
   display: flex;
   flex-direction: column-reverse;
@@ -35,7 +32,6 @@ const MessagesContainer = styled.div`
   flex: 1;
 `;
 const Container = styled.div`
-  width: 100%;
   display: flex;
   flex-direction: column;
   flex: 1 0;

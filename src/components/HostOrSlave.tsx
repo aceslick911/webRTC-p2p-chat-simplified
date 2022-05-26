@@ -37,7 +37,7 @@ const Card = styled.div`
   justify-content: center;
   align-items: stretch;
   flex: 1;
-  padding: 50% 20px;
+  padding: 20px;
 `;
 const Or = styled.div`
   position: absolute;
@@ -62,6 +62,7 @@ const Or = styled.div`
 `;
 
 const Card2 = styled(Card)`
+  width: 100%;
   border-left: 1px solid black;
   display: flex;
   flex-direction: column;
