@@ -77,8 +77,45 @@ export function createPeerConnection({
 
   return new Promise((res) => {
     peerConnection.onicecandidate = (e) => {
+      console.log('ICE', e, e?.candidate?.address);
+      if (e.candidate !== null && peerConnection.localDescription) {
+        const {
+          address,
+          candidate,
+          component,
+          foundation,
+          port,
+          priority,
+          protocol,
+          relatedAddress,
+          relatedPort,
+          sdpMLineIndex,
+          sdpMid,
+          tcpType,
+          type,
+          usernameFragment,
+        } = e.candidate;
+        console.log({
+          address,
+          candidate,
+          component,
+          foundation,
+          port,
+          priority,
+          protocol,
+          relatedAddress,
+          relatedPort,
+          sdpMLineIndex,
+          sdpMid,
+          tcpType,
+          type,
+          usernameFragment,
+        });
+      }
+
       if (e.candidate === null && peerConnection.localDescription) {
         peerConnection.localDescription.sdp.replace('b=AS:30', 'b=AS:1638400');
+
         res({
           localDescription: JSON.stringify(peerConnection.localDescription),
           setAnswerDescription,

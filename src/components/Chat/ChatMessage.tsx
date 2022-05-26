@@ -5,6 +5,9 @@ import { MESSAGE_SENDER } from '../../types/MessageSenderEnum';
 import { ChatMessageType } from '../../types/ChatMessageType';
 import { useFileBuffer } from '../../module/FileBuffers/FileBuffers';
 
+import _ReactPlayer, { ReactPlayerProps } from 'react-player';
+const ReactPlayer = _ReactPlayer as unknown as React.FC<ReactPlayerProps>;
+
 const Text = styled.div``;
 const Header = styled.div`
   font-size: 12px;
@@ -41,6 +44,7 @@ const ImageContainer = styled.div`
   flex: 1 1;
   padding: 10px;
   margin: 0;
+  max-width: 500px;
 `;
 
 const ImageOb = styled.img`
@@ -76,7 +80,8 @@ const ChatFileMessage: FC<ChatFileMessageProps> = memo(function ChatFileMessage(
     );
   }
 
-  const isImage = !!/\.(jpg|jpeg|gif|bmp|png|tiff|svg|ico)/.exec(fileName);
+  const isImage = !!/\.(jpg|jpeg|gif|bmp|png|tiff|svg|ico)/i.exec(fileName);
+  const isVideo = !!/\.(mp4|avi|wmf|3gp|mkv|mov)/i.exec(fileName);
 
   return (
     <Message sender={chatMessage.sender}>
@@ -84,9 +89,13 @@ const ChatFileMessage: FC<ChatFileMessageProps> = memo(function ChatFileMessage(
         <span>{chatMessage.sender === MESSAGE_SENDER.ME ? 'Me' : 'Friend'}</span> (
         {new Date(chatMessage.timestamp).toLocaleTimeString()})
       </Header>
-      {isImage ? (
+      {isVideo ? (
         <ImageContainer>
-          <ImageOb src={receivedBlobUrl} alt="" />
+          <ReactPlayer url={receivedBlobUrl} playing controls width="500px" height="300px" loop />
+        </ImageContainer>
+      ) : isImage ? (
+        <ImageContainer>
+          <ImageOb src={receivedBlobUrl} />
         </ImageContainer>
       ) : (
         <></>

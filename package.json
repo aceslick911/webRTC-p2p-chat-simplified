@@ -3,20 +3,31 @@
   "version": "4.0.0",
   "private": true,
   "homepage": "https://michal-wrzosek.github.io/p2p-chat",
+  "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
+    "start": "react-app-rewired start",
+    "build:app": "react-app-rewired build && mv -f build docs",
+    "build:clean": "rimraf ./docs",
+    "build": "npm run build:clean && npm run build:app",
+    "test": "react-app-rewired test",
+    "eject": "react-scripts eject"
+  },
   "dependencies": {
-    "@xstate/inspect": "^0.7.0",
-    "@xstate/react": "^3.0.0",
+    "@xstate/inspect": "latest",
+    "@xstate/react": "latest",
     "copy-to-clipboard": "^3.3.1",
     "js-base64": "^2.5.2",
     "qrcode.react": "^3.0.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "react-player": "^2.10.1",
     "react-scripts": "^3.4.1",
     "rxjs": "^6.5.5",
     "schemat": "^2.0.1",
     "shortid": "^2.2.15",
     "styled-components": "^5.1.0",
-    "xstate": "^4.32.1"
+    "xstate": "latest"
   },
   "devDependencies": {
     "@types/jest": "^25.2.1",
@@ -31,17 +42,7 @@
     "gh-pages": "^2.2.0",
     "react-app-rewired": "^2.1.5",
     "rimraf": "^3.0.2",
-    "typescript": "^3.8.3"
-  },
-  "scripts": {
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d build",
-    "start": "react-app-rewired start",
-    "build:app": "react-app-rewired build && mv -f build docs",
-    "build:clean": "rimraf ./docs",
-    "build": "npm run build:clean && npm run build:app",
-    "test": "react-app-rewired test",
-    "eject": "react-scripts eject"
+    "typescript": "4.7.2"
   },
   "eslintConfig": {
     "extends": "react-app"

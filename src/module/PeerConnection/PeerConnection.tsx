@@ -41,7 +41,7 @@ const PeerConnectionContext = createContext<PeerConnectionContextValue>({} as Pe
 export const PeerConnectionProvider: FC = ({ children }) => {
   const app = useContext(AppContext);
 
-  console.log('APP CONTE', { app });
+  // console.log('APP CONTE', { app });
 
   const [localDescription, setLocalDescription] = useState<string | undefined>();
 
@@ -61,6 +61,7 @@ export const PeerConnectionProvider: FC = ({ children }) => {
   }, []);
 
   const startAsHost = useCallback(async () => {
+    console.group('startAsHostCB');
     app.startAsHost();
     onConnecting();
     peerConnectionRef.current = await createPeerConnection({
@@ -69,7 +70,9 @@ export const PeerConnectionProvider: FC = ({ children }) => {
       onChannelOpen,
     });
 
+    console.log({ localDescription: peerConnectionRef.current.localDescription });
     setLocalDescription(Base64.encode(peerConnectionRef.current.localDescription));
+    console.groupEnd();
   }, [app.mode, app.startAsHost, onMessageReceived, onChannelOpen, setLocalDescription]);
 
   const startAsSlave = useCallback(
@@ -83,7 +86,7 @@ export const PeerConnectionProvider: FC = ({ children }) => {
         onMessageReceived,
         onChannelOpen,
       });
-      console.log('peerConnectionRef.current.localDescription', peerConnectionRef.current.localDescription);
+      console.log({ localDescription: peerConnectionRef.current.localDescription });
       setLocalDescription(Base64.encode(peerConnectionRef.current.localDescription));
     },
     [app.mode, app.startAsSlave, onMessageReceived, onChannelOpen, setLocalDescription],

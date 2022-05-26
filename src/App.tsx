@@ -30,16 +30,47 @@ const Wrapper = styled.div`
 const App: FC = memo(function App() {
   const { mode, isConnected } = useChat();
 
+  console.log('REN', { mode, isConnected });
+
   useChatPeerConnectionSubscription();
+
+  const RenderPage = () => {
+    const modeString = typeof mode === 'string' ? mode : JSON.stringify(mode);
+    console.log('REN', { mode, isConnected, modeString });
+
+    if (isConnected) {
+      switch (modeString) {
+        case '{"client":"waitingForHost"}':
+        case '{"host":"waitingForClient"}':
+          return <Chat />;
+      }
+    }
+
+    switch (modeString) {
+      case 'home':
+      case 'slave':
+        return <HostOrSlave />;
+      case '{"client":"waitingForHost"}':
+        return <Slave />;
+
+      case '{"host":"waitingForClient"}':
+      case 'host':
+        return <Host />;
+
+      case 'chatting':
+        return <Chat />;
+
+      case 'loading':
+      default:
+        return <span>Loading..</span>;
+    }
+  };
 
   return (
     <Wrapper>
       <InnerWrapper>
         <AppHeader />
-        {(!mode || mode === 'loading') && <HostOrSlave />}
-        {mode === 'HOST' && !isConnected && <Host />}
-        {mode === 'SLAVE' && !isConnected && <Slave />}
-        {mode && isConnected && <Chat />}
+        {RenderPage()}
         <AppFooter version={`v${pkg.version}`} homepage="github.com/aceslick911/webRTC-p2p-chat-simplified" />
       </InnerWrapper>
     </Wrapper>
