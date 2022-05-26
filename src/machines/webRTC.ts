@@ -53,10 +53,10 @@ export const ConnectionMachine =
     {
       actions: {
         setPeerConnection: assign({
-          peerConnection: (c, e) => e.peerConnection,
+          peerConnection: (c, e: any) => e.peerConnection,
         }),
         setDataChannel: assign({
-          dataChannel: (c, e) => e.dataChannel,
+          dataChannel: (c, e: any) => e.dataChannel,
         }),
 
         // setupChannelAsAHost: assign({}),
