@@ -10,15 +10,14 @@ const actions = {
 const services = {
   createOffer: (c, invokingEvent) => async (callback, onReceive) => {
     try {
-      console.log('✅ createdOffer');
-
       const description = await c.peerConnection.createOffer();
-
-      callback('SET_LOCAL_DESCRIPTOR', { localDescriptor: description });
 
       onReceive((event) => {
         console.log('GOT2', event);
       });
+      console.log('✅ createdOffer', { description });
+      callback('SET_LOCAL_DESCRIPTOR', { localDescriptor: description });
+      return description;
     } catch (err) {
       callback('ERROR', { err });
       throw err;
@@ -28,11 +27,11 @@ const services = {
   createRTCPeerConnection: (c, invokingEvent) =>
     new Promise((resolve, reject) => (callback, onReceive) => {
       try {
-        console.log('✅ Created peer connection');
         const peerConnection = new RTCPeerConnection({
           iceServers: c.ICEServers,
         });
         callback('SET_PEER_CONNECTION', { peerConnection });
+        console.log('✅ Created peer connection', { peerConnection });
 
         onReceive((event) => {
           console.log('GOT', event);
@@ -45,7 +44,7 @@ const services = {
 };
 
 export const ConnectionMachine =
-  /** @xstate-layout N4IgpgJg5mDOIC5QGED2A7dYDGAXAlhgLICG2AFvlgHT4QA2YAxMgPIBy7AosgCqKgADqlj4CGASAAeiAOwAmAAzV5sgIzyAbAA5NATgCsagMx75AGhABPRAFpNx5WocAWF8YPz5b-QF9flmiYOOLopBRUYNTYGFh4VFDUAO5gAEYASrzI1IJgYABOQXGhtOhi+CT0+ABeCUwAyrwAgpkA+gAKXFzprWycPLwAkhySwqKhkjII2tpq1IayCnqKRvIG2pY2CLZretSKeo6yirN6epoOxv6BsSGEYWSUNDHB8eiJKRlZOXmFt-EYaiwAoAN3w2Dg0XIJGC9Gi+TAJFwkCYGFYuXQoxE5QkSGkiDUx2M1AMxjUahcSnkam0Lj0mwJ6mo6jM2mMM0JhjZ1xARTuxEekWi-wI72SaUy2VyBT5APQQNB4MhFBhWDhqAxqLCcFgJBgWPG90mBJmBmomgMqwMmgpLgMbgZCEJcxZqi0elkDg0Bh5stC4SeURexQS4q+Ut+fvuCvyYIhsGoADN6KgkgnBOCANZMYG4ACugmQ0NhTVgTQAEiJcAacZi8VNFvISbMTG42S5ZOdHezqC4ORS9NpDHaXBdfSL7gGhcG7mLPpKfjKJ4DgbGlQnk6n01mc2B84Xi2rS016vQSCCwDWJvWCeTlJ21GZ5GZjJS6d3tL3+3Sh-b7WOAl5ZcHgiZ4JznCVvmlP5XhKVc40hTc02oStYFweFEVFKBWETRMChYdIuCaXguFaVgADFyO6K8jRvBBOxcZkdBtTxFj0OkLGsRB5DJagTE9WRtFka1BMUTRx1gydBTAySIPDRcYJDFdFXjJMU2Q1D0KSEhynecjUHyJp0FgFJ8hYAAZQYuHYXhWiadh6gAdWovExlrY16OWFRFD7RQxNMQ5NEdOk9mtR9rRtYxjGfCSlJAwNhVkj5IIjJdJOUtdVKQhNNOSHSsP0wpDzAegmBVWFqDRDEaNxUAGzMc1tFYgwfOpWlOK2C05jWLxjE0NYh1feRYv5eLp3A5L5OgqMMoQjd1ITZAqjAdAtPyhJCpwvCzPLVhGjIyiXKEbFrzq293GZM5BKHR8TlkFxu0UOZNDEzRPSu9Y7RGuUpxkkM5IXabgJjOa1K3aglvwFb0OwBEkUgIyTPw+ynO6LgABFWl2xoarrM6nQ0WQ+M8AxZHZAxDkpWRgsceZ9DcO0+pcZwrkAmaxr+2dJsByNgfg9cweQyHoby3SoEKotVRKsrivVdB0RW3GPPJKKVCilw-PJCljDJx0upUTweP69ZKeGtngN+oMJrDHm0rikGBeyqEkSwpN8EYXh8hhWBtuoXAveM7b0jAABHPM4FwJgEQAKxCSAlbownlA9Wl2J1pr5A2LjplJeYX00HxPRcb7-Wkq2kptqDefS+V+ayhbndwV3E3dsBPe933-Y7gpg7DiOmDICFBFwdvA4KBP8bUO7qHTw4jD7JqDEdLWm0cRR1C8YTFEcH1zZry3Ev+7mq7t0aHfr8GVSb0MW49gOfYKBV0AgDbW6YCAMCiKgQVQTMonZg+M43jH1SopM+ddEINyvs3Vuo8H75Cfi-PSrcEDf1QNgJE9wADaigAC6E98TTFmMyTOlohKjgtKSZe7hNAqDZOsXQfZRw+RLlJUC5cj6V1Aezc+kDL7QmvmKW+bd76+2BM-V+jAmAFHyAZHIZ5cCJgMgAWwhhbMuh8uZcIUjwiB81+EuxvrA0Rj9xFIPFigtBGDQg4Pwa5E6tF8Zkz2D5ZwfkDieDUNQvqdC+rkOZnoCku8bj7w0UA1284T5gLlLw-RyFoFGLvt3BBGZsCZnIrA1A9QVoQF3M-OBQdQ7hzQgQqYtJaGHHUNodxiwp70mzlPT0fE+qODpOyfqQlWECnYZo4B2igY11iYLBMCShHGOSdQdAqACn4TMRkxgpTEBDmUH47wZMNAeKXtnQwtCGZPUztdFYXSOYcK0ZE7hfMVJ8PiQImBSSx4IKmTMsy0FskSOQQs+xhpaqEKntoJsGg6QWm3h6R8D1tnWl7O4QcWsPCeD0McwB1tzk6MuZla5IzbmJJERM7SYteBZNwCQfIkdeDpBRlRHojQWj8C+e5RO69aEmHtI+ISTVmZBQad4M0loPSkM+qScSe84pIoriigZ9s9HDMbncnFDzRZYQJU0bAQ9I7UraGSilR0QBuVOoQpqRMVZ+TdMsAJy9qS0NJOyFYpI-KjlZiEkVYTkUpVRYMqVTtRmJGEc86gCIIT4DBB85gH8aBoL-mo0JPTwmhnFdXSVVy4mYsMWM+58C-U4DAIGyRYBUHoB-tY7BeDFkEw9OaDwKwdA+HZMYbxtDM5+PugEtQwSgJRoSjGgGUTdGJulV6t2abfb+qzUGixUiZFyMEAopR+RVEAOdWK11ErwG9s9Vi1Ncr03DuzcGvNBbMEYFsSWqeGtqC0j-KyNwFJOVbG1vWtkOgm2PiCYihdnC42nxiR6qB66oAWT2qRPo3A+DDHYMe6FzI+xGHYv+ZY1Ns7HEYkYRDnZ7TPncK+6NLqprxpXeipN79P5AiJciSNTqsOLpw5+uCq6FrHouN1a0IKnpkiMDepZxDXyzC3mSJQ-VMMduw7baJoRCNhvzb-KI5Aqy2BJdgWwMafm6scYQ6klpmQeEEpnBwgT2MIBek2QcbIaReALkKx1o1RXvqXbhuU0j8iyJSdOlR1BpNoVk7geTim8Y6ocT8qYamiY8XOKYDQOsGaOk8BUwkAlCQ6EMKzQCUyIBwEkPOnpdBPnHW+T5qYpNDWHCpGsG0FxwVbHsD4i4ZNRyWjC-x4Vlm31nJs9R6MVByiVBqAkEtOhiT2lpO4Y4g59mOh2KOPiRqzisgcFoAT41KPCZ7fh52FVYaYXjnSvVUxnRmlUBTUkgTDArCzlsJq+x6EtRML+M4xcGs-Sa30j9InoxSvKmqSq1VNsqe24Es0ZhwrVJWMJTwjozsnA8OyYcqHvBzc5o9lrz3ZoCzeyVejnYSRkgpFSGk75s62B7GyNkXhBz9U9KoWHpz4dUcR7XWj4NUmZhLYOPYUHnzUjMPaQS3Y5iDgCYD61zhtAU96REhHS3QZO1ymtzB7wtrjy+-5uQtINMvR-M+FqPFl42jPZvbwT115TzNhZ+7FHrPU-F47BuuU8UFQMojUyJb3q9kMDFt0V34NbHV3xRQqgdadjJLMB1bbyOCYW92tFEurdVgVRtAyktYSO4tL2C0ambQrHOCdxAlokMtvhf+C4RhhedpAW6hNy3JdVkd8zZPniwrp50KDz8TUTBvTMAobwdIi9CfD+6unQtlqrRj3pAycv8jHvJETBLbht7HFpOoR0XhGKXGEjrNYzNnxB-S6Hs3i2I+W-BsLQf0vkQQHt-L7L9LJ7kj2CYGL28fyrG7NrykpgA9KGg13sPFze-l4boftaYsEsss4+Yk+wJgZIoWwk70kW9oJIue5MhwkOt2xupcpuzW5ue+F8-eUMq0x6JwTYLGEBgSUB+gy8Rg5o-UpgRcj4bon+O+PeZekeBigi3q4y8qXcDyvcxS1YCuuWBIYkjEPuL01oGsBcRmy8PkjExwBulalCRuwejWaBVOu+P+TBNyKarBg6piOSOaJa56OupgquJMHY9St6jgLiPuc81opgHY8hW+829B3+jB++6hLBA6m6vsDO8ybcWSOSehHYKghgByQ4tIYkph-BU8M8901WhIQ4CwdB6BKhzhWByabhPqJijy0yGRTOZ2ugywdqoKwk4R0wARC8doPu-4ugCRyhDBeGahqRsqvqNuCQBK9QRKJKeBxwfEgkpgJwGyhIZWt4TIzCFIT0lIIkra9hcOouGBqhLhDR2KTR607wSqKqYAw8-hTYlo1o7EM+zOemKsPKb0JwngZIHoCg1RMxSRdR8xMqixGRGaAao63heBkK0ROs5wZgBcUUy85h+wlhcKOmthlxsaYumBGKdxG6zyjuLa+wHK7iQRXiCG90cBG8QhwktIm+6iShVxtRX6feCx7wPWgScJbifkiJjoxwcwf48WlBmsagIJXaThNxKRbsZQsA5AkAksLB4Gp6Lai80Ug4FMgSoOpRMw5Ra+zEjJJey6+Jv+W4PWb0pJL05Jnio2p6g46g7gzg90Bc9o0p-StmNG+GPWF0riKpHi1Io2Ks8wn0ZwawHiPusgBpT27MPWj4ypCJapeOohechWLMLao4CKd2qB2+iRWQJa+2npqpVpPp6OHo687ibIfUNI5mChJuYZwCkZTI5pXpsZ5WlohmlIJ6XoTGwZKBbCCUyIs6VA8MEAJaXg6mHK5wBcJgfkme+mg4YBEBNIiwEBwuiYOkjAEABKfoDZRs-xmcnxJho4wU3gNetq0Ur4lBaZUxl4vBHknO0ZlpSJ5WQ25augnopIyZgk-g-gQAA */
+  /** @xstate-layout N4IgpgJg5mDOIC5QGED2A7dYDGAXAlhgLICG2AFvlgHT4QA2YAxMgPIBy7AosgCqKgADqlj4CGASAAeiAOwAmAAzV5sgIzyAbAA5NATgCsagMx75AGhABPRAFpNx5WocAWF8YPz5b-QF9flmiYOOLopBRUYNTYGFh4VFDUAO5gAEYASrzI1IJgYABOQXGhtOhi+CT0+ABeCUwAyrwAgpkA+gAKXFzprWycPLwAkhySwqKhkjIImmrKLoou8gYKBobahpY2CLbGStSzLgbaBooKmpryxv6BsSGEYWSUNDHB8eiJKRlZOXmFt-EYaiwAoAN3w2Dg0XIJGC9Gi+TAJFwkCYGFYuXQoxE5QkSGkiDUskUxmoBmMajUi0U8jU2hcek2BPU1HUZm0xm02kJayuARARTuxEekWi-wI72SaUy2VyBQFAPQQNB4MhFBhWDhqAxqLCcFgJBgWPG90mBM5BmomgMRiWMzcBjcjIQhLULLUZjOelkDg0Bmu-LF93CTyiL2KCUlXxlv3lJWB+TBENg1AAZvRUElk4JwQBrJjA3AAV0EyGhsKasCaAAkRLgjTjMXiprIFKSuRSrdpibJtBZrHZCSpTno9JSjg79JoXP7Y0Hhc9AxLPtKfnLA4D44nIWmM1nc-mwEWS2WNRWmvV6CQQWB6xMmwSKcpZGZFIo1NbltoFE7bIOlM-R0OY4XEnac+VnIUIgXV5xQ+KVvllP4YPuJUExVZMd0zaga1gXB4URWDWBTFMCiYCAMCiKgQVQHNQwRJEwFsVBiIKW8TXvBAexcahTFmeQ9E0HtiSMJ1LldExvR0PRX27PQZ3XB4oNDRc4KjVckPDDdlSTVN0ywnC8OwejCJY-IGi4XhWgAGVYZAmis1oABEuHqZB0kGdpeFYdI2NxUAphcWQLWORRPHfE4FEWFwnRMeQeMCtxpOkpZrTAm5kMgkNRWQpd4OjNcMsVTd0N03dsNrZISHKd4ADFUHyJp0FgFIzOQKzBi4dhLKadh6gAdW6XzG38uRpKHFwu0UBwR2MTQnXpPRSRmQxzhMXY5PAhTgxFMM7lytTEIgortO3PTkwMyrqqgOrChPMB6CYNVYWoNEMSG01OLMS1jlUE5FlpRYnStV0li8WalnWYxFnkwrtug8N9pXQ6FNQrcMLO6hkCqMB0DwpIqtgm6iJIsyq1YRpWlYGqasGvExgbD6KXcFkRx7dZ3UUL9ov7BBHFdTQpsE-QvSOQ4Yc0xSst2t5VKRmMUeKnTMOTLH8BxwzjMgRrmtInr+u6LhHNaMnGnejiKVUfZPGWDlVih1R5scagBL0NxDlmlxnF5dKJbh5SctlhD5cK1GSuVzHsdxy7Cfq0t1Xux67s1dB0Rxs2RudNaVGMKHXwpSljFkYwgaMFRPEuC4jj0e3xcFSWdpUyM5YKiXQ6VjG1VwWDU3wRheHyGFYBJ6hcAHpqSfSMAAEdCzgXAmARAArEJIHT-FnVUZQvTpV3C5+7QnWOEkRwrnxvTSgNYfnf2EcD-KNLrtvTrKzvu5TXuwH7wfh9H7+Cknmec8mBkAhIIXAX9x6sTptiO8GdZhfh4j2auRgJrHAMDFC2PFXzqC8EFYkoVa4Kj9tlW+Tcg4t0forZ+WFX4Rnfn3MeQ8ChKnQBABINUP5kQoqUaitFMZbWviQvad91JHSfujF+0Iu50I-hAph+QWFsNqh-BAVFUDYCRPcAA2ooAAumvKYnJXQKDQVzc41pi48wLpoFQ7Iji6AmiBBYhDQjEOlt3Zc5CH4KnEaVGhUi36yMYcPYErD2GcIKPkeqORLy4BTPVAAtvwq+SkhEyzIffMRVCJH+KRIEhhf8FGhKUddFRaiNGhB0fo6Bxo-LryLotBYzgZKGBpDFdwNj5Dsh0LINw7oxwuLnKk9xEZPGZIVidHJyZaESnoZ-YJzDszYBzBwvuqB6g4wgAeVhciJ7T1nrhAxiA6Q2OruoSapx1CKAZFY04NiTAOAWNXXQXTZCDMyg3AOGTRETLQu3SReSZEFMgQo9AqBdmkWKasm8NSGYcXWMoWavZArkiUIYdBPMVrUDdm+V5nICGbRSVLRuYyfkh2yX46ZASgXzMKdQMFEKzKIQ2WE5RjAjnOk5nFDQ9IrTEi9O6bmWwsVuFMO2Ew1p+LvPrvDYR3zkbksmZSqEgLZlBLpfjK6vB1m4BIPkeevB0h6xpj0RoLR+CwtgevWY3p9geE9noL8wFnAxW8Baa0XounWjpGSTQ0q3EkrymS1uFLw4zMSHMxl0cEjaqaNgUB88zVtENca2mQgYHsQzscWQ+wTCvlUPxJpNytgaGcKSHOXYLGvhAt7S+vtBEjMRl4rJSqw3UrVcC+R1AEQQnwGCNlzByI0DUXwo6AavmkoVSG1tHd20RvVSC7tOAwB9vCYwVR6BqIVO0XojlFIvSWg8KFHQPgOSWJLR02xSLekOvfP6htgaDrB2nX86hVLVXzs7cPHtK7+2lMYEwSJ0TBCxPifkJJY6H0TqDVOyhM6AXSI7bSxdP7V0Do3VuzRGAql7oWMoH1hw2R9JAu02aV6el9MAn6Ql9bhmPubt4uM8HcmIagCwGy9QuC9A4NwPgwx2B7vcItXpxxBUTmkrIJ0RJuJGGk8+B0-F3D3ro9Bp9FCfGhrOlwmguEGLJNo8S1TDGW2vqmXu1aZcBamDfOSIwc0eZGPilyPBqKpryGU4Z0hk7n11205RTdNEojkFrLYfV2BbAjLqfTK1UwaTWhZB4HsXTpoup5gLOKjr2S0i8FOP1NG67jq8zBnzCpAP5CiQokDSIwNJOC7hULuBwuReGiAaLmb15xZzZcASvFLg3qFYgTwpzCTenUN6dYZJ-B8jBRAOAkhIOpLoOyy17WpjLBze6XY1JbTOCnD+BwNjzhFxAtaDQ4MPOfKK2pxjKEqDlEqDUBIHLPZPh+stCangpo-kcBtrwXIDACzs6FajPsCtQau8Z35aMVXPSMgRVeK26lTBdBaX6hheKGFCgfBzFpOYeBOCYCbI4L4Lc83K7z6mmOmZhxqF6b1EcteR6OC0Zh3RHFfMsSVh9cd2I5IYQKrSScCJUxD5tUOSpPQ1OZ585amZKBpDvb72hqDsm6ZSAWhgzB5dB0Q8H5PiuU5QppsqSycwcpHMrlshgTACUpLoNQ+24oAS0Ads77MLuyvSRTm7WlqfhwunDzR7xiZQPTbUxnch3QsnpNcxYQVVDfluYinQ-FpLUkFRcD3N99fXZM9D-3FVNUxwak1FqHLvSLXpEYLs74grPj7FsHOcUU8zDi5cVYgUs9pI8Qbn3x0-cYwukX9hsck7l6tNiq0cWZihQEtjrYqVSThX4hOcxagu+NpEbBjTzHzq1me6XEKYVrSnG8N4USObTCTjzssTmnsN-0bF4qgfZVVbq2jbVeqIf8h7opDm9Hbg3Yd+6gok3gh6hcZIKwns-EtapOl2OekOz++eGMb+UcgeyIEA2sZeDOjM+6dqI2xI9IomDeiAs0roiwpg5IvYoU7oD+RmT+L6yBr+kceMBMI+t08c9Av+U01ANm5IvEde+gToi+RgFixw1cfOQuRK8BXuveeeYcKBLBuGvYvBa0NuhIywQhVipc5w3glIRc6wWgby+WuuIuCBDBcGL+LG+SyGXav8IKACBydYOB5sU03E1IgOU4bhmWMUCw3ERIpwswAOVongdBou4ySBChCGNhUaxSa6MKYecKWahwKu3WAshwSwAuMUjgjS1IyCAOpggU7mJhrieushue4u-y1hNKUapu0K2qLKEAHKdIXWrSTqjq8wWhJab4iKvSx2hI6whgxhOupRZh5RiBjBUR1RSGUaDKCyP+LhGcjqwU+gMk9IY2qwh8gU2KnIhw1IE4ugYR5hERkxVR76rGPcX6zCw+7wDRuq+quGRI+wPY1mXISghIA2mczITilIb4iwAOQURx4xFhO+Vh5xMR8xH+UAsa8aYAYCzRiwpI1o+g8whcjqAkGCHgS0RIP05IXoCgQJPeFRkRZxKqFxkakJqGf60KuGAO0eRcz4+gWg7g56BIORvBeR+O00RRhJoychlRb6ZJEJhS5e74vBnsAsr4rSDuPMLYMmhIoUhwy0DoUhBmMhRJExlhTB0xUAHK+groTSkp1yYUUmb4pISp9iTJf2vJTaJxWpUxGEd2sA5AkAccrGgm8wVsaC604ho4WxOaqCexmROg2udaYOYxGpIJVO2pyYWASQAABLpsiPGWoLhliZchyGcP+IXEDLkcevikSBoFNDaVviVtGQ6c9pbEfnFhFGfp8b+FiS2FNLZu6KrjnCWfKmWUbpMs9sSCricMfrWVFD+EoJbg6gJIJHSIXC2B2d7kdBymif2aFDWafsOTzLYCBMrj0d0l+JOYBLOXlAufFtWeFKuefuuQ6FvL2HFqWvaMUSMUMmTjLAueSEuYOWefWTMMfGSHbLNDPhoF3siOBlQAxE0YsR1ilNis4BOZ7I4JzLmVuSYEhV+EXCYF3imFVIwBANqrGBymDDYvmusCic+CRjzFFJPlWrsFDBcLNFnguacG+SuZFOeVsLYESItA4LoDoJzAJCBBtP4EAA */
   createMachine(
     {
       context: {
@@ -146,11 +145,17 @@ export const ConnectionMachine =
                               initial: 'creatingOffer',
                               states: {
                                 creatingOffer: {
+                                  invoke: {
+                                    src: 'createOffer',
+                                    id: 'create-offer',
+                                    onDone: [
+                                      {
+                                        target: 'waitingForAnswer',
+                                      },
+                                    ],
+                                  },
                                   on: {
-                                    CREATE_OFFER: {
-                                      actions: 'createOffer',
-                                      target: 'waitingForAnswer',
-                                    },
+                                    SET_LOCAL_DESCRIPTOR: {},
                                   },
                                 },
                                 waitingForAnswer: {
@@ -285,6 +290,7 @@ export const ConnectionMachine =
                             finishedChatting: {
                               type: 'final',
                             },
+                            'new state 1': {},
                           },
                           onDone: {
                             target: '#ConnectionMachine.terminated',

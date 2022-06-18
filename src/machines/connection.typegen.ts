@@ -6,7 +6,6 @@ export interface Typegen0 {
     setPeerConnection: 'START_PEER_CONNECTION';
     'channel.onOpen': 'onOpen';
     'channel.onMessage': 'onMessage';
-    createOffer: 'CREATE_OFFER';
   };
   internalEvents: {
     'xstate.init': { type: 'xstate.init' };
@@ -16,15 +15,22 @@ export interface Typegen0 {
       __tip: 'See the XState TS docs to learn how to strongly type this.';
     };
     'error.platform.host-rtc-connection': { type: 'error.platform.host-rtc-connection'; data: unknown };
+    'done.invoke.create-offer': {
+      type: 'done.invoke.create-offer';
+      data: unknown;
+      __tip: 'See the XState TS docs to learn how to strongly type this.';
+    };
+    'error.platform.create-offer': { type: 'error.platform.create-offer'; data: unknown };
   };
   invokeSrcNameMap: {
     createRTCPeerConnection: 'done.invoke.host-rtc-connection';
     createDataChannel: 'done.invoke.ConnectionMachine.connecting.webRTC.peerConnection.services.channel:invocation[0]';
+    createOffer: 'done.invoke.create-offer';
     sendFile: 'done.invoke.ConnectionMachine.connecting.webRTC.peerConnection.services.flows.chatting.fileTransfer.sendingFile:invocation[0]';
     receiveFile: 'done.invoke.ConnectionMachine.connecting.webRTC.peerConnection.services.flows.chatting.fileTransfer.receivingFile:invocation[0]';
   };
   missingImplementations: {
-    actions: 'channel.onOpen' | 'channel.onMessage' | 'createOffer';
+    actions: 'channel.onOpen' | 'channel.onMessage';
     services: 'createDataChannel' | 'sendFile' | 'receiveFile';
     guards: never;
     delays: never;
@@ -32,6 +38,7 @@ export interface Typegen0 {
   eventsCausingServices: {
     createRTCPeerConnection: 'xstate.init';
     createDataChannel: 'xstate.init';
+    createOffer: 'setupChannelAsAHost';
     sendFile: 'START_TRANSFER';
     receiveFile: 'TRANSFER_START';
   };
@@ -67,6 +74,7 @@ export interface Typegen0 {
     | 'connecting.webRTC.peerConnection.services.flows.chatting.fileTransfer.waitingToAccept'
     | 'connecting.webRTC.peerConnection.services.flows.chatting.fileTransfer.receivingFile'
     | 'connecting.webRTC.peerConnection.services.flows.finishedChatting'
+    | 'connecting.webRTC.peerConnection.services.flows.new state 1'
     | 'terminated'
     | 'failedToConnect'
     | {
@@ -91,6 +99,7 @@ export interface Typegen0 {
                                   | 'Client'
                                   | 'chatting'
                                   | 'finishedChatting'
+                                  | 'new state 1'
                                   | {
                                       Host?: 'creatingOffer' | 'waitingForAnswer' | 'waitingForChannel';
                                       Client?: 'waitingForOffer' | 'createdAnswer' | 'waitingForChannel';
