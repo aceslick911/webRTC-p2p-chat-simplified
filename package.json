@@ -6,7 +6,7 @@
   "scripts": {
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
-    "start": "react-app-rewired start",
+    "start": "TSC_COMPILE_ON_ERROR=true react-app-rewired start",
     "build:app": "react-app-rewired build && mv -f build docs",
     "build:clean": "rimraf ./docs",
     "build": "npm run build:clean && npm run build:app",
