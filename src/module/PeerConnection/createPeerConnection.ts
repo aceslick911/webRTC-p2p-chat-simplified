@@ -69,7 +69,7 @@ export function createPeerConnection({
       const description = await peerConnection.createOffer();
       peerConnection.setLocalDescription(description);
 
-      disp('offerCreated', description);
+      disp('CREATE_OFFER');
     };
 
     const setupChannelAsASlave = () => {
