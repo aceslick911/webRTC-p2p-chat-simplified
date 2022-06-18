@@ -41,7 +41,7 @@ export function createPeerConnection({
         };
 
         channelInstance.onmessage = (event) => {
-          console.log('>>HOST.onmessage', {});
+          console.log('>>HOST.onmessage', { event });
           onMessageReceived(event.data);
         };
       } catch (e) {
@@ -59,32 +59,32 @@ export function createPeerConnection({
       console.log('>>setupChannelAsASlave', {});
       peerConnection.ondatachannel = ({ channel }) => {
         channelInstance = channel;
-        channelInstance.onopen = () => {
-          console.log('>>SLAVE.onopen', {});
+        channelInstance.onopen = (ev) => {
+          console.log('>>SLAVE.onopen', { ev });
           onChannelOpen();
         };
 
         channelInstance.onmessage = (event) => {
-          console.log('>>SLAVE.onmessage', {});
+          console.log('>>SLAVE.onmessage', { event });
           onMessageReceived(event.data);
         };
       };
     };
 
     const createAnswer = async (remoteDescription: string) => {
-      console.log('>>createAnswer', {});
+      console.log('>>createAnswer', { remoteDescription });
       await peerConnection.setRemoteDescription(JSON.parse(remoteDescription));
       const description = await peerConnection.createAnswer();
       peerConnection.setLocalDescription(description);
     };
 
     const setAnswerDescription = (answerDescription: string) => {
-      console.log('>>setAnswerDescription', {});
+      console.log('>>setAnswerDescription', { answerDescription });
       peerConnection.setRemoteDescription(JSON.parse(answerDescription));
     };
 
     const sendMessage = (message: string) => {
-      console.log('>>sendMessage', {});
+      console.log('>>sendMessage', { message });
       if (channelInstance) {
         channelInstance.send(message);
       }
@@ -92,7 +92,7 @@ export function createPeerConnection({
 
     return new Promise((res) => {
       peerConnection.onicecandidate = (e) => {
-        console.log('>>onicecandidate', {});
+        console.log('>>onicecandidate', { e });
         console.log('ICE', e, e?.candidate?.address);
         if (e.candidate !== null && peerConnection.localDescription) {
           const {
@@ -111,22 +111,22 @@ export function createPeerConnection({
             type,
             usernameFragment,
           } = e.candidate;
-          console.log({
-            address,
-            candidate,
-            component,
-            foundation,
-            port,
-            priority,
-            protocol,
-            relatedAddress,
-            relatedPort,
-            sdpMLineIndex,
-            sdpMid,
-            tcpType,
-            type,
-            usernameFragment,
-          });
+          // console.log({
+          //   address,
+          //   candidate,
+          //   component,
+          //   foundation,
+          //   port,
+          //   priority,
+          //   protocol,
+          //   relatedAddress,
+          //   relatedPort,
+          //   sdpMLineIndex,
+          //   sdpMid,
+          //   tcpType,
+          //   type,
+          //   usernameFragment,
+          // });
         }
 
         if (e.candidate === null && peerConnection.localDescription) {

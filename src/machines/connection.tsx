@@ -32,13 +32,31 @@ export const ConnectionMachine =
         states: {
           host: {
             on: {
-              createOffer: {},
-              setAnswerDescription: {},
+              createOffer: '.offerCreated',
+            },
+            states: {
+              offerCreated: {
+                on: {
+                  setAnswerDescription: '..connected',
+                },
+              },
             },
           },
           slave: {
             on: {
-              createAnswer: {},
+              createAnswer: '.answerReady',
+            },
+            states: {
+              answerReady: {
+                on: {
+                  answeredOffer: {},
+                },
+              },
+              waitingForHostToAccept: {
+                on: {
+                  'channelInstance.onopen': '..connected',
+                },
+              },
             },
           },
         },
@@ -46,6 +64,7 @@ export const ConnectionMachine =
       connected: {
         on: {
           sendMessage: {},
+          'channelInstance.onmessage': {},
         },
       },
       failedToConnect: {},

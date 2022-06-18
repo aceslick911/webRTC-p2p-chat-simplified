@@ -20,9 +20,12 @@ export interface Typegen0 {
     | 'idle'
     | 'connecting'
     | 'connecting.host'
+    | 'connecting.host.offerCreated'
     | 'connecting.slave'
+    | 'connecting.slave.answerReady'
+    | 'connecting.slave.waitingForHostToAccept'
     | 'connected'
     | 'failedToConnect'
-    | { connecting?: 'host' | 'slave' };
+    | { connecting?: 'host' | 'slave' | { host?: 'offerCreated'; slave?: 'answerReady' | 'waitingForHostToAccept' } };
   tags: never;
 }

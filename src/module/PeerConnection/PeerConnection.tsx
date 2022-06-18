@@ -61,18 +61,20 @@ export const PeerConnectionProvider: FC = ({ children }) => {
   }, []);
 
   const startAsHost = useCallback(async () => {
-    console.group('startAsHostCB');
+    // console.group('startAsHostCB');
     app.startAsHost();
     onConnecting();
+    console.log('HOST - 1 - createPeerConnection');
     peerConnectionRef.current = await createPeerConnection({
       iceServers,
       onMessageReceived,
       onChannelOpen,
     });
 
-    console.log({ localDescription: peerConnectionRef.current.localDescription });
+    console.log('HOST - 2 - setLocalDescription', { peerConnectionRef });
+    // console.log({ localDescription: peerConnectionRef.current.localDescription });
     setLocalDescription(Base64.encode(peerConnectionRef.current.localDescription));
-    console.groupEnd();
+    // console.groupEnd();
   }, [app.mode, app.startAsHost, onMessageReceived, onChannelOpen, setLocalDescription]);
 
   const startAsSlave = useCallback(
@@ -80,13 +82,15 @@ export const PeerConnectionProvider: FC = ({ children }) => {
       app.startAsSlave();
       onConnecting();
 
+      console.log('SLAVE - 1 - createPeerConnection');
       peerConnectionRef.current = await createPeerConnection({
         iceServers,
         remoteDescription: Base64.decode(connectionDescription.description),
         onMessageReceived,
         onChannelOpen,
       });
-      console.log({ localDescription: peerConnectionRef.current.localDescription });
+      // console.log({ localDescription: peerConnectionRef.current.localDescription });
+      console.log('SLAVE - 2 - setLocalDescription', { peerConnectionRef });
       setLocalDescription(Base64.encode(peerConnectionRef.current.localDescription));
     },
     [app.mode, app.startAsSlave, onMessageReceived, onChannelOpen, setLocalDescription],
@@ -95,6 +99,7 @@ export const PeerConnectionProvider: FC = ({ children }) => {
   const setRemoteConnectionDescription = useCallback((connectionDescription: ConnectionDescription) => {
     if (!peerConnectionRef.current) return;
 
+    console.log('?? - 3 - setAnswerDescription', { connectionDescription });
     peerConnectionRef.current.setAnswerDescription(Base64.decode(connectionDescription.description));
   }, []);
 
