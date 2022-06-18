@@ -1,4 +1,4 @@
-import React, { FC, memo } from 'react';
+import React, { FC, memo, useRef } from 'react';
 import styled, { css } from 'styled-components';
 
 import { MESSAGE_SENDER } from '../../types/MessageSenderEnum';
@@ -55,6 +55,8 @@ const ImageOb = styled.img`
 const ChatFileMessage: FC<ChatFileMessageProps> = memo(function ChatFileMessage({ chatMessage }) {
   const { fileName, fileSize, receivedSize, receivedBlobUrl } = useFileBuffer(chatMessage.fileId);
 
+  const videoRef = useRef();
+
   if (typeof fileSize === 'undefined' || typeof fileName === 'undefined') {
     return (
       <Message sender={chatMessage.sender}>
@@ -75,7 +77,7 @@ const ChatFileMessage: FC<ChatFileMessageProps> = memo(function ChatFileMessage(
       <>
         {isVideo ? (
           <ImageContainer>
-            <ReactPlayer url={blobURL} playing controls width="500px" height="300px" loop />
+            <ReactPlayer ref={videoRef} url={blobURL} playing controls width="500px" height="300px" loop />
           </ImageContainer>
         ) : isImage ? (
           <ImageContainer>
