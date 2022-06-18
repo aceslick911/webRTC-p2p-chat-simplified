@@ -273,6 +273,7 @@ export const ConnectionMachine =
         createRTCPeerConnection: (c, invokingEvent) =>
           new Promise((resolve, reject) => (callback, onReceive) => {
             try {
+              console.log('✅ Created peer connection');
               const peerConnection = new RTCPeerConnection({
                 iceServers: c.ICEServers,
               });
