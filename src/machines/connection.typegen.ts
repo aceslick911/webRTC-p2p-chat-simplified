@@ -50,7 +50,6 @@ export interface Typegen0 {
     | 'connecting'
     | 'connecting.webRTC'
     | 'connecting.webRTC.peerConnection'
-    | 'connecting.webRTC.peerConnection.initializing'
     | 'connecting.webRTC.peerConnection.services'
     | 'connecting.webRTC.peerConnection.services.channel'
     | 'connecting.webRTC.peerConnection.services.channel.created'
@@ -86,7 +85,6 @@ export interface Typegen0 {
                 | 'peerConnection'
                 | {
                     peerConnection?:
-                      | 'initializing'
                       | 'services'
                       | {
                           services?:

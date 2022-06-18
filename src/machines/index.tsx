@@ -1,7 +1,7 @@
 import React, { createContext, FC, useCallback, useEffect, useLayoutEffect, useMemo } from 'react';
 import { inspect } from '@xstate/inspect';
 import { useMachine } from '@xstate/react';
-import { ConnectionMachine } from './connection';
+import { ConnectionMachine, ConnectionState } from './connection';
 import { AppMachine } from './app';
 import { assign, createMachine, send, State } from 'xstate';
 
@@ -202,6 +202,7 @@ interface AppContextValue {
 
   dispatch: (event: any) => void;
   onConnectionEvent: (handler: (event: any) => void | any) => void;
+  connectionState: () => ConnectionState;
 
   //mode: any; //PEER_CONNECTION_MODE | undefined;
   // isConnected: boolean;
@@ -241,6 +242,7 @@ export const AppProvider: FC = ({ children }) => {
         onConnectionEvent: (handler) => {
           console.log('REGISTERED HANDLER', handler);
         },
+        connectionState: () => ConnectionData.state,
       } as AppContextValue),
     [AppData, ConnectionData, AppData.send, ConnectionData.send, AppData.state, ConnectionData.state],
   );

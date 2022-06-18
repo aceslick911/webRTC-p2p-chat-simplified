@@ -1,4 +1,5 @@
 import { send } from 'xstate';
+import { ConnectionState } from '../../machines/connection';
 
 /* eslint-disable @typescript-eslint/no-use-before-define */
 const CHANNEL_LABEL = 'P2P_CHAT_CHANNEL_LABEL';
@@ -11,6 +12,7 @@ export interface CreatePeerConnectionProps {
 
   dispatch: (event: any) => void;
   onConnectionEvent: (handler: (event: any) => void | any) => void;
+  connectionState: () => ConnectionState;
 }
 
 export interface CreatePeerConnectionResponse {
@@ -28,6 +30,7 @@ export function createPeerConnection({
   onMessageReceived,
   dispatch,
   onConnectionEvent,
+  connectionState,
 }: CreatePeerConnectionProps): Promise<CreatePeerConnectionResponse> {
   const disp = (type, payload?) => {
     dispatch({ type, payload: payload || {} });
