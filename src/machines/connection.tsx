@@ -289,59 +289,44 @@ export const ConnectionMachine =
         }),
       },
       services: {
-        createOffer: (c, invokingEvent) => {
-          console.log('OFFER');
-          const fun = async (callback, onReceive) => {
-            try {
-              if (c.peerConnection) {
-                const description = await c.peerConnection.createOffer();
-
-                onReceive((event) => {
-                  console.log('GOT2', event);
-                });
-                console.log('✅ createdOffer', { description });
-                callback({ type: 'SET_LOCAL_DESCRIPTOR', localDescriptor: description });
-                return description;
-              } else {
-                console.log('NOT DEFINED', c);
-              }
-            } catch (err) {
-              callback('ERROR', { err });
-              throw err;
-            }
-            return new Promise(() => {
-              console.log('LEL2');
-            });
-          };
-          return fun;
-        },
-
-        createRTCPeerConnection: (c, invokingEvent) => {
-          console.log('CREATE');
-          // return (callback, onReceive) => {
-          // console.log('AAA');
-
-          return async (callback: (ev: any) => void, onReceive) => {
-            //new Promise((resolve, reject) => {
-            console.log('CREATE2', callback, onReceive);
-            try {
-              const peerConnection = new RTCPeerConnection({
-                iceServers: c.ICEServers,
-              });
-              callback({ type: 'START_PEER_CONNECTION', peerConnection });
-              console.log('✅ Created peer connection', { peerConnection });
+        createOffer: (c, invokingEvent) => async (callback: (ev: any) => void, onReceive) => {
+          try {
+            if (c.peerConnection) {
+              const description = await c.peerConnection.createOffer();
 
               onReceive((event) => {
-                console.log('GOT', event);
+                console.log('GOT2', event);
               });
-            } catch (err) {
-              callback({ type: 'ERROR', err });
-              throw err;
+              console.log('✅ createdOffer', { description });
+              callback({ type: 'SET_LOCAL_DESCRIPTOR', localDescriptor: description });
+              return description;
+            } else {
+              console.log('NOT DEFINED', c);
             }
-            return new Promise(() => {
-              console.log('LEL1');
+          } catch (err) {
+            callback({ type: 'ERROR', err });
+            throw err;
+          }
+          await new Promise(() => {});
+        },
+
+        createRTCPeerConnection: (c, invokingEvent) => async (callback: (ev: any) => void, onReceive) => {
+          console.log('CREATE2', callback, onReceive);
+          try {
+            const peerConnection = new RTCPeerConnection({
+              iceServers: c.ICEServers,
             });
-          };
+            callback({ type: 'START_PEER_CONNECTION', peerConnection });
+            console.log('✅ Created peer connection', { peerConnection });
+
+            onReceive((event) => {
+              console.log('GOT', event);
+            });
+          } catch (err) {
+            callback({ type: 'ERROR', err });
+            throw err;
+          }
+          await new Promise(() => {});
         },
       },
     },
