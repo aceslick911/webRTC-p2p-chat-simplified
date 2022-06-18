@@ -2,7 +2,9 @@
 
 export interface Typegen0 {
   '@@xstate/typegen': true;
-  eventsCausingActions: {};
+  eventsCausingActions: {
+    createRTCPeerConnection: 'setupChannelAsAHost';
+  };
   internalEvents: {
     'xstate.init': { type: 'xstate.init' };
   };
