@@ -2,7 +2,7 @@ import { assign, createMachine } from 'xstate';
 import { log, sendParent } from 'xstate/lib/actions';
 
 export const ConnectionMachine =
-  /** @xstate-layout N4IgpgJg5mDOIC5QGED2A7dYDGAXAlhgLICG2AFvlgHT4QA2YAxMgPIBy7AosgCqKgADqlj4CGASAAeiAMwB2ACzVFqgGwBGAAyLNsrfPkAaEAE9EAJgCsADhUBOWYvlWNz2Rs+yAvt5NpMHHF0UgoqMGpsDCw8KihqAHcwACMAJV5kakEwMAAnAJjg2nQxfBJ6fAAvOKYAZS5eAH0ABS4uVMa2Th5eAEkOSWFRYMkZBG1dag17C0V7NSs1Jy0rWRNzcYsbeWprWXt7eUcjxQsNX39ooMIQskoaKMDY9HiktIysnPyr2IxqVAAZgC8shcmASLhIExYGBcABBdCwJK5AAicGwuXwghGSBAQ1KElxYw0ags9imJK0ZNszhcNnWiBmFl2VgsWlkankK00qwuIAK12Id3CkR+BBeiRS6Uy2RBYpuiRIpReADFUPlyCRAvQmBQtVh6L1EbgtdgIhhUNl0IMRATrUTECSNHYrC5NNZHDZVMYzI6NFYrNRXAdnRz5JzZBY+QLfrcwg95RK3tLPnKnkUYbkAG74M2wagA-CMXi5LWwYG5agw9C4I0A1B1Xhw9KNXipOHsWoq9o24Y3UaOxRWclueT6CYWNRqGxWBkIGxaDTUBaeTRDqes85+fnyoXxiKPQpxSXvGVfGMZvI5vORTXayJgiFQvX3jCsK29u0D8aKJzUGfyNM+yyFYv6KHOcw7DONg2NMmgLjYFjyNGu5xvcB6Jq8UofLK3zpgqmbXnABb0KgCT5gAEiIuAsKkXBwrwXCNKwKrdqkn44qAYyGHYNj2Kozokgupzgb6CD7DsChaDBMxeKsaiKCh+F7uhor4Um2FnmmR5-IRubEQCpHkdQyAVGANZMBRrC1E0LFsRx-YOuMOhLqS9iLvIsxKIYEGaLsWwye5BhaFSSk6WhIqHtcGmnqmeHhVWV76fmhlkfmgi5gA1tCsIAK6CMgd4GnCsBwlRsC4A5hJcYgbrUFyagzAoMHhhYFhztYdhzE4gGuoosE2GoYWChFCbqVhsW4ReBFJTeqXGRl2DZTCuD5YV+pgPQJVwrU9AkFmYBVfaNUIPMajUB48jbK4Ghjv19gdbYDg9f6SgDUN27TSpkWYSeKZTahiXZslJFpYqypQGquQIkieQsAAMr0XDsE0Ha1AA6j2uL4px0i1UoF36ApihUgJU5zqsOzwQYRxaI4ajssNsahKpUXPBN-3noDelzUZ+YYuCkIQDDyK6kVm3vuZkBHd+2iRiopxep4g3WOTYkM4GV0BvstgIYzn2oSzP3jX9OFc8p6BA0RsBMDLTluDoy6DbYVKIe1YlkkuQWARYCiLGcChM8ERtjUeMWc9pI1W8ltH0YxzGsVjQi2rjxKcudjUHIsCiTiTokbB4S6yINTiuJGfGnEHNwhxhJvJmbkexkwEAYBEVBZqgmUROQ1EALS5Lg2C92zuM445J1stM1A6CTkarHMGhOHOY7MiS8kGHL0z2FX32h9FHMN-FI1MHkuTqlke24PWuQALbUD3FX94Pw+oXbE9UloQbOPx7LF7MZxzinLIXY0kOTDgOIYNqO9Rq1zDvEWAe0DrUDLMiVI4IICmCYCgvIkBWBAjyG-PGmxpLUEcM4Dc7obBLzEr3XQvEZL+n4ovBYNhoE1zUnAqsiCIgJCVOKSG6p1rajFhtQ0xpTTmnQJacyhDiQcmAdYDQk4dDskQp5OcvdXC8U0P6RYsEgLIQNhbdhI9jwIP2swAWT4RYEOxinceRDtjknDIhRc-o5htTWDQuh-4GHDkUMw2wbDhR73ZjlVaBVxZbVKuVSqdi+zVSISTT+DNTgKCUHTBYSgNGzHOh4f+sF7DbE0JyYJ+4OH73CWtKJ21doWNkYgEmzjnSIX2EhbqGi-5TE5F6NqLsRJlNZmKSAt4IT8LqMjFEjQVS9HhlwBpCBDD1SWHMemBh7C2C8RsacOwyTtMnPI2QPgjHhRMcMiAozcDjLosgLgvQABqTEZlzIWUs8MTgDgcnWZs5eixdgKSUQpLYLhdCDONoUKE1YIBEDgLAEgMAFlbGZJPLkQEPBWB0BBP8sFPJHD4qBV0VCwWhKFiI7URoKoSP+OgG+sL4WHXiV+JyvtkVOCOdBDZqy5zF3OjOYuSjv7uUQr4bcUiIBwEkF9GBtAGAMuTgk46RCFC8rcKcI4zUtALDUHOVcQYSRTl6bYVwOhiWwP3qbLSR9YzFFKOUKocQFmL1usuCMrpIwtPpGJReLhp5hkMCFTy+TTUVPZhauKUr-j4PyI+IWjrgrTyQs6FYswvQKB1doZkY4aa3Q3J5KMJyRpnLrppcNgNeEQyhkIg0jqQLKEOL+YukYOSOHTXMaelIAmgUcKyVhBbmYhLNaG+ulqI08wMkWMAJYywVkSjWOsqAa0rHqnMa6dMZgBK2bVDZUxnBtTVY1ac+bLjGIHSG-hYaAYW2jnNCdU7EQzqhXEFUE7HVAousONqnyVZKOXtu0cSFGpwUAr249pzT2mPDofUds1x3FlLPe2x8qmUnSUbBZdRSXBrtmIvZebUpguHcsXbYCgPDBogwfEd3MYP8yiQ+QW0tGWp0dGSOwXgin6DZNYScEF7BFy7WuUmoEtygcLeB36w7S1XrHTR0R-wPyMYccSIcyhZislAqSQ9JIKYHF2LBBmsxQHzGOSJ-t5TyMXvNglaToztSOvaRSfYVCP5ce1WJAJdhG0AsXFsWw8wyPiZLZeqz1HI0zuwWCCAr6rr-nc6SdQHzPUbFsMioK6KQJqe3n24OYni2TUs1HazgIZ1WNjQpxJacZwOC7ayADixXNJZIU4AFDD2Tsf87liOVrLzAxvEVxDeJ7HlcdAsZQSsVbxZXViwMfs6YzkXKoZw7XOESaCwVkL81KLUVeUUqYIVbr5PDPxercgp5HKcAErk7I+lLfNSt-L1rrMbZMmZGscal3+zHKyQuPJuWnaOXMMCHGPomey2ZgLeXG7detqDBaWVtvkl0GOTyhxBrTB1dF04mrAKkhLmcRSWXq45eW4F+7UOQZPfLfwqGNjcivPDKQiM+hDsrh9Bsdwu2XDFyHAuScN2h0k8hzNHrBk+ahbyDThjSGmOLPp-MZHVClBuFuoAxcF03CdVknBYzO4T1g461BqjwuUqi5K5AGncaSQM4zVyWYhdZxiVZJ-Khk4lAgTO0ovn567uC90ut0XWAEgAAJKWQkDxoONHhdgtKOasKhGLWeIE5OSRCTjkfx+mJ7483uutC+hxt158sGpNSusUtqOql2qBmEU4cSx-sgZ12BvXxOIc5990b15JCi++xL61d2Gw2QqEMBs-Y2htDDl5AT3eg6vcC9b4qseQ2EDTmUF35qpe++IF7konYitqTzcu66TPkHkALKnJ-VfPfSQb4QL3Nkn99jzADHxQaTmj0N9E03815ikHhbQSQDBcaSE-4nIiivG1e4YGizgo2MwM4roZcGy9eUqRanC3+PCfCT6giUSNaSw9U+wzgIUjm9MkBCw-4hwOi66rovsR+8C3CCysByyringXaniGiDMwCzuPagEHy1g1BCyyqy4Og3eGSj+2SNC04vErWHkQ4RwngnuIyeoVyDqZWiqYwvc04y4JI3kZwOirogCfEKg8eugRMnIw4chFyj6qoL6yh34n6-4RytMKw4YC21+04S4AUbs8Ev4vOk+0qI8IyYIZo+AOYlhjAiKZIdhCgQUroxMpwvyn8yibIXmM4Q4ZhCyvcMwGhnIu6Tor0KuHmt0GKbUAUCg+OIOhO5SkIt8VAT4kW1hzK1IAhCk-KBwoCx2p0BMSwSiWwugqqxcwaAISojAEAvAqAF4iK-2F0v4PSi8ni1CBcGRpwQEt010VC2uSBA6aRuqJSWhORuhNC4YS4hgrI3kV00khwIq3gQAA */
+  /** @xstate-layout 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-F9CGAIRuASg6ZrDtMeWhG1d+lxBbla+tpscFKB-pGDkjhs1zAUZSbmX1HCshsCW4F4i3ZbwgTvKBmUixgBLGWCsaUax1lQNelY9TB5aoOLMBmU8P6jjZqccM8ww3itXkek5o7T0pV3vpUD4HESQZlRe0D9bhVvWHE0z0pJ-5ocDBh7D0xOTOh-bFMtRGq4keAwWcjpZKO3N7vcnWMj-4wQQ9sJDMxuY4uRWzKYLhDX+S45oXjHTj0Ce3peZGN4XwGgKk+GdLqKaOicEuFYTIoKGG2O2-6OwZxLHflzRY1gdN4fib+-jS1BOQLWoRUzVl-gfisxI4kcwdjTB0F1GcVSQLiSpns-QttrZ33kLpkBC0zHEZC8ZsLV7osPJs42+zbNHN7L2XOAR-oKRzHGqPKcY4qQ81oUCvjI6guGbwqF-ME68jpJxvkyzknXW6xJHsv8j9STqE5S5xAthVUdT0R9T6BjAHkoIwVk9wWgNDcxpB4OFm6MzgcB+1kMlM1ZqClquwThBU2HftofYpq-PtPy4ww7A3VoleG1jOjX15vOkW+8lrc4qlvRcAFb1Wz-R5eOQdgzgGjPe1RkZci2AKJIta8uawS89npyXSp4c-FbAgU6kOT0swUcgr++jlhpGfZowxudoqhTchItJIGbYU5FxjlNhFOcWxLYEMWJQiJQ5SW7YlQFvr7sMeDaB9jnKHE5YDOxkdXn5XpO8W0MuVZ-9mnkIsDDmSCjnDgW+sDahuXvtHKZ8ef7qvAdY7rujLXI3de40m5IqT34WPLg6vsASLb-mZ3GizUe9MxxLwmozv9YCx1CZO97raSLqcm9dGbjL8xLdBTOENNkpxP1s08E5lPgWVes+E97-2gdtcXvVDzpF7lySdR+hyGCw5VADW5lMLqw4g3shkuDWvyuAMN8z77Zvssueh3G-rqb1m3L+V2P2zLrIlArEzgYTyIEuYziIacZw0-9P9Y96lRvC+G7bV2m3jUozO-OCmIGvYMk5ErYQBuN6LYUkN7acAdHbbrPbJXa-evUWefNGRfHuIPabGRGYSXL-VYH-RcP-Sce+XxFRZYA4AFBXfDKAwjG-OfdXb3alF4AnHNcaTkfdQVaYP-DNIMd1aYMGPZN7BnZ3c1aA2fWAyg32QsEoWAcgSAEmIqAnUeKYYnJwCXfOdRIKQ4JcJkUkJLQhTwK-MgmA6ue-bKHPUkPPemXZcaIvBrBmXYIVVYffLYGYL0bQtHcgwQ72HPMaYwgvMw0kBrN7BRHyCaWwBPPZRw5nZwvmHPNwDw0wi3Brd1dqGYRYGcMnYCEIt3Udc5CIPJXILJEgAmJFeZcpF5KpVZd5cSAJfiPZKcAhfQNkcAodUgpwlMDI1vVUQZMrdfGLOZJ5MMSpFZV0UojtAMZkJQQeGSL0HlRQVI-9M5VJZ1DoirBAUpWYZ5Xot5WpIKARcMXYMkOnb+WYdyKYsBfI1QZ7JZYo-o9YjYARfQOwb+LqSMM-V0A9IxBoxhaRR6ToxY-+LQNLcCTyWSUeP+V0L6Q444gSFY15Eoy4uZMaVQ02awI4Ew4GEIqlbuKQg3b8ARacZcWbH5J0f0NdXFckIcAwd5cGTkYcFEiAKDCAGjBNDEt1MkP8CaQhFYcMVQU4MCOTLYbgycZ0b6ScKk6gMEM0fAHMVUWjBk3WJpZkhQDbV0O3TkvlLVAVVOQVUeY1Kk-ImYHEzkPEzQAksCGQjwL+ECXVfQSY3ghJSEJxKgC7KUnxakZccGe3fRCJB7DYQ4ZQJYf+LYXQCSMaRnAEJURgCAImC8ZVCaCCb6O+BmNmKMgaHUvOXBOrbFeXCAxXVCY45mHoyEi4lTUpMHDqTNQSAdOYUlXwIAA */
   createMachine(
     {
       context: {
@@ -112,20 +112,6 @@ export const ConnectionMachine =
                         flows: {
                           initial: 'pick',
                           states: {
-                            Host: {
-                              on: {
-                                CREATE_OFFER: {
-                                  target: 'waitingForAnswer',
-                                },
-                              },
-                            },
-                            Client: {
-                              on: {
-                                HOST_OFFER: {
-                                  target: 'createdAnswer',
-                                },
-                              },
-                            },
                             pick: {
                               on: {
                                 setupChannelAsAHost: {
@@ -136,69 +122,103 @@ export const ConnectionMachine =
                                 },
                               },
                             },
-                            waitingForAnswer: {
-                              on: {
-                                CLIENT_ANSWER: {
-                                  target: 'offerAnswered',
+                            Host: {
+                              initial: 'creatingOffer',
+                              states: {
+                                creatingOffer: {
+                                  on: {
+                                    CREATE_OFFER: {
+                                      target: 'waitingForAnswer',
+                                    },
+                                  },
+                                },
+                                waitingForAnswer: {
+                                  on: {
+                                    CLIENT_ANSWER: {
+                                      target: 'offerAnswered',
+                                    },
+                                  },
+                                },
+                                offerAnswered: {
+                                  type: 'final',
+                                  on: {
+                                    readyToChat: {
+                                      target:
+                                        '#ConnectionMachine.connecting.webRTC.peerConnection.services.flows.chatting',
+                                    },
+                                  },
                                 },
                               },
                             },
-                            offerAnswered: {},
-                            createdAnswer: {
-                              on: {
-                                channelOpened: {
-                                  target: 'new state 1',
+                            Client: {
+                              states: {
+                                waitingForOffer: {
+                                  on: {
+                                    HOST_OFFER: {
+                                      target: 'createdAnswer',
+                                    },
+                                  },
+                                },
+                                createdAnswer: {
+                                  on: {
+                                    channelOpened: {
+                                      target: 'waitingForChannel',
+                                    },
+                                  },
+                                },
+                                waitingForChannel: {
+                                  on: {
+                                    readyToChat: {
+                                      target:
+                                        '#ConnectionMachine.connecting.webRTC.peerConnection.services.flows.chatting',
+                                    },
+                                  },
                                 },
                               },
                             },
-                            'new state 1': {},
+                            chatting: {
+                              on: {
+                                CLOSE_CONNECTION: {
+                                  target: 'finishedChatting',
+                                },
+                                CONNECTION_DROPPED: {
+                                  target: 'finishedChatting',
+                                },
+                              },
+                            },
+                            finishedChatting: {
+                              type: 'final',
+                            },
                           },
                         },
                       },
-                      always: {
-                        actions: 'createRTCChannel',
-                        target: '.channel',
-                      },
+                    },
+                  },
+                },
+                slave: {
+                  states: {
+                    answerReady: {
                       on: {
-                        CREATE_OFFER: {
-                          target: '.offer.created',
+                        answeredOffer: {
+                          target: 'waitingForChannel',
                         },
                       },
                     },
+                    waitingForChannel: {
+                      on: {
+                        'channelInstance.onopen': {},
+                      },
+                    },
                   },
-                },
-              },
-            },
-            slave: {
-              states: {
-                answerReady: {
                   on: {
-                    answeredOffer: {
-                      target: 'waitingForChannel',
+                    createAnswer: {
+                      target: '.answerReady',
                     },
                   },
                 },
-                waitingForChannel: {
-                  on: {
-                    'channelInstance.onopen': {},
-                  },
-                },
-              },
-              on: {
-                createAnswer: {
-                  target: '.answerReady',
-                },
               },
             },
-          },
-          on: {
-            setupChannelAsAHost: {
-              actions: 'createRTCPeerConnection',
-              target: '.webRTC.peerConnection',
-            },
-            setupChannelAsASlave: {
-              target: '.slave',
-            },
+            on: {},
           },
         },
         connected: {

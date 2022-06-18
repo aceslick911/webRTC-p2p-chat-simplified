@@ -3,12 +3,9 @@
 export interface Typegen0 {
   '@@xstate/typegen': true;
   eventsCausingActions: {
-    createRTCPeerConnection: 'setupChannelAsAHost';
     setPeerConnection: 'SET_PEER_CONNECTION';
-    createRTCChannel: '';
   };
   internalEvents: {
-    '': { type: '' };
     'xstate.init': { type: 'xstate.init' };
     'done.invoke.host-rtc-connection': {
       type: 'done.invoke.host-rtc-connection';
@@ -22,13 +19,13 @@ export interface Typegen0 {
     sendFile: 'done.invoke.ConnectionMachine.connecting.webRTC.peerConnection.services.fileTransfer.sendingFile:invocation[0]';
   };
   missingImplementations: {
-    actions: 'createRTCPeerConnection' | 'createRTCChannel';
+    actions: never;
     services: 'sendFile';
     guards: never;
     delays: never;
   };
   eventsCausingServices: {
-    createRTCPeerConnection: 'setupChannelAsAHost';
+    createRTCPeerConnection: 'xstate.init';
     sendFile: 'START_TRANSFER';
   };
   eventsCausingGuards: {};
@@ -52,16 +49,21 @@ export interface Typegen0 {
     | 'connecting.webRTC.peerConnection.services.offer.answered'
     | 'connecting.webRTC.peerConnection.services.offer.created'
     | 'connecting.webRTC.peerConnection.services.flows'
-    | 'connecting.webRTC.peerConnection.services.flows.Host'
-    | 'connecting.webRTC.peerConnection.services.flows.Client'
     | 'connecting.webRTC.peerConnection.services.flows.pick'
-    | 'connecting.webRTC.peerConnection.services.flows.waitingForAnswer'
-    | 'connecting.webRTC.peerConnection.services.flows.offerAnswered'
-    | 'connecting.webRTC.peerConnection.services.flows.createdAnswer'
-    | 'connecting.webRTC.peerConnection.services.flows.new state 1'
-    | 'connecting.slave'
-    | 'connecting.slave.answerReady'
-    | 'connecting.slave.waitingForChannel'
+    | 'connecting.webRTC.peerConnection.services.flows.Host'
+    | 'connecting.webRTC.peerConnection.services.flows.Host.creatingOffer'
+    | 'connecting.webRTC.peerConnection.services.flows.Host.waitingForAnswer'
+    | 'connecting.webRTC.peerConnection.services.flows.Host.offerAnswered'
+    | 'connecting.webRTC.peerConnection.services.flows.Client'
+    | 'connecting.webRTC.peerConnection.services.flows.Client.waitingForOffer'
+    | 'connecting.webRTC.peerConnection.services.flows.Client.createdAnswer'
+    | 'connecting.webRTC.peerConnection.services.flows.Client.waitingForChannel'
+    | 'connecting.webRTC.peerConnection.services.flows.chatting'
+    | 'connecting.webRTC.peerConnection.services.flows.finishedChatting'
+    | 'connecting.webRTC.slave'
+    | 'connecting.webRTC.slave.answerReady'
+    | 'connecting.webRTC.slave.waitingForChannel'
+    | 'connecting.on'
     | 'connected'
     | 'connected.chatting'
     | 'connected.sendingFile'
@@ -71,10 +73,11 @@ export interface Typegen0 {
     | {
         connecting?:
           | 'webRTC'
-          | 'slave'
+          | 'on'
           | {
               webRTC?:
                 | 'peerConnection'
+                | 'slave'
                 | {
                     peerConnection?:
                       | 'initializing'
@@ -92,17 +95,19 @@ export interface Typegen0 {
                                 channel?: 'created' | 'open';
                                 offer?: 'answered' | 'created';
                                 flows?:
+                                  | 'pick'
                                   | 'Host'
                                   | 'Client'
-                                  | 'pick'
-                                  | 'waitingForAnswer'
-                                  | 'offerAnswered'
-                                  | 'createdAnswer'
-                                  | 'new state 1';
+                                  | 'chatting'
+                                  | 'finishedChatting'
+                                  | {
+                                      Host?: 'creatingOffer' | 'waitingForAnswer' | 'offerAnswered';
+                                      Client?: 'waitingForOffer' | 'createdAnswer' | 'waitingForChannel';
+                                    };
                               };
                         };
+                    slave?: 'answerReady' | 'waitingForChannel';
                   };
-              slave?: 'answerReady' | 'waitingForChannel';
             };
         connected?: 'chatting' | 'sendingFile' | 'receivingFile';
       };
