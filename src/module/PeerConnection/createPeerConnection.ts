@@ -29,7 +29,10 @@ export function createPeerConnection({
   dispatch,
   onConnectionEvent,
 }: CreatePeerConnectionProps): Promise<CreatePeerConnectionResponse> {
-  dispatch(send('CONNECT'));
+  const disp = (type, payload?) => {
+    dispatch({ type, payload: payload || {} });
+  };
+  disp('CONNECT');
   if (useStatechart) {
   } else {
     const peerConnection = new RTCPeerConnection({
@@ -40,14 +43,14 @@ export function createPeerConnection({
 
     const setupChannelAsAHost = () => {
       console.log('>>setupChannelAsAHost', {});
-      dispatch(send('setupChannelAsAHost'));
+      dispatch('setupChannelAsAHost');
 
       try {
         channelInstance = peerConnection.createDataChannel(CHANNEL_LABEL);
 
         channelInstance.onopen = () => {
           console.log('>>HOST.onopen', {});
-          dispatch(send('channelInstance.onopen'));
+          disp('channelInstance.onopen');
           onChannelOpen();
         };
 
@@ -55,7 +58,7 @@ export function createPeerConnection({
           console.log('>>HOST.onmessage', { event });
           onMessageReceived(event.data);
         };
-        // dispatch(send('setupChannelAsAHost', { channelInstance } as any));
+        // disp('setupChannelAsAHost', { channelInstance } as any);
       } catch (e) {
         console.error('No data channel (peerConnection)', e);
       }
@@ -66,7 +69,7 @@ export function createPeerConnection({
       const description = await peerConnection.createOffer();
       peerConnection.setLocalDescription(description);
 
-      dispatch(send('offerCreated', { description } as any));
+      disp('offerCreated', description);
     };
 
     const setupChannelAsASlave = () => {
@@ -95,7 +98,7 @@ export function createPeerConnection({
     const setAnswerDescription = (answerDescription: string) => {
       console.log('>>setAnswerDescription', { answerDescription });
       peerConnection.setRemoteDescription(JSON.parse(answerDescription));
-      dispatch(send('setAnswerDescription', { answerDescription } as any));
+      disp('setAnswerDescription', { answerDescription } as any);
     };
 
     const sendMessage = (message: string) => {
