@@ -321,7 +321,7 @@ export const ConnectionMachine =
           // return (callback, onReceive) => {
           // console.log('AAA');
 
-          const fun = async (callback, onReceive) => {
+          return async (callback: (ev: any) => void, onReceive) => {
             //new Promise((resolve, reject) => {
             console.log('CREATE2', callback, onReceive);
             try {
@@ -335,15 +335,13 @@ export const ConnectionMachine =
                 console.log('GOT', event);
               });
             } catch (err) {
-              callback('ERROR', { err });
+              callback({ type: 'ERROR', err });
               throw err;
             }
             return new Promise(() => {
               console.log('LEL1');
             });
           };
-
-          return fun;
         },
       },
     },
