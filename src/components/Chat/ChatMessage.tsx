@@ -34,6 +34,7 @@ const Message = styled.div<{ sender: MESSAGE_SENDER }>`
 
 interface ChatFileMessageType extends ChatMessageType {
   fileId: string;
+  blobURL: string;
 }
 
 interface ChatFileMessageProps {

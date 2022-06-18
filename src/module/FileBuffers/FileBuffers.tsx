@@ -14,6 +14,7 @@ export type FileBuffer = {
   receivedBuffer: ArrayBuffer[];
   receivedBlob?: Blob;
   receivedBlobUrl?: string;
+  blobURL?: string;
 };
 export type FileBuffersType = { [index: string]: FileBuffer };
 
@@ -21,6 +22,7 @@ const fileBuffers: FileBuffersType = {};
 
 export type FileBuffersUpdate = {
   fileId: string;
+  blobURL?: string;
 };
 
 const fileBuffersUpdates = new Subject<FileBuffersUpdate>();

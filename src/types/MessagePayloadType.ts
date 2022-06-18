@@ -2,6 +2,7 @@ export type MessagePayloadFileInfoType = {
   fileId: string;
   fileName: string;
   fileSize: number;
+  blobURL?: string;
 };
 export type MessagePayloadFileChunkType = {
   fileId: string;
