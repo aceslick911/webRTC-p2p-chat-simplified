@@ -1,4 +1,4 @@
-import React, { createContext, FC, useEffect, useMemo } from 'react';
+import React, { createContext, FC, useCallback, useEffect, useLayoutEffect, useMemo } from 'react';
 import { inspect } from '@xstate/inspect';
 import { useMachine } from '@xstate/react';
 import { ConnectionMachine } from './connection';
@@ -218,6 +218,13 @@ export const AppContext = createContext<AppContextValue>(null as AppContextValue
 
 export const AppProvider: FC = ({ children }) => {
   const { AppData, ConnectionData } = useApp();
+
+  useLayoutEffect(
+    useCallback(() => {
+      ConnectionData.send('CONNECT');
+      ConnectionData.send('START_PEER_CONNECTION');
+    }, []),
+  );
 
   const context = useMemo(
     () =>

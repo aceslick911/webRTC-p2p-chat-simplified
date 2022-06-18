@@ -4,6 +4,8 @@ export interface Typegen0 {
   '@@xstate/typegen': true;
   eventsCausingActions: {
     setPeerConnection: 'START_PEER_CONNECTION';
+    'channel.onOpen': 'onOpen';
+    'channel.onMessage': 'onMessage';
   };
   internalEvents: {
     'xstate.init': { type: 'xstate.init' };
@@ -21,7 +23,7 @@ export interface Typegen0 {
     receiveFile: 'done.invoke.ConnectionMachine.connecting.webRTC.peerConnection.services.flows.chatting.fileTransfer.receivingFile:invocation[0]';
   };
   missingImplementations: {
-    actions: never;
+    actions: 'channel.onOpen' | 'channel.onMessage';
     services: 'createDataChannel' | 'sendFile' | 'receiveFile';
     guards: never;
     delays: never;
@@ -44,9 +46,6 @@ export interface Typegen0 {
     | 'connecting.webRTC.peerConnection.services.channel'
     | 'connecting.webRTC.peerConnection.services.channel.created'
     | 'connecting.webRTC.peerConnection.services.channel.open'
-    | 'connecting.webRTC.peerConnection.services.offer'
-    | 'connecting.webRTC.peerConnection.services.offer.answered'
-    | 'connecting.webRTC.peerConnection.services.offer.created'
     | 'connecting.webRTC.peerConnection.services.flows'
     | 'connecting.webRTC.peerConnection.services.flows.pick'
     | 'connecting.webRTC.peerConnection.services.flows.Host'
@@ -67,24 +66,14 @@ export interface Typegen0 {
     | 'connecting.webRTC.peerConnection.services.flows.chatting.fileTransfer.waitingToAccept'
     | 'connecting.webRTC.peerConnection.services.flows.chatting.fileTransfer.receivingFile'
     | 'connecting.webRTC.peerConnection.services.flows.finishedChatting'
-    | 'connecting.webRTC.slave'
-    | 'connecting.webRTC.slave.answerReady'
-    | 'connecting.webRTC.slave.waitingForChannel'
-    | 'connecting.on'
-    | 'connected'
-    | 'connected.chatting'
-    | 'connected.sendingFile'
-    | 'connected.receivingFile'
     | 'terminated'
     | 'failedToConnect'
     | {
         connecting?:
           | 'webRTC'
-          | 'on'
           | {
               webRTC?:
                 | 'peerConnection'
-                | 'slave'
                 | {
                     peerConnection?:
                       | 'initializing'
@@ -92,11 +81,9 @@ export interface Typegen0 {
                       | {
                           services?:
                             | 'channel'
-                            | 'offer'
                             | 'flows'
                             | {
                                 channel?: 'created' | 'open';
-                                offer?: 'answered' | 'created';
                                 flows?:
                                   | 'pick'
                                   | 'Host'
@@ -121,10 +108,8 @@ export interface Typegen0 {
                                     };
                               };
                         };
-                    slave?: 'answerReady' | 'waitingForChannel';
                   };
             };
-        connected?: 'chatting' | 'sendingFile' | 'receivingFile';
       };
   tags: never;
 }
