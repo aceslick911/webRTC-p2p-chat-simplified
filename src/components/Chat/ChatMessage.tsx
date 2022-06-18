@@ -1,4 +1,4 @@
-import React, { FC, memo, useRef } from 'react';
+import React, { FC, memo, useEffect, useRef } from 'react';
 import styled, { css } from 'styled-components';
 
 import { MESSAGE_SENDER } from '../../types/MessageSenderEnum';
@@ -55,7 +55,16 @@ const ImageOb = styled.img`
 const ChatFileMessage: FC<ChatFileMessageProps> = memo(function ChatFileMessage({ chatMessage }) {
   const { fileName, fileSize, receivedSize, receivedBlobUrl } = useFileBuffer(chatMessage.fileId);
 
-  const videoRef = useRef();
+  const videoRef = useRef() as any;
+
+  useEffect(() => {
+    if (receivedSize && receivedSize === fileSize) {
+      console.log('DONE!', videoRef);
+      if (videoRef?.current?.seekTo) {
+        videoRef?.current?.seekTo(0);
+      }
+    }
+  }, [receivedSize, fileSize, videoRef]);
 
   if (typeof fileSize === 'undefined' || typeof fileName === 'undefined') {
     return (
@@ -118,6 +127,9 @@ const ChatFileMessage: FC<ChatFileMessageProps> = memo(function ChatFileMessage(
         {new Date(chatMessage.timestamp).toLocaleTimeString()})
       </Header>
       {FormattedMessage({ fileName, blobURL: previewBlob })}
+      <Text>
+        {fileName} {receivedSize == fileSize ? ` COMPLETE` : `- ${Math.floor((receivedSize / fileSize) * 100)}%`}
+      </Text>
     </Message>
   );
 });
