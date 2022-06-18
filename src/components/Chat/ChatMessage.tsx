@@ -93,7 +93,9 @@ const ChatFileMessage: FC<ChatFileMessageProps> = memo(function ChatFileMessage(
     );
   };
 
-  if (!receivedBlobUrl) {
+  const previewBlob = receivedBlobUrl || chatMessage.blobURL;
+
+  if (!previewBlob) {
     return (
       <Message sender={chatMessage.sender}>
         <Header>
@@ -113,7 +115,7 @@ const ChatFileMessage: FC<ChatFileMessageProps> = memo(function ChatFileMessage(
         <span>{chatMessage.sender === MESSAGE_SENDER.ME ? 'Me' : 'Friend'}</span> (
         {new Date(chatMessage.timestamp).toLocaleTimeString()})
       </Header>
-      {FormattedMessage({ fileName, blobURL: receivedBlobUrl })}
+      {FormattedMessage({ fileName, blobURL: previewBlob })}
     </Message>
   );
 });

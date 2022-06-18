@@ -6,5 +6,5 @@ export type ChatMessageType = {
   timestamp: number;
   text?: string;
   fileId?: string;
-  blobUrl?: string;
+  blobURL?: string;
 };
