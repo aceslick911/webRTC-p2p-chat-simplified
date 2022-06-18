@@ -25,9 +25,29 @@ export const ConnectionMachine =
             target: 'failedToConnect',
             actions: [sendParent('UPDATE'), log('connected')],
           },
+
+          setupChannelAsAHost: '.host',
+          setupChannelAsASlave: '.slave',
+        },
+        states: {
+          host: {
+            on: {
+              createOffer: {},
+              setAnswerDescription: {},
+            },
+          },
+          slave: {
+            on: {
+              createAnswer: {},
+            },
+          },
         },
       },
-      connected: {},
+      connected: {
+        on: {
+          sendMessage: {},
+        },
+      },
       failedToConnect: {},
     },
   });

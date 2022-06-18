@@ -132,9 +132,9 @@ export const Host: FC = memo(function Host() {
   useEffect(() => {
     if (remoteConnectionDescriptionInputValue !== '') {
       handleSubmit();
-      console.log('DONE');
+      // console.log('DONE');
     } else {
-      console.log('nope..');
+      // console.log('nope..');
     }
   }, [pasteDone]);
 

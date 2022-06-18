@@ -30,13 +30,13 @@ const Wrapper = styled.div`
 const App: FC = memo(function App() {
   const { mode, isConnected } = useChat();
 
-  console.log('REN', { mode, isConnected });
+  // console.log('REN', { mode, isConnected });
 
   useChatPeerConnectionSubscription();
 
   const RenderPage = () => {
     const modeString = typeof mode === 'string' ? mode : JSON.stringify(mode);
-    console.log('REN', { mode, isConnected, modeString });
+    // console.log('REN', { mode, isConnected, modeString });
 
     if (isConnected) {
       switch (modeString) {

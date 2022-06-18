@@ -16,6 +16,13 @@ export interface Typegen0 {
   eventsCausingServices: {};
   eventsCausingGuards: {};
   eventsCausingDelays: {};
-  matchesStates: 'idle' | 'connecting' | 'connected' | 'failedToConnect';
+  matchesStates:
+    | 'idle'
+    | 'connecting'
+    | 'connecting.host'
+    | 'connecting.slave'
+    | 'connected'
+    | 'failedToConnect'
+    | { connecting?: 'host' | 'slave' };
   tags: never;
 }
