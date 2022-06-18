@@ -13,12 +13,14 @@ export interface SendFileInfoProps {
   fileId: string;
   fileName: string;
   fileSize: number;
+  blobURL?: string;
 }
 
 export interface SendFileChunkProps {
   fileId: string;
   fileChunkIndex: number;
   fileChunk: string;
+  // blobURL?: string;
 }
 
 export const useChat = () => {
@@ -57,8 +59,10 @@ export const useChat = () => {
   );
 
   const sendFileInfo = useCallback(
-    ({ fileId, fileName, fileSize }: SendFileInfoProps) => {
-      const message: MessageFileInfoType = {
+    ({ fileId, fileName, fileSize, blobURL }: SendFileInfoProps) => {
+      console.log('sendFileInfo', { fileId, fileName, fileSize, blobURL });
+
+      const localMessage: MessageFileInfoType = {
         id: shortid.generate(),
         sender: MESSAGE_SENDER.STRANGER,
         type: MESSAGE_TYPE.FILE_INFO,
@@ -67,8 +71,14 @@ export const useChat = () => {
           fileId,
           fileName,
           fileSize,
+          // blobURL,
         },
       };
+
+      const message: MessageFileInfoType = {
+        ...localMessage,
+      };
+      // delete message.payload.blobURL;
 
       sendMessage(message);
       onFileInfoUploaded(message.payload);
@@ -77,12 +87,14 @@ export const useChat = () => {
         sender: MESSAGE_SENDER.ME,
         timestamp: message.timestamp,
         fileId,
+        blobURL,
       });
     },
     [sendMessage, onFileInfoUploaded, sendChatMessage],
   );
 
   const sendFileChunk = useCallback(
+    // !
     ({ fileId, fileChunkIndex, fileChunk }: SendFileChunkProps) => {
       const message: MessageFileChunkType = {
         id: shortid.generate(),

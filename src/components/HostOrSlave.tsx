@@ -1,4 +1,13 @@
-import React, { FC, useState, MouseEventHandler, ChangeEventHandler, FormEventHandler, memo } from 'react';
+import React, {
+  FC,
+  useState,
+  MouseEventHandler,
+  ChangeEventHandler,
+  FormEventHandler,
+  memo,
+  useCallback,
+  useEffect,
+} from 'react';
 import styled from 'styled-components';
 
 import { connectionDescriptionValidator } from '../util';
@@ -104,6 +113,8 @@ export const HostOrSlave: FC = memo(function HostOrSlave() {
   const [connectionDescription, setConnectionDescription] = React.useState<string>('');
   const [error, setError] = useState<string>('');
 
+  const [pasteDone, setPasteDone] = useState(false);
+
   const handleHostBtnClick: MouseEventHandler<HTMLButtonElement> = (event) => {
     event.preventDefault();
     event.stopPropagation();
@@ -117,18 +128,37 @@ export const HostOrSlave: FC = memo(function HostOrSlave() {
     setConnectionDescription(event.target.value);
   };
 
-  const handleSlaveFormSubmit: FormEventHandler = (event) => {
-    event.preventDefault();
-    event.stopPropagation();
+  const handleSlaveFormSubmit /*: FormEventHandler*/ = useCallback(
+    (event?) => {
+      event?.preventDefault();
+      event?.stopPropagation();
 
-    try {
-      const connectionDescriptionObject = decode(connectionDescription);
-      if (connectionDescriptionValidator(connectionDescriptionObject)) throw new Error();
-      startAsSlave(connectionDescriptionObject as ConnectionDescription);
-    } catch (error) {
-      setError('Connection Description invalid!');
-    }
+      try {
+        const connectionDescriptionObject = decode(connectionDescription);
+        if (connectionDescriptionValidator(connectionDescriptionObject)) throw new Error();
+        startAsSlave(connectionDescriptionObject as ConnectionDescription);
+      } catch (error) {
+        setError('Connection Description invalid!');
+      }
+    },
+    [connectionDescription, startAsSlave],
+  );
+
+  const pasteFromClip = () => {
+    navigator.clipboard.readText().then((cliptext) => {
+      setConnectionDescription(cliptext);
+      setPasteDone(true);
+    });
   };
+
+  useEffect(() => {
+    if (connectionDescription !== '') {
+      handleSlaveFormSubmit();
+      console.log('DONE');
+    } else {
+      console.log('nope..');
+    }
+  }, [pasteDone]);
 
   return (
     <Container>
@@ -146,7 +176,8 @@ export const HostOrSlave: FC = memo(function HostOrSlave() {
             />
             {!!error && <ErrorMessage>{error}</ErrorMessage>}
             <SlaveButWrap>
-              <SlaveButton type="submit">Join a chat</SlaveButton>
+              <SlaveButton onClick={pasteFromClip}>📋 Paste and Join</SlaveButton>
+              <SlaveButton type="submit">🚪 Join a chat</SlaveButton>
             </SlaveButWrap>
           </Form>
         </Card>

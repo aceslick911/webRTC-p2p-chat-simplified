@@ -9,6 +9,7 @@ export type Message = {
   type: MESSAGE_TYPE;
   timestamp: number;
   payload: MessagePayload;
+  blobURL?: string;
 };
 export type MessageTextType = Message & {
   type: MESSAGE_TYPE.TEXT;

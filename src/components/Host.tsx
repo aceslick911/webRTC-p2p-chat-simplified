@@ -1,4 +1,4 @@
-import React, { useState, createRef, FC, memo } from 'react';
+import React, { useState, createRef, FC, memo, useCallback, useEffect } from 'react';
 import styled from 'styled-components';
 import copy from 'copy-to-clipboard';
 
@@ -90,6 +90,8 @@ export const Host: FC = memo(function Host() {
 
   const encodedConnectionDescription = encode(localConnectionDescription as ConnectionDescription);
 
+  const [pasteDone, setPasteDone] = useState(false);
+
   const handleCopyClick = () => {
     if (!copyTextAreaRef.current) return;
 
@@ -104,17 +106,37 @@ export const Host: FC = memo(function Host() {
     setRemoteConnectionDescriptionInputValue(event.target.value);
   };
 
-  const handleSubmit: React.FormEventHandler = (event) => {
-    try {
-      event.stopPropagation();
-      event.preventDefault();
-      const connectionDescriptionObject = decode(remoteConnectionDescriptionInputValue);
-      if (connectionDescriptionValidator(connectionDescriptionObject)) throw new Error();
-      setRemoteConnectionDescription(connectionDescriptionObject as ConnectionDescription);
-    } catch (error) {
-      setError('Connection Description invalid!');
-    }
+  const handleSubmit /*: React.FormEventHandler*/ = useCallback(
+    (event?) => {
+      try {
+        event?.stopPropagation();
+        event?.preventDefault();
+        const connectionDescriptionObject = decode(remoteConnectionDescriptionInputValue);
+        if (connectionDescriptionValidator(connectionDescriptionObject)) throw new Error();
+        setRemoteConnectionDescription(connectionDescriptionObject as ConnectionDescription);
+      } catch (error) {
+        setError('Connection Description invalid!');
+      }
+    },
+    [remoteConnectionDescriptionInputValue, setRemoteConnectionDescription],
+  );
+
+  const pasteFromClip = () => {
+    navigator.clipboard.readText().then((cliptext) => {
+      setRemoteConnectionDescriptionInputValue(cliptext);
+
+      setPasteDone(true);
+    });
   };
+
+  useEffect(() => {
+    if (remoteConnectionDescriptionInputValue !== '') {
+      handleSubmit();
+      console.log('DONE');
+    } else {
+      console.log('nope..');
+    }
+  }, [pasteDone]);
 
   return (
     <Container>
@@ -139,6 +161,7 @@ export const Host: FC = memo(function Host() {
             onChange={handleRemoteConnectionDescriptionInputChange}
             placeholder="Paste an answer code"
           />
+          <ConnectButton onClick={pasteFromClip}>📋 Paste and Connect</ConnectButton>
           <ConnectButton type="submit">Connect</ConnectButton>
         </Form>
         {!!error && <ErrorMessage>{error}</ErrorMessage>}

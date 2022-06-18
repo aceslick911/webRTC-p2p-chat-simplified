@@ -1,4 +1,4 @@
-import React, { FC, memo } from 'react';
+import React, { FC, memo, useEffect, useRef } from 'react';
 import styled, { css } from 'styled-components';
 
 import { MESSAGE_SENDER } from '../../types/MessageSenderEnum';
@@ -34,6 +34,7 @@ const Message = styled.div<{ sender: MESSAGE_SENDER }>`
 
 interface ChatFileMessageType extends ChatMessageType {
   fileId: string;
+  blobURL: string;
 }
 
 interface ChatFileMessageProps {
@@ -54,6 +55,17 @@ const ImageOb = styled.img`
 const ChatFileMessage: FC<ChatFileMessageProps> = memo(function ChatFileMessage({ chatMessage }) {
   const { fileName, fileSize, receivedSize, receivedBlobUrl } = useFileBuffer(chatMessage.fileId);
 
+  const videoRef = useRef() as any;
+
+  useEffect(() => {
+    if (receivedSize && receivedSize === fileSize) {
+      console.log('DONE!', videoRef);
+      if (videoRef?.current?.seekTo) {
+        videoRef?.current?.seekTo(0);
+      }
+    }
+  }, [receivedSize, fileSize, videoRef]);
+
   if (typeof fileSize === 'undefined' || typeof fileName === 'undefined') {
     return (
       <Message sender={chatMessage.sender}>
@@ -66,7 +78,35 @@ const ChatFileMessage: FC<ChatFileMessageProps> = memo(function ChatFileMessage(
     );
   }
 
-  if (!receivedBlobUrl) {
+  const FormattedMessage = ({ fileName, blobURL }) => {
+    const isImage = !!/\.(jpg|jpeg|gif|bmp|png|tiff|svg|ico)/i.exec(fileName);
+    const isVideo = !!/\.(mp4|avi|wmf|3gp|mkv|mov)/i.exec(fileName);
+
+    return (
+      <>
+        {isVideo ? (
+          <ImageContainer>
+            <ReactPlayer ref={videoRef} url={blobURL} playing controls width="500px" height="300px" loop />
+          </ImageContainer>
+        ) : isImage ? (
+          <ImageContainer>
+            <ImageOb src={blobURL} />
+          </ImageContainer>
+        ) : (
+          <></>
+        )}
+        <Text>
+          <a href={blobURL} download={fileName}>
+            Download: {fileName}
+          </a>
+        </Text>
+      </>
+    );
+  };
+
+  const previewBlob = receivedBlobUrl || chatMessage.blobURL;
+
+  if (!previewBlob) {
     return (
       <Message sender={chatMessage.sender}>
         <Header>
@@ -74,14 +114,11 @@ const ChatFileMessage: FC<ChatFileMessageProps> = memo(function ChatFileMessage(
           {new Date(chatMessage.timestamp).toLocaleTimeString()})
         </Header>
         <Text>
-          {fileName} {Math.floor((receivedSize / fileSize) * 100)}%
+          {fileName} SENDING: {Math.floor((receivedSize / fileSize) * 100)}%
         </Text>
       </Message>
     );
   }
-
-  const isImage = !!/\.(jpg|jpeg|gif|bmp|png|tiff|svg|ico)/i.exec(fileName);
-  const isVideo = !!/\.(mp4|avi|wmf|3gp|mkv|mov)/i.exec(fileName);
 
   return (
     <Message sender={chatMessage.sender}>
@@ -89,21 +126,9 @@ const ChatFileMessage: FC<ChatFileMessageProps> = memo(function ChatFileMessage(
         <span>{chatMessage.sender === MESSAGE_SENDER.ME ? 'Me' : 'Friend'}</span> (
         {new Date(chatMessage.timestamp).toLocaleTimeString()})
       </Header>
-      {isVideo ? (
-        <ImageContainer>
-          <ReactPlayer url={receivedBlobUrl} playing controls width="500px" height="300px" loop />
-        </ImageContainer>
-      ) : isImage ? (
-        <ImageContainer>
-          <ImageOb src={receivedBlobUrl} />
-        </ImageContainer>
-      ) : (
-        <></>
-      )}
+      {FormattedMessage({ fileName, blobURL: previewBlob })}
       <Text>
-        <a href={receivedBlobUrl} download={fileName}>
-          {fileName}
-        </a>
+        {fileName} {receivedSize == fileSize ? ` COMPLETE` : `- ${Math.floor((receivedSize / fileSize) * 100)}%`}
       </Text>
     </Message>
   );

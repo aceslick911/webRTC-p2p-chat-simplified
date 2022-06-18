@@ -49,7 +49,12 @@ export const FileSharing: FC<FileSharingProps> = memo(function FileSharing({ cla
       fileReader.onload = () => {
         if (!(fileReader.result instanceof ArrayBuffer)) return;
 
-        sendFileChunk({ fileId, fileChunkIndex: currentChunk, fileChunk: arrayBufferToString(fileReader.result) });
+        sendFileChunk({
+          fileId,
+          fileChunkIndex: currentChunk,
+          fileChunk: arrayBufferToString(fileReader.result),
+          // blobURL: URL.createObjectURL(new Blob(fileReader.result)), //!
+        });
         currentChunk++;
 
         if (BYTES_PER_CHUNK * currentChunk < file.size) {
@@ -57,11 +62,26 @@ export const FileSharing: FC<FileSharingProps> = memo(function FileSharing({ cla
         }
       };
 
-      sendFileInfo({
-        fileId,
-        fileName: file.name,
-        fileSize: file.size,
-      });
+      const previewReader = new FileReader();
+
+      previewReader.onload = () => {
+        console.log('READER', previewReader);
+        // if (!(typeof previewReader.result !== 'string')) {
+        //   console.log('NOT STRING', previewReader.result);
+        //   return;
+        // }
+
+        sendFileInfo({
+          fileId,
+          fileName: file.name,
+          fileSize: file.size,
+          //URL.createObjectURL(new Blob(
+          blobURL: previewReader.result as any as string,
+          //)) //!
+        });
+      };
+
+      previewReader.readAsDataURL(file);
 
       readNextChunk();
     },

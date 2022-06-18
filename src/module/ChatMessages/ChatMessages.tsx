@@ -7,6 +7,7 @@ export interface SendFileInfoProps {
   fileId: string;
   fileName: string;
   fileSize: number;
+  blobURL?: string;
 }
 
 export interface SendFileChunkProps {
