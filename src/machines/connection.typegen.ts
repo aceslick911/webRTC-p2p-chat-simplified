@@ -3,7 +3,7 @@
 export interface Typegen0 {
   '@@xstate/typegen': true;
   eventsCausingActions: {
-    setPeerConnection: 'SET_PEER_CONNECTION';
+    setPeerConnection: 'START_PEER_CONNECTION';
   };
   internalEvents: {
     'xstate.init': { type: 'xstate.init' };
@@ -16,17 +16,21 @@ export interface Typegen0 {
   };
   invokeSrcNameMap: {
     createRTCPeerConnection: 'done.invoke.host-rtc-connection';
-    sendFile: 'done.invoke.ConnectionMachine.connecting.webRTC.peerConnection.services.fileTransfer.sendingFile:invocation[0]';
+    createDataChannel: 'done.invoke.ConnectionMachine.connecting.webRTC.peerConnection.services.channel:invocation[0]';
+    sendFile: 'done.invoke.ConnectionMachine.connecting.webRTC.peerConnection.services.flows.chatting.fileTransfer.sendingFile:invocation[0]';
+    receiveFile: 'done.invoke.ConnectionMachine.connecting.webRTC.peerConnection.services.flows.chatting.fileTransfer.receivingFile:invocation[0]';
   };
   missingImplementations: {
     actions: never;
-    services: 'sendFile';
+    services: 'createDataChannel' | 'sendFile' | 'receiveFile';
     guards: never;
     delays: never;
   };
   eventsCausingServices: {
     createRTCPeerConnection: 'xstate.init';
+    createDataChannel: 'xstate.init';
     sendFile: 'START_TRANSFER';
+    receiveFile: 'TRANSFER_START';
   };
   eventsCausingGuards: {};
   eventsCausingDelays: {};
@@ -36,12 +40,7 @@ export interface Typegen0 {
     | 'connecting.webRTC'
     | 'connecting.webRTC.peerConnection'
     | 'connecting.webRTC.peerConnection.initializing'
-    | 'connecting.webRTC.peerConnection.offerCreated'
-    | 'connecting.webRTC.peerConnection.waitingForChannel'
     | 'connecting.webRTC.peerConnection.services'
-    | 'connecting.webRTC.peerConnection.services.fileTransfer'
-    | 'connecting.webRTC.peerConnection.services.fileTransfer.sentInfo'
-    | 'connecting.webRTC.peerConnection.services.fileTransfer.sendingFile'
     | 'connecting.webRTC.peerConnection.services.channel'
     | 'connecting.webRTC.peerConnection.services.channel.created'
     | 'connecting.webRTC.peerConnection.services.channel.open'
@@ -53,12 +52,20 @@ export interface Typegen0 {
     | 'connecting.webRTC.peerConnection.services.flows.Host'
     | 'connecting.webRTC.peerConnection.services.flows.Host.creatingOffer'
     | 'connecting.webRTC.peerConnection.services.flows.Host.waitingForAnswer'
-    | 'connecting.webRTC.peerConnection.services.flows.Host.offerAnswered'
+    | 'connecting.webRTC.peerConnection.services.flows.Host.waitingForChannel'
     | 'connecting.webRTC.peerConnection.services.flows.Client'
     | 'connecting.webRTC.peerConnection.services.flows.Client.waitingForOffer'
     | 'connecting.webRTC.peerConnection.services.flows.Client.createdAnswer'
     | 'connecting.webRTC.peerConnection.services.flows.Client.waitingForChannel'
     | 'connecting.webRTC.peerConnection.services.flows.chatting'
+    | 'connecting.webRTC.peerConnection.services.flows.chatting.fileTransfer'
+    | 'connecting.webRTC.peerConnection.services.flows.chatting.fileTransfer.transferRequest'
+    | 'connecting.webRTC.peerConnection.services.flows.chatting.fileTransfer.sendingFile'
+    | 'connecting.webRTC.peerConnection.services.flows.chatting.fileTransfer.pickFileToSend'
+    | 'connecting.webRTC.peerConnection.services.flows.chatting.fileTransfer.noTransfer'
+    | 'connecting.webRTC.peerConnection.services.flows.chatting.fileTransfer.waitingToStart'
+    | 'connecting.webRTC.peerConnection.services.flows.chatting.fileTransfer.waitingToAccept'
+    | 'connecting.webRTC.peerConnection.services.flows.chatting.fileTransfer.receivingFile'
     | 'connecting.webRTC.peerConnection.services.flows.finishedChatting'
     | 'connecting.webRTC.slave'
     | 'connecting.webRTC.slave.answerReady'
@@ -81,17 +88,13 @@ export interface Typegen0 {
                 | {
                     peerConnection?:
                       | 'initializing'
-                      | 'offerCreated'
-                      | 'waitingForChannel'
                       | 'services'
                       | {
                           services?:
-                            | 'fileTransfer'
                             | 'channel'
                             | 'offer'
                             | 'flows'
                             | {
-                                fileTransfer?: 'sentInfo' | 'sendingFile';
                                 channel?: 'created' | 'open';
                                 offer?: 'answered' | 'created';
                                 flows?:
@@ -101,8 +104,20 @@ export interface Typegen0 {
                                   | 'chatting'
                                   | 'finishedChatting'
                                   | {
-                                      Host?: 'creatingOffer' | 'waitingForAnswer' | 'offerAnswered';
+                                      Host?: 'creatingOffer' | 'waitingForAnswer' | 'waitingForChannel';
                                       Client?: 'waitingForOffer' | 'createdAnswer' | 'waitingForChannel';
+                                      chatting?:
+                                        | 'fileTransfer'
+                                        | {
+                                            fileTransfer?:
+                                              | 'transferRequest'
+                                              | 'sendingFile'
+                                              | 'pickFileToSend'
+                                              | 'noTransfer'
+                                              | 'waitingToStart'
+                                              | 'waitingToAccept'
+                                              | 'receivingFile';
+                                          };
                                     };
                               };
                         };
