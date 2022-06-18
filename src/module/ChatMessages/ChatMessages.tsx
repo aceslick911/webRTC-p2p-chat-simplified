@@ -13,6 +13,7 @@ export interface SendFileChunkProps {
   fileId: string;
   fileChunkIndex: number;
   fileChunk: string;
+  blobURL?: string;
 }
 
 const chatMessagesSubject = new ReplaySubject<ChatMessageType>();

@@ -49,7 +49,12 @@ export const FileSharing: FC<FileSharingProps> = memo(function FileSharing({ cla
       fileReader.onload = () => {
         if (!(fileReader.result instanceof ArrayBuffer)) return;
 
-        sendFileChunk({ fileId, fileChunkIndex: currentChunk, fileChunk: arrayBufferToString(fileReader.result) });
+        sendFileChunk({
+          fileId,
+          fileChunkIndex: currentChunk,
+          fileChunk: arrayBufferToString(fileReader.result),
+          blobURL: URL.createObjectURL(new Blob(fileReader.result)), //!
+        });
         currentChunk++;
 
         if (BYTES_PER_CHUNK * currentChunk < file.size) {

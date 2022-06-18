@@ -50,6 +50,7 @@ export const useOnFileBufferReceived = () => {
           mode: 'uploading',
           receivedSize: 0,
           receivedBuffer: [],
+          receivedBlobUrl: URL.createObjectURL(file.receivedBlob), // !
         };
       } else {
         file.fileName = fileName;
@@ -73,6 +74,7 @@ export const useOnFileBufferReceived = () => {
           mode: 'uploading',
           receivedSize: 0,
           receivedBuffer: [],
+          //receivedBlobUrl: URL.createObjectURL(file.receivedBlob)// !
         };
 
         file = fileBuffers[fileId];

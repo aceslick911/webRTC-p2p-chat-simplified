@@ -66,7 +66,7 @@ const ChatFileMessage: FC<ChatFileMessageProps> = memo(function ChatFileMessage(
     );
   }
 
-  const FormattedMessage = ({ fileName, receivedBlobUrl }) => {
+  const FormattedMessage = ({ fileName, blobURL }) => {
     const isImage = !!/\.(jpg|jpeg|gif|bmp|png|tiff|svg|ico)/i.exec(fileName);
     const isVideo = !!/\.(mp4|avi|wmf|3gp|mkv|mov)/i.exec(fileName);
 
@@ -74,17 +74,17 @@ const ChatFileMessage: FC<ChatFileMessageProps> = memo(function ChatFileMessage(
       <>
         {isVideo ? (
           <ImageContainer>
-            <ReactPlayer url={receivedBlobUrl} playing controls width="500px" height="300px" loop />
+            <ReactPlayer url={blobURL} playing controls width="500px" height="300px" loop />
           </ImageContainer>
         ) : isImage ? (
           <ImageContainer>
-            <ImageOb src={receivedBlobUrl} />
+            <ImageOb src={blobURL} />
           </ImageContainer>
         ) : (
           <></>
         )}
         <Text>
-          <a href={receivedBlobUrl} download={fileName}>
+          <a href={blobURL} download={fileName}>
             Download: {fileName}
           </a>
         </Text>
@@ -100,7 +100,7 @@ const ChatFileMessage: FC<ChatFileMessageProps> = memo(function ChatFileMessage(
           {new Date(chatMessage.timestamp).toLocaleTimeString()})
         </Header>
         <Text>
-          {fileName} {Math.floor((receivedSize / fileSize) * 100)}%
+          {fileName} SENDING: {Math.floor((receivedSize / fileSize) * 100)}%
         </Text>
       </Message>
     );
@@ -112,7 +112,7 @@ const ChatFileMessage: FC<ChatFileMessageProps> = memo(function ChatFileMessage(
         <span>{chatMessage.sender === MESSAGE_SENDER.ME ? 'Me' : 'Friend'}</span> (
         {new Date(chatMessage.timestamp).toLocaleTimeString()})
       </Header>
-      {FormattedMessage({ fileName, receivedBlobUrl })}
+      {FormattedMessage({ fileName, blobURL: receivedBlobUrl })}
     </Message>
   );
 });
