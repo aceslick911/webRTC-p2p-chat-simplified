@@ -222,7 +222,6 @@ export const AppProvider: FC = ({ children }) => {
   useLayoutEffect(
     useCallback(() => {
       ConnectionData.send('CONNECT');
-      ConnectionData.send('START_PEER_CONNECTION');
     }, []),
   );
 

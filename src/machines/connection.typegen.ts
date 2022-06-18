@@ -6,6 +6,7 @@ export interface Typegen0 {
     setPeerConnection: 'START_PEER_CONNECTION';
     'channel.onOpen': 'onOpen';
     'channel.onMessage': 'onMessage';
+    setLocalDescriptor: 'SET_LOCAL_DESCRIPTOR';
   };
   internalEvents: {
     'xstate.init': { type: 'xstate.init' };
