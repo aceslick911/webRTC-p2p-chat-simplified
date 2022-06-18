@@ -66,6 +66,32 @@ const ChatFileMessage: FC<ChatFileMessageProps> = memo(function ChatFileMessage(
     );
   }
 
+  const FormattedMessage = ({ fileName, receivedBlobUrl }) => {
+    const isImage = !!/\.(jpg|jpeg|gif|bmp|png|tiff|svg|ico)/i.exec(fileName);
+    const isVideo = !!/\.(mp4|avi|wmf|3gp|mkv|mov)/i.exec(fileName);
+
+    return (
+      <>
+        {isVideo ? (
+          <ImageContainer>
+            <ReactPlayer url={receivedBlobUrl} playing controls width="500px" height="300px" loop />
+          </ImageContainer>
+        ) : isImage ? (
+          <ImageContainer>
+            <ImageOb src={receivedBlobUrl} />
+          </ImageContainer>
+        ) : (
+          <></>
+        )}
+        <Text>
+          <a href={receivedBlobUrl} download={fileName}>
+            Download: {fileName}
+          </a>
+        </Text>
+      </>
+    );
+  };
+
   if (!receivedBlobUrl) {
     return (
       <Message sender={chatMessage.sender}>
@@ -80,31 +106,13 @@ const ChatFileMessage: FC<ChatFileMessageProps> = memo(function ChatFileMessage(
     );
   }
 
-  const isImage = !!/\.(jpg|jpeg|gif|bmp|png|tiff|svg|ico)/i.exec(fileName);
-  const isVideo = !!/\.(mp4|avi|wmf|3gp|mkv|mov)/i.exec(fileName);
-
   return (
     <Message sender={chatMessage.sender}>
       <Header>
         <span>{chatMessage.sender === MESSAGE_SENDER.ME ? 'Me' : 'Friend'}</span> (
         {new Date(chatMessage.timestamp).toLocaleTimeString()})
       </Header>
-      {isVideo ? (
-        <ImageContainer>
-          <ReactPlayer url={receivedBlobUrl} playing controls width="500px" height="300px" loop />
-        </ImageContainer>
-      ) : isImage ? (
-        <ImageContainer>
-          <ImageOb src={receivedBlobUrl} />
-        </ImageContainer>
-      ) : (
-        <></>
-      )}
-      <Text>
-        <a href={receivedBlobUrl} download={fileName}>
-          {fileName}
-        </a>
-      </Text>
+      {FormattedMessage({ fileName, receivedBlobUrl })}
     </Message>
   );
 });
