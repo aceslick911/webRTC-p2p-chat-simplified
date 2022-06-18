@@ -1,3 +1,5 @@
+import { send } from 'xstate';
+
 /* eslint-disable @typescript-eslint/no-use-before-define */
 const CHANNEL_LABEL = 'P2P_CHAT_CHANNEL_LABEL';
 
@@ -6,6 +8,9 @@ export interface CreatePeerConnectionProps {
   iceServers?: RTCIceServer[];
   onChannelOpen: () => any;
   onMessageReceived: (message: string) => any;
+
+  dispatch: (event: any) => void;
+  onConnectionEvent: (handler: (event: any) => void | any) => void;
 }
 
 export interface CreatePeerConnectionResponse {
@@ -21,7 +26,10 @@ export function createPeerConnection({
   iceServers = [],
   onChannelOpen,
   onMessageReceived,
+  dispatch,
+  onConnectionEvent,
 }: CreatePeerConnectionProps): Promise<CreatePeerConnectionResponse> {
+  dispatch(send('CONNECT'));
   if (useStatechart) {
   } else {
     const peerConnection = new RTCPeerConnection({
@@ -32,11 +40,14 @@ export function createPeerConnection({
 
     const setupChannelAsAHost = () => {
       console.log('>>setupChannelAsAHost', {});
+      dispatch(send('setupChannelAsAHost'));
+
       try {
         channelInstance = peerConnection.createDataChannel(CHANNEL_LABEL);
 
         channelInstance.onopen = () => {
           console.log('>>HOST.onopen', {});
+          dispatch(send('channelInstance.onopen'));
           onChannelOpen();
         };
 
@@ -44,6 +55,7 @@ export function createPeerConnection({
           console.log('>>HOST.onmessage', { event });
           onMessageReceived(event.data);
         };
+        // dispatch(send('setupChannelAsAHost', { channelInstance } as any));
       } catch (e) {
         console.error('No data channel (peerConnection)', e);
       }
@@ -53,6 +65,8 @@ export function createPeerConnection({
       console.log('>>createOffer', {});
       const description = await peerConnection.createOffer();
       peerConnection.setLocalDescription(description);
+
+      dispatch(send('offerCreated', { description } as any));
     };
 
     const setupChannelAsASlave = () => {
@@ -81,6 +95,7 @@ export function createPeerConnection({
     const setAnswerDescription = (answerDescription: string) => {
       console.log('>>setAnswerDescription', { answerDescription });
       peerConnection.setRemoteDescription(JSON.parse(answerDescription));
+      dispatch(send('setAnswerDescription', { answerDescription } as any));
     };
 
     const sendMessage = (message: string) => {

@@ -75,6 +75,7 @@ const RootMachine =
               invoke: {
                 src: 'ConnectionMachine',
                 id: 'ConnectionMachine',
+                autoForward: true,
               },
               initial: 'idle',
               states: {
@@ -199,6 +200,9 @@ interface AppContextValue {
   connectionFailed: () => void;
   onConnecting: () => void;
 
+  dispatch: (event: any) => void;
+  onConnectionEvent: (handler: (event: any) => void | any) => void;
+
   //mode: any; //PEER_CONNECTION_MODE | undefined;
   // isConnected: boolean;
   // localConnectionDescription: ConnectionDescription | undefined;
@@ -226,6 +230,11 @@ export const AppProvider: FC = ({ children }) => {
         onConnecting: () => ConnectionData.send('CONNECT'),
         onChannelOpen: () => ConnectionData.send('CONNECT_SUCCESS'),
         connectionFailed: () => ConnectionData.send('CONNECTION_FAILED'),
+
+        dispatch: (event: any) => ConnectionData.send(event),
+        onConnectionEvent: (handler) => {
+          console.log('REGISTERED HANDLER', handler);
+        },
       } as AppContextValue),
     [AppData, ConnectionData, AppData.send, ConnectionData.send, AppData.state, ConnectionData.state],
   );

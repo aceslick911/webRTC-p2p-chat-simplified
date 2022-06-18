@@ -21,11 +21,21 @@ export interface Typegen0 {
     | 'connecting'
     | 'connecting.host'
     | 'connecting.host.offerCreated'
+    | 'connecting.host.waitingForChannel'
     | 'connecting.slave'
     | 'connecting.slave.answerReady'
-    | 'connecting.slave.waitingForHostToAccept'
+    | 'connecting.slave.waitingForChannel'
     | 'connected'
+    | 'connected.chatting'
+    | 'connected.sendingFile'
+    | 'connected.receivingFile'
     | 'failedToConnect'
-    | { connecting?: 'host' | 'slave' | { host?: 'offerCreated'; slave?: 'answerReady' | 'waitingForHostToAccept' } };
+    | {
+        connecting?:
+          | 'host'
+          | 'slave'
+          | { host?: 'offerCreated' | 'waitingForChannel'; slave?: 'answerReady' | 'waitingForChannel' };
+        connected?: 'chatting' | 'sendingFile' | 'receivingFile';
+      };
   tags: never;
 }
