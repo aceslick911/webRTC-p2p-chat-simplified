@@ -19,7 +19,7 @@ const context = {
 export type ConnectionState = typeof context;
 
 export const ConnectionMachine =
-  /** @xstate-layout N4IgpgJg5mDOIC5QGED2A7dYDGAXAlhgLICG2AFvlgHT4QA2YAxMgPIBy7AosgCqKgADqlj4CGASAAeiAKwAmAOzUAzAAZ5KgCwAORVrUA2FYZ0AaEAE9EAWkOLD1fWrXaAjLq1bDbgL6+LNEwccXRSCiowamwMLDwqKGoAdzAAIwAlXmRqQTAwACcguNDadDF8Enp8AC8EpgBlXgBBTIB9AAUuLnTWtk4eXgBJDklhUVDJGQQfNWoDLXlZRUWATlkdNYtrBBsVeVm3NS112TVlw0NNf0DYkMIwskoaGOD49ESUjKycvMLb+Iw1FgBQAbvhsHBouQSMF6NF8mASLhIEwMKxcuhRiJyhIkNJEG5FK5qLIVG4PPt5G4dFoVlsCYo3E43Ct5DoVDodIS1uzriAindiI9ItF-gR3sk0plsrkCgKAeggaDwZCKDCsHDUBjUWE4LASDAseN7pMCZzZNRDLJZG5Fj4vLIvPSEISmYzWecVg4yYs+fLQuEnlEXsUEpKvjLfv77kr8mCIbBqAAzeioJKJwTggDWTGBuAAroJkNDYU1YE0ABIiXBGnGYvFTRTLElc8lWnSuRQ6eTOmyE6j7RQrFYeE7eFaGLR+sX3QMikN3CWfaU-OUzwHAuMqxMptMZ7O5sAFosljVlpr1egkEFgWsTBsE8mzIf7NRua1LPQ9qy2fuD4ejjojqGBOU4BPy64PBEzwzkuUrfLKfyvCUm7xpCu7ptQVawLg8KIuKUCsEmSYFEwEAYFEVAgqgWbBgiSJgDYqDEQUd4mg+CBdloqgjhoE5dq4NrOpoTJuCoDimCsLidis07IbOwowfJcERquSGhhuyoJsmqaYdhuHYPRBFESR+QNFwvCtAAMqwyBNFZrQACJcPUyDpIM7S8Kw6RsbioBTFoigWkBagKO+pzLAsWjOmJ8iqIFXhSVJizWmBNzyUK0HBrBHzwZGa4ZYqqHbjpe5YdWyQkOU7wAGKoPkTToLAKRmcgVmDFw7CWU07D1AA6t0vn1v5iBDrM+y6C4xjDiYzq0isJI+GsFxiXssngdGmVBqKym5apiGbUVWnobpib6ZV1VQHVhSnmA9BMGqsLUGiGJDaanGspaQFKKcCzUgszpWkyizyJolzrCs2jyHJGlQdtC5vHtK4HZBsZoTup3UMgVRgOguFJFVBHXSZpEVqwjStKwNU1YNeJjHW73kloKhOMOXYbCyah6NFP4IOoTKGEY9ggV66zHDDgpw-OOXhsjUao8V2kYYm2P4LjBlGZAjXNaRPX9d0XCOa0ZONG9HHkko1DvosigcrIkMLIoc3qNQE4rF4xwmFobjGBLCpzkpoYqXLBWw2jJXK1jON4xdRP1cW6p3Q9t2aug6K42bI0uqtA4qNoLjkh44kqIDNoDgoYOLBsUN+wGinZbtssIfLhXh0rmNqrgBHJvgjC8PkMKwKZ1C4APTWmekYAAI75nAuBMAiABWISQJn+IukosxejS7vid95i80BLPDmDXjC2lEGFQHDdB0jzeh5LbcnWVnfd0mvdgP3g-D6P38FJPM855MDIBCQQuAv7j1YnTbE94s6HD0KoLskMbS6CArIGKFtVAuEZKDIKrhQq1wUllHat8m75XUo-RWz9MKvzDO-PuY8h4FCVOgCACQaofzIhRUo1FaJY0gtfEhi477kMOk-DGL9oRdzoR-CBTD8gsLYbVD+CAqKoGwEie4ABtNQABdNeUxORujZNabmFxrQl15kXRwbIVDrB0JOGkgsL6HUEQjbuy574UIVOI0qNCpFv1kYw4ewJWHsM4QUfI9UchXlwEmeqABbfhV965CMRmQtSYiqESP8UiQJDC-4KNCUoq6Ki1EaNCDo-R0DjR+XXrbBaRwfbSTWFSGKzMbHslMPob2I5xYbQEak9xYZPGiIVsdHJiZaESnoZ-YJzDMzYCzBwvuqB6i4wgIeVhciJ7T1njhAxiAnGu3EtSaSTZDh0isWcRwYljBHEhg4tkihCFbWlo3UZmTxlbnbpIvJMiCmQIUegVAOzSLFJWbeGpDMOIbFmCYbsgUfRqDWOg3my05heDfM8zkBCBkpOIcM4OXiskTL8VMgJAK5mFOoCCsFZlELrLCcoxghyXRcziraWkVpXBehZDzbYGKvAqBWK2MS1p5DrXSrDNxMtPko1btk8lUJ-kzKCTSgml1eBrNwCQfI89eDpD1jTHojQWj8GhbA9ehwHBWzsb0vQQFvaGBivIY4JJ7bLDQTSUkhhXlS0DsIjJCqw5KsjtMxIsz6WxwSNqpo2BQHzzNW0Q1xraZCBgexLOQFlDknUBoZYUlemup9iSPOHYLEuG8Cof1sqPl5S+Yqsl4bKVqsBfI6gCIIT4DBCy5g5EaBqL4a4oZcqG0hsoc2jurbI3qqBZ2nAYAe3hMYKo9A1EKnaL0Wy8kXpLR2NCqYM+HJLHbGsQOLp3NenvlraO+t+0W6hqnX86RbbqXzq7Uu3tpTGBMEidEwQsT4n5CSSOwlY6H0Px8WG6dqrZ3tuHp+5dfa10bs0RgKpO6jizB9ccVkNJvbeHaSYC9CKekslHLe8D96Q7eJQs+3Jr6oAsBsvULgvQODcD4MMdgO7mYLX0EBflwEpJO15kSbiNoJNDkdJK5mVH4YQdo6Sn51DYBcJoDhBiySZV3tIfKx9k7VOTJ3StcugsRVvjJDaF1h8uTxS5Hg5FlwFPvP0+OwzCoNOUXXTRKI5Bqw2H1dgGwwy6n0ytVMKk1onB2K7GyaaPtAYaFdpyMk3Z5CTj9fi3T1H3OQbo-cP9+QokKMA0iYDSSAs4SC7gELYXhogAi1m9e0XlCaAnCK204kPbOgUI4EcTZ7CEkkqSVzgb0kGag6EBozQ2idG6Bx-o3GRiWpa4Y0wcwHC2w2JyPQChex7AOEce2kq3zknZGBcCIKIBwEkGB7adBWVrbqVMfO1ANggW0NWjQtjeymBZuobQ3N7Ei3GzfINU3CuAioOUSoNQEhsu9s+b6S1dAKCMIds4VtQZclkILGzoVZDg7SR4jz02YxKsehqPCDEIA7sZBaH6awutrFCgfbYQFqBczsacMSGx7buxJ0SkRjan3GZVU9LUGcXuNamBRi0rIWTrBcEsCVzouc89JALwKrSXGDLy5D8n0OjoS+p3dUzQ4y1M0pP9K52xdg6A+ye5mtoLFu+F0pkl3z0bKsWVmNlw4ndNjWGJCcHgHFuH+3FIcrILgmG6xzT3NHvdNol5Hc6hl8IJBJvkNl7onC0hRY7BQTZvxnpcKoUwkqpIaH5S5nLks635eUz7iOmNzqarjg1JqLV88gTmKHjs74govmdHnOK1efDRc0PbQKyeW+p-F77jPFUu-sPjinfvFpvBhXx4ce2pg+uOhJOFSVwFzF+Eb-7PTRuCsqZXx36sSOy4hT3xFN1brhLKBFSBFkm9jAFglgF879W809H8ypVZ1YY1ap6pc8d1yRlAWcsVxIuZAoo9eZQZuJjBxJSRlhHRbRIYQDJtjcH929IDo4NZ8ItZe8oEM1ak5dHwWQ7VCQiRtBRUbRy9EAE85gOt0t9gbQpVL5ctFMU8xlwDyDMIoCY519YCbpE56AECjBudVow9CQlgQJj9JNwo7ZIYOQhdr865DcSD7829fkpDKCsNuwVC841DR9NCrEy4LhNAGlHkFBrRiCydTCJDzCKU4Me4ENmFf4gUAF9kaxZdGYjBuINACdJwojRUOcCQjhuIiQzgD9zEFBPCRlSCzC1MVUmMAj30O1ikV0oV6CYVs13Vuxf8TtFhdcYp1BGk+JedppApoZDCiFRDF9xDl9JC-CCio15kytsxIVtUmV6cIjYVAoBxWlHVRUDAHCK9DhEEkVvYkE1gXkOi3kJsvCwDejfD8j8kijh46UhjA8ucHFa8HlGQgp7cjlpjUFjgNBgIHEsjiUeijMIDGMjjo1ZCoAxjdV9UsMiQrYuxLMuR9hCQBVHxGQ5hBYPA3wgD7BictiA0IcTC9jPi+jDiqVfjCZY1UB41E02UaQ4oPwQIDBxJRUJwME7FFoiRvoyQvRlg3jRcJ1oMGN+ifihiF1u1v1IUsN8dC9bYhwQJMtmZT0CRGjudmjrRWiWTUTm9QCl8sSDiI1Cj6V893xudnUWkwpnQmxtCiQiQFAfRgDFTb8MSVSOT09YMmM2U-8dTmkXBWkMDtgiQmRHR8dRMRx8cxsLTjDdjrT6NbSyp34yhYByBIAE57TJi4EsUrYThSRJUgIAINcHjOQni6jTBstpUm9LSgyPibSvjEwsAkgAACLTZEcstwLDOks4Hbc4QccSQGJow9XFD0-YXM4Q-MwM7I7w-YtTJHS2N-aLD-KKXscVJwIkQWTkbeE9K-PMm-Ps94sXVUu7OM9eSkj7U4d-M4T-aEnYfYYPXpFBb7cSfQVk4NTzK1ZrV7bgq3Uc8Kfcic3mGwSaFQjlUKbwIwLsbsh7NzZU5ANlXnHc0KMcl8r-N8iVVLKkGkLsT1FEpcowro4RECskMCvcyKKCh3cGV2UkTwQQhYTkEnZEEDKgOnNlUGGLZ1CcScMSFwRI6YUVGwsSakJsMkGtAM7aJMKqRgCAbVf0KisGGUtkN2XXIjXmKKOEytPYbQS4EwcHEC7HJ860SCw8mwIKGxQTGzUVJsTY-wIAA */
+  /** @xstate-layout N4IgpgJg5mDOIC5QGED2A7dYDGAXAlhgLICG2AFvlgHT4QA2YAxMgPIBy7AosgCqKgADqlj4CGASAAeiAKwAmAOzUAzAAZ5KgCwAORVrUA2FYZ0AaEAE9EAWkOLD1fWrXaAjLq1bDbgL6+LNEwccXRSCiowamwMLDwqKGoAdzAAIwAlXmRqQTAwACcguNDo-LASAnQoAAU8wtiQwnQmAGVeAEFMgH1qri50rrZOHl4ASQ5JYVFQyRkEA3lqNTc1LQBOHVXTRVkLawQ3WQ3qNbd5LUU3Q3krjS1-QIb44jJKGhjg+KrktMzs3IKRUaGGosAKADd8Ng4NFyCRgvRSuVcJBWlxeIMABLtYYAGS6o3YbRxyC4kxEYias0QV0u1FkhnWim0yxUKk0expdJUelkRzUazWO2W8geICBzzCr0i0SelUSKQyWRydQlJTB+Uh0NgsPhWER2DKFVRFD1YHoo3QsFw8Oh1AwrFy6HJ0ypSGkNJ0Okcl3kam9ig2OgMhk5CFO9L0WhUO0UyyMa0MYrVTXCbyiH2KCR+Sv+qrlTVBEKhMNNCPtTqYxDgsBIMBdlIk7rmbkDOicQqMPgTWnk5isiBUh2oV2uawZre8ikUyYLLwi7wL30VfxVgLn6CLmpLOoAZvRUEkdYIoQBrJhg3AAV0EyDhCPasHamJEuAbM2biGni1kOjc-8MX9XEUHR5DDGxW2oP1A1OLRf1kbxE3uAJxQ3NMZUzRpl1+ZUAXqT51WLbVqH3Q9jzPC8wGvW9731R92haegSHBMB3zdUAW3-NQOz9ZY+VkEDFDAgcEAg5RoMFDx4MQxlZwI1NpUXeTsNzNd8KzEENS1GFSKPagX2tJEKgSVhd13AomAgDAoiocFUFPDMjRRGxUDMgo2KbDiv2DVRTg0RMQNcWQ3DDTQ3BHGNDFMNYXGAtY5I0qUFwzJcFRwvN13kzSiJ0g89IM3AjPlUzzPyNEMVxVhkHafEABEuBaZB0lGapeFYdIPOdT95h2agdFkNQFEOAahN7LQwzcdlVAuLwYpi+R+OQx4sqS9NZWUtLVLwlNsu3YjdJ1ArkhISkqgAMVQfJ2itFIyuQXFRi4dgMRxFoAHV+k66kEEDbi-V0FxjEFEww3WNZ6R8ccosm9l4pQnbVow1Kc1XbaNy3bS9zyw7X2O06oAuwpaPNJgy31e10EdMAuqECkPy8n61kWUwFGFXs3GDYT9kA8KFvkTRrl-NZtFFeG0MUlKNpR3D8xWjGdxI7HqGQeh8GpwqkhO+VCZKizMVYNoulYM6zs+90pkbGmPQODwVA7IUvVOGKozDdRwsMLsHEFHZg1kBLgURpSsxU1HZcS+X9qVlW1fQQrDWRSBrtgW6mFej70i4Wqun1tovu6-8lBHBQBJ5I4RcUUH1BOQw1i8OCTC0K4VH9yV0KDrDNtDzLw60hWDuV1X1bx7XLrvM16FJ4nEQdJ084Z-82SgtkDGWf9o2ZMMeaghQBYWnRhd7FvQjbyXg87mXu4DiPcrI3VcHlEj8EYXh8nhWBSuoXBX6tUr0jAABHK8cBcBMDKAAKxCJAOe1szhxhOCBdY69+p9jDP1O2goBZeHsLJMWK0T7rTPtLDK6kr690jrfU099sy7ifmAF+b8P5fwYQUP+gDgFMDINCQQuB6E-3cubOm7EYH+mUDGfeKhgq6H6rsES-4ziqBcL6JQA11B+1wYlfBmEvjn2IQja+WMKFwiod8Ghz9v7vwKEWdAEAEhnVoZZaytB0B2QcsrcWyUCEdyIWpPRZCb56UoQ-UxdDzEfzBNY2xtCEC2VQNgYyGAADaagAC60C5henCkJaRUYop8hUBNaMjg+wSK9IyYMHslqoTwRLTx2jvFozln4gxASjFBNobwix+QrE2POvYgo+RLo5CYrgXcl0AC2bjqkeK0Q-FcF8SGSn0YrQxFQ2lmOYV08JPSCZRJiXE0ISTUkCNdJ5a2zJwarFuC4ccNwCkmCgjoEwUZG6wTUctDRNSZnZjmbo9GTTlktNWdQ9poTLEnmwKeOxz9UAtGphASi1iOm-wAUA60aTEDlJODGDmsVpwrDWBNNQDgIrGFWMLb0fYZzqIDpo5GPyfF-Jys0nUgTgXrL4V09AqAkUWS2VC1ixzLbfX3txJ55xmRnAFHyMMUNqB1xFHoL0g0j4KWmXS9KDLGlMoBSy1pbKQkbOoFynlZU8Kwoib0xg6KDj+kWGcdYgFXBCjcLXGVDI5XRg2HIiRCg4bvJpZ89VW0w6kO1f3VlJiQWGs1vjXgMKbT5BAbwdIr1TYDGJJka1KxiWTQQi6xVebQyyPOLIekRwsl8l9iYFV841pfJDvM3xYalYRsSMEk1w8EhxvaNgLhICM0YmTams2tMTlW3SQJEck0XBKHkDFF5E0biOFkGyTYeSXDeGbtS1ugapb0oaT3ZtKzjFtqjRy6gZRoT4EhJa5gVkaAxNcQjWle6NUHtDXtfxuqgWRvZZ0i9OAwDXsiYwaJzjYnxPQIcrNLrlDGAGgyYMm7Hl3KKY87YXgXWHBrYHU+Xj90hsWf88Nerf0GvPZeoDN6dmMCYP0wZghhmjPyBM59u7CEEcvkRo9gKT2Pz-R-SjwHb1gbsvspo0HBX02EQYPqcE4JMyQx4It+xbZoaefoF5UkcMvo42+wjhFP3MrvvKFglUWhcEGBwbgfBxjsCzZ6pwuhgq1wQjXIlYY4xaHpK2VYgYEJzujDp9j+H9NccM5jHVDiaDWmNJMj5arX3BvC4WYj2Ms3Q23h7FQMVJqHCuKgv800-zCiHH6a4wXEt6eSws0I0WbLgdceQV8NhE3YBsF805FtpNzBuHyJwEiQJ9iBgVkSHtFhBiHKBeQjIkzbuPiFupnHatNDo-kAZXTGMVGYxM5r1pWu4Ha51q23WhG9cOOJHLI3NCafGiJBQjhTjTnsK2aKK7-AoS5RAOAkg2MeLoFaqTZ3Byyf3jXbQm6NDFPAqYO26htBRl-N6QUlW61Bq7itkE8djJVFqClrrgjTlzDUAUudSx-I+qBhcUW-qd1VdCzVptRndTlmxyiCAWbLiluUeOHLLqEP9n2P1JYjy+Ssn3kcWuqOkZJYx0zyLZNzQVmplm4Wpb2S+u9pcGK+TZE+RMMLVRZwD5Bfm6qtHsvG2MuZ4r+gGWLgQyZCyGGHIRI2B5H1Hk6hSs8iUJUv7Fvqty+t5F-u4LTzWsFO2ac45JqJg8N6EKbvrj2xm8YHwmh95+DN7WmXQerdauZ-3I6bOTJuXyNa7XTm5q9h2EoIShLRWmDnTFDQLrvA06qQlwPDPg+F9D0rI6MaR5XRuvw0dQrupezlbHzYF2BJM1dlNZvGfDiaCOBcaX7clthcx5uNLt8h9a1saPKelfAJysAn17sRxTBhj5N54KfI51udydn2nC36c78ZyHvug-XzWpwThT9SDR9YjTnDnChSiKJjCwbCrBsjfhb54bf596HpF5RyDyxydrnSXS6wV5A5E40j-jKC85eDAT+gXBJ77D8zebGAxgrpCR5pzpbof7m55694F5oED63zRxDxs6Jxj74ET49ZEEuoRSthxjaAbDBRcyDg+ByqaDCwcx+guZIG1KzK77y5-48GYEazH44FEzjwwZGBLAwxx6tgCQ1z34IQ+Z5L9SG77z+7uI94oGcEfrcF6S8GxxZq2qmFsjmGxhWGyLBTUBRSKFwTKIMgaBqH1o6KapcHaG8ZrLkb-pMIcqsKopvgEHjo0hGDeYaAewMghjrBeiEpeBOCKIrAMiAQKAxHo5uHcboHHrJEdpbIgYCrCHA4IC+x9SKEVLFwXAEqyLqAXIU58hU5CR1GW6-L96JHfp8btqgqbZnj8pxrmoc7ZHCoO4v6Ur7zBgJiEorCqD6DMiNwgSCgCRTH54zEJHkJJH6odrGpLGR7C7I6xRMgWFDFC4O5SJwQaBubehXEcE3HuFzEmYPFLHYFQBrEJpZGdGEE2pwKtiPLOySqTgTStjhTeDLAGAeALT2BvJd4Bpf4aE-6zF3HzEtGQnD5dqoA9p9rWqcxloMi1xxRg4YkSIQxxjIJDhCiTE564bqHfKaG-4UnglkYdpCbUb8o+HuonExgwEzbRi66qYjHk7MHjE5bU5AmuEgmNEeGUkQkbKV7DiXIezXJDSeb6A+ZxhmmNyHBOFTIuGkmoGglimtrWo1zhRmmxQ3JUFfjLD0hwSMgOqCyAkCm6bAnxFulfqPzoD4CwDkCQBjwnoOayaHDSKwz2GnCoI-Feh-ELTeDhmsG57b4ukNERZglYBJAAAEsWKINZbgPhnJRKzIegM20EMYm8oxg0pgmwcYkqc2JZgpsR9SBmqWPG8Amx3UtefUCGYBRKEBd2+wEEnJ04RgrgrguaO8Op5ZeplZ2ogBrgc5oBw0i5Y04Efo0eLyOWA5lBfIu5wpZJiU1qNgkBbuEijgZS7eugcYDIVKw5kZupr5ug4EvY4MkMLJz2hwpgj5VQr5DebuA0P4c0PI1wvIiYQ5RJdOa0KILGVAxoGx8JORCA-M-WjcNcUUjc6g-o3Z7YrIeWegEqLB2Fn+a0u4J0jAEAcaao1q-M9yM6YOtcgY3goM5wl+667I2g1w1aEZEsr5iY4EOwRS+g5SgE9gM2OgH2vgQAA */
   createMachine(
     {
       context: context as ConnectionState,
@@ -41,7 +41,6 @@ export const ConnectionMachine =
               initial: 'peerConnection',
               states: {
                 peerConnection: {
-                  tags: ['peerConnection'],
                   invoke: {
                     src: 'createRTCPeerConnection',
                     id: 'host-rtc-connection',
@@ -56,6 +55,7 @@ export const ConnectionMachine =
                       },
                     ],
                   },
+                  tags: 'peerConnection',
                   initial: 'creatingPeerConnection',
                   states: {
                     creatingPeerConnection: {
@@ -68,7 +68,6 @@ export const ConnectionMachine =
                     },
                     services: {
                       type: 'parallel',
-
                       states: {
                         channel: {
                           invoke: {
@@ -82,8 +81,7 @@ export const ConnectionMachine =
                                 SET_CHANNEL_INSTANCE: {
                                   actions: 'setChannelInstance',
                                 },
-                                onOpen: {
-                                  actions: 'channel.onOpen',
+                                'channelInstance.onOpen': {
                                   target: 'open',
                                 },
                               },
@@ -298,30 +296,41 @@ export const ConnectionMachine =
         }),
       },
       services: {
-        createOffer: (c, invokingEvent) => async (callback: (ev: any) => void, onReceive) => {
-          try {
-            if (c.peerConnection) {
-              const description = await c.peerConnection.createOffer();
+        createOffer: machineService<ConnectionState>({
+          serviceName: 'createOffer',
+          run: async ({ onCallback, event, context }) => {
+            if (context.peerConnection) {
+              const description = await context.peerConnection.createOffer();
 
-              onReceive((event) => {
-                console.log('GOT2', event);
-              });
-              console.log('✅ createdOffer', { description });
-              callback({ type: 'SET_LOCAL_DESCRIPTOR', localDescriptor: description });
-              return description;
-            } else {
-              console.log('NOT DEFINED', c);
+              onCallback({ type: 'SET_LOCAL_DESCRIPTOR', localDescriptor: description });
             }
-          } catch (err) {
-            callback({ type: 'ERROR', err });
-            throw err;
-          }
-          await new Promise(() => {});
-        },
+          },
+          onEnd: (event) => {},
+          onReceive: (event) => {},
+        }),
+        // : (c, invokingEvent) => async (callback: (ev: any) => void, onReceive) => {
+        //   try {
+        //     if (c.peerConnection) {
+        //       const description = await c.peerConnection.createOffer();
+
+        //       onReceive((event) => {
+        //         console.log('GOT2', event);
+        //       });
+        //       console.log('✅ createdOffer', { description });
+        //       callback({ type: 'SET_LOCAL_DESCRIPTOR', localDescriptor: description });
+        //       return description;
+        //     } else {
+        //       console.log('NOT DEFINED', c);
+        //     }
+        //   } catch (err) {
+        //     callback({ type: 'ERROR', err });
+        //     throw err;
+        //   }
+        //   await new Promise(() => {});
+        // },
 
         createDataChannel: machineService<ConnectionState>({
           serviceName: 'createDataChannel',
-
           run: async ({ onCallback, event, context }) => {
             const channelInstance = context.peerConnection.createDataChannel(context.channelLabel);
 
@@ -344,23 +353,35 @@ export const ConnectionMachine =
           onReceive: (event) => {},
         }),
 
-        createRTCPeerConnection: (c, invokingEvent) => async (callback: (ev: any) => void, onReceive) => {
-          try {
+        createRTCPeerConnection: machineService<ConnectionState>({
+          serviceName: 'createRTCPeerConnection',
+          run: async ({ onCallback, event, context }) => {
             const peerConnection = new RTCPeerConnection({
-              iceServers: c.ICEServers,
+              iceServers: context.ICEServers,
             });
-            callback({ type: 'START_PEER_CONNECTION', peerConnection });
-            console.log('✅ Created peer connection', { peerConnection });
+            onCallback({ type: 'START_PEER_CONNECTION', peerConnection });
+          },
+          onEnd: (event) => {},
+          onReceive: (event) => {},
+        }),
 
-            onReceive((event) => {
-              console.log('GOT', event);
-            });
-          } catch (err) {
-            callback({ type: 'ERROR', err });
-            throw err;
-          }
-          await new Promise(() => {});
-        },
+        // (c, invokingEvent) => async (callback: (ev: any) => void, onReceive) => {
+        //   try {
+        //     const peerConnection = new RTCPeerConnection({
+        //       iceServers: c.ICEServers,
+        //     });
+        //     callback({ type: 'START_PEER_CONNECTION', peerConnection });
+        //     console.log('✅ Created peer connection', { peerConnection });
+
+        //     onReceive((event) => {
+        //       console.log('GOT', event);
+        //     });
+        //   } catch (err) {
+        //     callback({ type: 'ERROR', err });
+        //     throw err;
+        //   }
+        //   await new Promise(() => {});
+        // },
       },
     },
   );

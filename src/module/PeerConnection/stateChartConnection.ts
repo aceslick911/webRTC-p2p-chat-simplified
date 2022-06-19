@@ -95,7 +95,6 @@ export const stMode = ({
 
   return new Promise<CreatePeerConnectionResponse>(async (res) => {
     disp('CONNECT');
-    console.log('Started st async');
     const actor = connectionActor();
     await waitFor(
       actor,

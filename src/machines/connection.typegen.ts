@@ -5,7 +5,6 @@ export interface Typegen0 {
   eventsCausingActions: {
     setPeerConnection: 'START_PEER_CONNECTION';
     setChannelInstance: 'SET_CHANNEL_INSTANCE';
-    'channel.onOpen': 'onOpen';
     'channel.onMessage': 'onMessage';
     setLocalDescriptor: 'SET_LOCAL_DESCRIPTOR';
   };
@@ -38,7 +37,7 @@ export interface Typegen0 {
     receiveFile: 'done.invoke.ConnectionMachine.connecting.webRTC.peerConnection.services.flows.chatting.fileTransfer.receivingFile:invocation[0]';
   };
   missingImplementations: {
-    actions: 'channel.onOpen' | 'channel.onMessage';
+    actions: 'channel.onMessage';
     services: 'sendFile' | 'receiveFile';
     guards: never;
     delays: never;
