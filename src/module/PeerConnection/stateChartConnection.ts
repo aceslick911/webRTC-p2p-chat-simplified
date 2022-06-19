@@ -27,28 +27,28 @@ export const stMode = ({
 
   let channelInstance: RTCDataChannel;
 
-  const setupChannelAsAHost = () => {
-    console.log('>>setupChannelAsAHost', {});
-    dispatch('setupChannelAsAHost');
+  // const setupChannelAsAHost = () => {
+  //   console.log('>>setupChannelAsAHost', {});
+  //   dispatch('setupChannelAsAHost');
 
-    try {
-      channelInstance = peerConnection().createDataChannel(CHANNEL_LABEL);
+  //   try {
+  //     channelInstance = peerConnection().createDataChannel(CHANNEL_LABEL);
 
-      channelInstance.onopen = () => {
-        console.log('>>HOST.onopen', {});
-        disp('channelInstance.onopen');
-        onChannelOpen();
-      };
+  //     channelInstance.onopen = () => {
+  //       console.log('>>HOST.onopen', {});
+  //       disp('channelInstance.onopen');
+  //       onChannelOpen();
+  //     };
 
-      channelInstance.onmessage = (event) => {
-        console.log('>>HOST.onmessage', { event });
-        onMessageReceived(event.data);
-      };
-      // disp('setupChannelAsAHost', { channelInstance } as any);
-    } catch (e) {
-      console.error('No data channel (peerConnection)', e);
-    }
-  };
+  //     channelInstance.onmessage = (event) => {
+  //       console.log('>>HOST.onmessage', { event });
+  //       onMessageReceived(event.data);
+  //     };
+  //     // disp('setupChannelAsAHost', { channelInstance } as any);
+  //   } catch (e) {
+  //     console.error('No data channel (peerConnection)', e);
+  //   }
+  // };
 
   const createOffer = async () => {
     console.log('>>createOffer', {});
@@ -98,7 +98,6 @@ export const stMode = ({
     disp('CONNECT');
     console.log('Started st async');
     const actor = connectionActor();
-    console.log('WAITFOR', actor);
     await waitFor(
       actor,
       (state) => {
@@ -110,7 +109,10 @@ export const stMode = ({
     console.log('🏁 DONE WAITING!!!!!');
 
     if (!remoteDescription) {
-      setupChannelAsAHost();
+      // setupChannelAsAHost();
+      dispatch('setupChannelAsAHost');
+
+      await waitFor(connectionActor(), (state) => state.hasTag(''));
       createOffer();
     } else {
       setupChannelAsASlave();

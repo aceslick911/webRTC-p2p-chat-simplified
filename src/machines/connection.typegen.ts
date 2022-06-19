@@ -32,7 +32,7 @@ export interface Typegen0 {
   };
   missingImplementations: {
     actions: 'channel.onOpen' | 'channel.onMessage';
-    services: 'createDataChannel' | 'sendFile' | 'receiveFile';
+    services: 'sendFile' | 'receiveFile';
     guards: never;
     delays: never;
   };
