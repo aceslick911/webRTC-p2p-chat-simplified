@@ -345,7 +345,6 @@ export const ConnectionMachine =
         }),
 
         createRTCPeerConnection: (c, invokingEvent) => async (callback: (ev: any) => void, onReceive) => {
-          console.log('CREATE2', callback, onReceive);
           try {
             const peerConnection = new RTCPeerConnection({
               iceServers: c.ICEServers,

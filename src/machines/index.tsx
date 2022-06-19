@@ -236,7 +236,7 @@ export const AppProvider: FC = ({ children }) => {
         },
         connectionState: () => {
           const snap = service.children.get('ConnectionMachine').getSnapshot();
-          console.log('SNAP', snap);
+          // console.log('SNAP', snap);
           return snap?.context;
         },
         connectionActor: () => {

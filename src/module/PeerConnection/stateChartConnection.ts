@@ -21,7 +21,6 @@ export const stMode = ({
   // });
 
   const peerConnection = () => {
-    console.log('READ PEER', connectionState());
     return connectionState().peerConnection;
   };
 
