@@ -49,13 +49,13 @@ export const stMode = ({
   //   }
   // };
 
-  const createOffer = async () => {
-    console.log('>>createOffer', {});
-    const description = await peerConnection().createOffer();
-    peerConnection().setLocalDescription(description);
+  // const createOffer = async () => {
+  //   console.log('>>createOffer', {});
+  //   const description = await peerConnection().createOffer();
+  //   peerConnection().setLocalDescription(description);
 
-    disp('CREATE_OFFER');
-  };
+  //   disp('CREATE_OFFER');
+  // };
 
   const setupChannelAsASlave = () => {
     console.log('>>setupChannelAsASlave', {});
@@ -108,10 +108,12 @@ export const stMode = ({
 
     if (!remoteDescription) {
       // setupChannelAsAHost();
-      dispatch('setupChannelAsAHost');
+      disp('setupChannelAsAHost');
 
       await waitFor(connectionActor(), (state) => state.hasTag('peerConnection'));
-      createOffer();
+      // createOffer();
+
+      disp('CREATE_OFFER');
     } else {
       setupChannelAsASlave();
       createAnswer(remoteDescription);
