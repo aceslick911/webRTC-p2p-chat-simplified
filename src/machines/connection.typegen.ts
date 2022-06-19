@@ -128,5 +128,5 @@ export interface Typegen0 {
                   };
             };
       };
-  tags: 'peerConnection';
+  tags: 'peerConnection' | 'hostOffer';
 }

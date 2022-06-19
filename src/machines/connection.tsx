@@ -12,14 +12,28 @@ const context = {
   channelLabel: 'P2P_CHAT_CHANNEL_LABEL',
   peerConnection: null as RTCPeerConnection,
   channelInstance: null as RTCDataChannel,
-  localDescriptor: null as string,
-  remoteDescriptor: null as string,
+
+  localDescriptor: null as any,
+  localDescriptorConfigured: null as any,
+  remoteDescriptor: null as any,
 
   localDescriptionString: null as string,
+  localDescriptorConfiguredString: null as string,
   remoteDescriptionString: null as string,
 };
 
 export type ConnectionState = typeof context;
+
+const encodePeerConnection = (desc: any) => {
+  return Base64.encode(
+    JSON.stringify({
+      description: desc,
+    }),
+  );
+};
+const decodePeerConnection = (desc) => {
+  return JSON.parse(Base64.decode(desc));
+};
 
 export const ConnectionMachine =
   /** @xstate-layout N4IgpgJg5mDOIC5QGED2A7dYDGAXAlhgLICG2AFvlgHT4QA2YAxMgPIBy7AosgCqKgADqlj4CGASAAeiAMwBGagE4ATAHYALCpUA2AByy18lfPkAaEAE9EAWh1qd1TQAZnsjfI16NGnfIC+-hZomDji6KQUVGDU2BhYeFRQ1ADuYABGAEq8yNSCYGAATiEJ4bGFYCQE6FAACgXF8WGE6EwAyrwAgtkA+rVcXJk9bJw8vACSHJLCouGSMggqAKyy1MZqrvJG3ip68noW1gg2CqtqSj4qGmqnrrKBwU2JxGSUNHGhiTWpGdm5+UUSs0MNRYEUAG74bBwWLkEihejlSq4SDtLi8YYACU6owAMj1xuwOjjkFxpiIxC15oh5PZFEsdBolDcNM55LJZCpZIcaUZqLI9GolkslM4lMylmyVA8QEDnhFXtFYk9qsk0lkcnkGnKymDCpDobBYfCsIjsBUqqiKCawPRxuhYLh4dDqBhWPl0OTZlSkNIaXo9I4jCpnIHzgHWToeQglPTBRpDEsNvJnDolDoZTqWpE3jEPqUkj8Nf9tSqWqCIVCYdaEa6PUxiHBYCQYF7KRJfQstko9E5mam-KmLrtowolmsdDoVEoGVtfGo1Jmyy8ou8y991X8tYDl+gK-qq0aAGb0VApI2CKEAayYYNwAFdBMg4QjOrBOpiRLg23NO4gFyo1BLHspg6MBbhqHoKjRjYWzUCG5yxhowFLL46YaEunzhDmSr5s0G6-JqAKNFh5Z6gaMInmeF7XreYAPk+L6mm+nRtPQJDgmAP4+qAXamM4fYhmywpJoK0FWLYcEIeKngoWhjKYQWK65sqpEEcW24kUpe7kYe1BUee1Cfo6SJVEkrBHkeRRMBAGAxFQ4KoFeeYWiiNioJZRTcR2vH-t4-Kxs4072HobhLOYEmLAoayGJOeiinc5yKcCCqrnm65qoRJY7qRIK6Ya+mnoZxm4KZqoWVZhRohiuKsMgnT4gAIlwbTIJk4y1LwrCZN5np-gg1zjnokpLCYwrOGoVxXNG7KAe4mhMmKQUiRhQSyruOFrmpmUacRWZ5ZWBUGUaJWpCQlI1AAYqghSdA6aRVcguLjFw7AYjibQAOqDL11IIOcAkhl4-GhpKBjRkyqwBsGw3eGmIrJfKm3pdtRZbntu77hRx5FSdX5nRdUDXcUTG2kwNamq66DumAfVCBSv6+f9qjUPoo1Cs4Wj7Fo0ZgYoyzaLIU7AUo7jSmt+2pSpeFfDt6OlrlOmHZRuPUMg9D4LTpUpOdqrExV1mYqwHQ9Kwl2XT9vozO2dN+ggpgJn2zIBrGorxqObKswODjikK3hLIj2GKltBbqfLOXaVjenHWrGta2VkB3bAD1MB932ZFwjU9EbHS-f1pjqGso1JgKIpi2oEOyAJ6YXD4KyMrS9wSxtwco6HctEQrkf5Sr1Gx5r6Da7rSTE8+Nr0OTpOIm6Hp50zpgcvBHKsmyDuGNykV8-Bo1csL8Vi4H2at6p7do53EcpVHR2q9auCqvp+CMLwhTwrAlXULgL8OpVmRgAAjveOAuAmAVAAFZhEgHPO26xq6QSZAmSCo0DiRWGqscUu8fD2AUs3RWyMT74Q7tlLSl8e44z7rfe+R5H5gGfq-d+n86FFF-gAoBTAyDQkELgWh38vJWwZjxaBoY1D8kgqLcKXhhpLBmgXfkrhgzqElFXAOODtJ4JlvfTc59iHyivr3QyFDCxUKfl-N+RQKzoAgCPahNk7K0HQI5ZyasW5pXwbLM+RDJa6LIfouEd9DHUO4aYwo5jLFXWoQgByqBsBmQwAAbWcAAXSgQsAMihJqSPjJOYUG8jieCFvBAwwFAxeF8JzQ+ylcIZXcZpTxpDCrkN8ZQgJJj35ggsVYxgTAiiFBunkdiuAjw3QALZONwcfdRhZNEeMxnUmOBjvhGJoS0sxbTQlE3CZE6J4R4lJL4d6HydsbhKGoJzWkrgxSjQirkhMjhdhC3jB4JCyjHhjJcRMsOWjanK28UaeZyRFmBPfpebAV5LoBNQG0WmEA6IWMBUw-+gDHTJMQHDZQhh9jnIXCmJQM0JqOHZDoKukNAy7EXColKaiqlTJqTM759SfFVCacYxhwT0CoDhVVVZYLGDIoQPFAS9yrg3GMBcqRkUZyOB8KyYwgoAzOGeetV50sqVZRpYrLx9LfmNP8cynhrL2XLKqsRSF7Swk8r2TbP6KYoJrCuOmRRzJ5AXGjBK6gPhZA9lMOyYU05ylS0qajalGN1WzJvtqhZzSWUE1VLwCFTpCjAN4JkD6FshjEmyLylMDgYqoSdbK3NUZIrGGQkBEU6ThT+yFn6ylgbVXBu7nSuZ4b-mRr1dGpIsbOjYA4cA9NGIk0pstvTfZtsUlJjWOyVw6hpynJxUWkwjgVgCnlSsVwvgm4vNUeMlVu0u4kMbWGxlOqllRoqNCfAkIzXMFsjQSJjjJY1tPkGvdOjQ0NKPRG3VQTqBnrABejpYAIn2KiTE9AOzM1OuEYSka+hMEChyTSG5BT7kLSdfIBVD7t21t3RfV9B731+M-Settv7-1Xq6YUHpwTBD9MGYUEZmG3k7vDto3U+GGWEZbV+9+pHL3rMYEBxyWyWjgYtYzQRrJqD+2QqobwHhfAzSQ3c-QqGnnVqw0+utL62MHmvgR1ULBaptC4MMDg3A+CTHYJmhMxzNDDSdchNCE1owbA0EBLYnNzioWnAmdTTHsMsa+bpvRsAbE0EdJaUZW7-OaZw6xsi7H4BiYEV2Sc-MGRuFFOydDtJoypP5MDDmCgQxTj88qgLnzdxhfssBxx5Avw2ATdgGwEyDnW3EwsMa44biiV2IS2Mhajg6CCsoAMCgoK6F8GVgNsXAtVe6b0mjVQ6MjPq46RruBmutdtu1lLiAxrCK5OmD1xhDBSujKNRwsYFx0gcPFFYgQ1psogHASQjGVJ0HNcOy1-VYKc2UEmLB1wthOtDDBfQqwrgevcKg0KSZpshwIdU+tl9zTIiSPUXD4ndsHIWCcccuhXAinCqLSaU4YJVwEnsdQZ2FwOHUGSzdFKNNI+fVjhLwWtXjwThATNRgCdChnCdmc8rkFHGGicwpkp2T3fFKtJnSMWduLZ-Fg6nPjS1lQLPZLuOaRiP5ALcUzIjCigQ-bfyQtRZKOMKLd1CO26s60+ztX2MNemkzYyYRDImQsjZByLkFPewGCgj2LQ1whZOow848rs3KshsS3ka8vLxS9gXDOdk6ZPCBiubYKcTtdCEr8FyeKARyWK5i47uLQXXcx1OmjsyNQDaFF5Sbpwi1hxCgZ+JXJrh+T6GnAlEwFxStl6DhX5XTvVdK3V7X-GOtCbEyTg9FvaY3Xp9CuhoU5xu9yE5KzKCRf0NchFNce3riNGT+r9HVWp1596xumPBEK-xy+EubOeV6YxeIGFG58KPqZy+BZKl4K5j4x6V5zbx4z435fi8rISKDDTypdYTRTQaDRiFwerwyjTG4kqEpn7vKEJqoNpQF9zqwDxDwL43RN4QZwRC4+AQShjA5oFXCswchCiGDLAeDTgbqKrRZgET5V60rEGGSkHxz14ogQBL68LfYdY0imDHLZYLhuBMj2Y74IAR5upHbjYhgk54HMZx5EE16qwiGDztpXQP5TwQapgnLsinDXaA5zpHA-7ubZLDRW7xTy48HM7j4X4CGQGGEkFxyDyZqhiAR+62FbD2EzThSsxTiyDiISJwK6EVbTJ+HX76bHocofyGrMKIrfg66jo0iphuZBTDbe5FE9hf72ycxuYbATQpgMhgSjRJGx4pEGFpEcZMrEbfqrIAa8r+xSZHbDbIQcHnAzRVzHJTpiIMgerXDiwgFHzeGTKX6CH+EdEZGGqJ4grco0IQpQp9HXDwQzikrxTeBDi4opgiLh4eCiIziM6eHl58E+EQFtF6ZrFEaZFsocrJ4S6BgJScyOqC55YHESLITLS+CBjNHgH6H7pCFc6cYPzcZmJ34dpxokAJrBEbBrCQQeqhgipzjSJ8ilKeBshaAMhCiQn8HPEwmrFwmdGZHIk1CdrdpgCcL7GAQiRpisiGA9jpjSJxFAT2CgxciQaTQUlPHQl4awnGjwkAobG8a9H5FWrypBjh7nBpiTYchjFignJBRTH9azFilLG+EvEhbSl0mGot7oYnIeDDauBHE57-SaDuZpjuGpjLRzH3GgEzZQmtHUntG0lJC8ppiKCnK2kXImAuaeyoTe5Jhsh+BpiGkfK+mSk0kPzoD4CwDkCQBjycbWaSboaSKcg9giixhAnCIgmSgcH6AZij4LGPFGlUkpn+nUBYApAAAEEWKIbZ8gwR-JE0NwYkU4E0hgvMExRO+goUyYJWiZBBKOTZrxSW0he2A0hcCBb+kok0YeME3qTgGwg4qY3uk0UeSq3plJEpOm2MsBbgUmI0SBm500kUNgIYqejyKwihK6NZ8xFSiOZ5yZ2O-CuuxwIo8EtpxOTq7B5Oj5vgaSrgsGJeCg7Idx72p54pyAvKNgBgIFRO6epOugqhNgKwbmdIvsypAYugM56FWaWFH+JOEF+Fw2UGCYQsaeyEegZ+KI9GVAlovOip-U2gwobqtI6YDclOlRLp1hpw+wC4pwZ+R450jAEAsaOovKgsjgU68UnJ5wCmkUYebqjRVcnI7gsRn5npdZ0QlF0UhONF4FZO+FQotyR+qgE0XgwEZKgQQAA */
@@ -117,6 +131,11 @@ export const ConnectionMachine =
                               initial: 'creatingOffer',
                               states: {
                                 creatingOffer: {
+                                  on: {
+                                    SET_LOCAL_DESCRIPTOR: {
+                                      actions: 'setLocalDescriptor',
+                                    },
+                                  },
                                   invoke: {
                                     src: 'createOffer',
                                     id: 'create-offer',
@@ -126,13 +145,9 @@ export const ConnectionMachine =
                                       },
                                     ],
                                   },
-                                  on: {
-                                    SET_LOCAL_DESCRIPTOR: {
-                                      actions: 'setLocalDescriptor',
-                                    },
-                                  },
                                 },
                                 waitingForAnswer: {
+                                  tags: ['hostOffer'],
                                   on: {
                                     CLIENT_ANSWER: {
                                       target: 'waitingForChannel',
@@ -293,7 +308,10 @@ export const ConnectionMachine =
         }),
         setLocalDescriptor: assign({
           localDescriptor: (c, e: any) => e.localDescriptor,
-          localDescriptionString: (c, e: any) => Base64.encode(JSON.stringify(e.localDescriptor)),
+          localDescriptionString: (c, e: any) => encodePeerConnection(e.localDescriptor),
+          localDescriptorConfigured: (c, e) => e.localDescriptor.description.sdp.replace('b=AS:30', 'b=AS:1638400'),
+          localDescriptorConfiguredString: (c, e: any) =>
+            encodePeerConnection(e.localDescriptor.description.sdp.replace('b=AS:30', 'b=AS:1638400')),
         }),
         setChannelInstance: assign({
           channelInstance: (c, e: any) => e.channelInstance,
@@ -317,9 +335,10 @@ export const ConnectionMachine =
             if (context.peerConnection) {
               const description = await context.peerConnection.createOffer();
 
-              onCallback({ type: 'SET_LOCAL_DESCRIPTOR', localDescriptor: description });
+              onCallback({ type: 'SET_LOCAL_DESCRIPTOR', localDescriptor: { description } });
             }
           },
+          endEvent: 'SET_LOCAL_DESCRIPTOR',
           onEnd: (event) => {},
           onReceive: (event) => {},
         }),

@@ -113,6 +113,15 @@ export const stMode = ({
       await waitFor(connectionActor(), (state) => state.hasTag('peerConnection'));
       // createOffer();
 
+      await waitFor(connectionActor(), (state) => state.hasTag('hostOffer'));
+      const { context } = connectionActor().state;
+
+      res({
+        localDescription: context.localDescription, //JSON.stringify(peerConnection().localDescription),
+        setAnswerDescription,
+        sendMessage,
+      });
+
       //disp('CREATE_OFFER');
     } else {
       setupChannelAsASlave();
@@ -125,12 +134,16 @@ export const stMode = ({
 
       if (e.candidate === null && peerConnection().localDescription) {
         peerConnection().localDescription.sdp.replace('b=AS:30', 'b=AS:1638400');
-
         res({
-          localDescription: JSON.stringify(peerConnection().localDescription),
+          localDescription: connectionActor().context.localDescriptorConfigured,
           setAnswerDescription,
           sendMessage,
         });
+        // res({
+        //   localDescription: JSON.stringify(peerConnection().localDescription),
+        //   setAnswerDescription,
+        //   sendMessage,
+        // });
       }
     };
   });

@@ -33,7 +33,7 @@ export const createPeerConnection = async ({
   connectionActor,
 }: CreatePeerConnectionProps): Promise<CreatePeerConnectionResponse> => {
   if (useStatechart) {
-    return stMode({
+    return await stMode({
       dispatch,
       connectionState,
       onConnectionEvent,
@@ -42,6 +42,9 @@ export const createPeerConnection = async ({
       onMessageReceived,
       remoteDescription,
       connectionActor,
+    }).then((val) => {
+      console.log('VAL RESOLVED', val);
+      return val;
     });
   } else {
     return funcMode({ dispatch, iceServers, onChannelOpen, onMessageReceived, remoteDescription });
