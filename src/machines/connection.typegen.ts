@@ -38,7 +38,7 @@ export interface Typegen0 {
     receiveFile: 'done.invoke.ConnectionMachine.connecting.webRTC.peerConnection.services.flows.chatting.fileTransfer.receivingFile:invocation[0]';
   };
   missingImplementations: {
-    actions: 'setChannelInstance' | 'channel.onOpen' | 'channel.onMessage';
+    actions: 'channel.onOpen' | 'channel.onMessage';
     services: 'sendFile' | 'receiveFile';
     guards: never;
     delays: never;

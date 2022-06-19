@@ -291,9 +291,9 @@ export const ConnectionMachine =
         setLocalDescriptor: assign({
           localDescriptor: (c, e: any) => e.localDescriptor,
         }),
-        // setChannelInstance: assign({
-        //   channelInstance: (c, e: any) => e.channelInstance,
-        // }),
+        setChannelInstance: assign({
+          channelInstance: (c, e: any) => e.channelInstance,
+        }),
       },
       services: {
         createOffer: (c, invokingEvent) => async (callback: (ev: any) => void, onReceive) => {
