@@ -48,7 +48,9 @@ export const Slave: FC = memo(function Slave() {
   const copyTextAreaRef = createRef<HTMLTextAreaElement>();
 
   const encodedConnectionDescription = useStatechart
-    ? (localConnectionDescription as ConnectionDescription)?.description
+    ? encode({
+        description: encode(localConnectionDescription?.description as any),
+      } as ConnectionDescription)
     : encode(localConnectionDescription as ConnectionDescription);
 
   const handleCopyClick = () => {

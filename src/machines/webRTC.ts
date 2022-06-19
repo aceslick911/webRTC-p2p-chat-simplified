@@ -79,7 +79,7 @@ export const ConnectionMachine =
               if (pEvent.candidate === null && peerConnection.localDescription) {
                 peerConnection.localDescription.sdp.replace('b=AS:30', 'b=AS:1638400');
                 callback('ON_ICE_CANDIDATE', {
-                  localDescription: JSON.stringify(peerConnection.localDescription),
+                  localDescription: 'fgffffsdfsdfsdf' + JSON.stringify(peerConnection.localDescription),
                 });
               }
             };

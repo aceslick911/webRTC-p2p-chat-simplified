@@ -90,7 +90,7 @@ export const Host: FC = memo(function Host() {
   const copyTextAreaRef = createRef<HTMLTextAreaElement>();
 
   const encodedConnectionDescription = useStatechart
-    ? localConnectionDescription?.description
+    ? encode({ description: localConnectionDescription?.description })
     : encode(localConnectionDescription as ConnectionDescription);
 
   const [pasteDone, setPasteDone] = useState(false);

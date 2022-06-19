@@ -25,11 +25,7 @@ const context = {
 export type ConnectionState = typeof context;
 
 const encodePeerConnection = (desc: any) => {
-  return Base64.encode(
-    JSON.stringify({
-      description: desc,
-    }),
-  );
+  return Base64.encode(JSON.stringify(desc));
 };
 const decodePeerConnection = (desc) => {
   return JSON.parse(Base64.decode(desc));
@@ -311,10 +307,31 @@ export const ConnectionMachine =
           localDescriptionString: (c, e: any) => encodePeerConnection(e.localDescriptor),
           localDescriptorConfigured: (c, e) => ({
             ...e.localDescriptor,
-            sdp: e.localDescriptor.sdp.replace('b=AS:30', 'b=AS:1638400'),
+            description: encodePeerConnection({
+              ...e.localDescriptor.description,
+              sdp: e.localDescriptor.description.sdp.replace('b=AS:30', 'b=AS:1638400'),
+            }),
           }),
-          localDescriptorConfiguredString: (c, e: any) =>
-            encodePeerConnection(e.localDescriptor.sdp.replace('b=AS:30', 'b=AS:1638400')),
+          localDescriptorConfiguredString: (c, e: any) => {
+            console.log('PROCESS', e);
+            const targ = e.localDescriptor.description;
+
+            console.log('PROCESSe', { targ });
+            const internal = {
+              type: targ.type,
+              sdp: targ.sdp.replace('b=AS:30', 'b=AS:1638400'),
+            };
+
+            const inner = {
+              description: encodePeerConnection(internal),
+            };
+            const output = encodePeerConnection({
+              ...inner,
+            });
+            console.log('PROCESSe', { internal, inner, output });
+
+            return output;
+          },
         }),
         setChannelInstance: assign({
           channelInstance: (c, e: any) => e.channelInstance,
@@ -338,7 +355,7 @@ export const ConnectionMachine =
             if (context.peerConnection) {
               const description = await context.peerConnection.createOffer();
 
-              onCallback({ type: 'SET_LOCAL_DESCRIPTOR', localDescriptor: description });
+              onCallback({ type: 'SET_LOCAL_DESCRIPTOR', localDescriptor: { description } });
             }
           },
           endEvent: 'SET_LOCAL_DESCRIPTOR',
