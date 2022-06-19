@@ -112,7 +112,7 @@ export const stMode = ({
       // setupChannelAsAHost();
       dispatch('setupChannelAsAHost');
 
-      await waitFor(connectionActor(), (state) => state.hasTag(''));
+      await waitFor(connectionActor(), (state) => state.hasTag('peerConnection'));
       createOffer();
     } else {
       setupChannelAsASlave();
