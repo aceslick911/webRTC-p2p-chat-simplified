@@ -14,6 +14,9 @@ const context = {
   channelInstance: null as RTCDataChannel,
   localDescriptor: null as string,
   remoteDescriptor: null as string,
+
+  localDescriptionString: null as string,
+  remoteDescriptionString: null as string,
 };
 
 export type ConnectionState = typeof context;
@@ -290,6 +293,7 @@ export const ConnectionMachine =
         }),
         setLocalDescriptor: assign({
           localDescriptor: (c, e: any) => e.localDescriptor,
+          localDescriptionString: (c, e: any) => Base64.encode(JSON.stringify(e.localDescriptor)),
         }),
         setChannelInstance: assign({
           channelInstance: (c, e: any) => e.channelInstance,

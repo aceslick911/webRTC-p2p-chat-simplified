@@ -113,7 +113,7 @@ export const stMode = ({
       await waitFor(connectionActor(), (state) => state.hasTag('peerConnection'));
       // createOffer();
 
-      disp('CREATE_OFFER');
+      //disp('CREATE_OFFER');
     } else {
       setupChannelAsASlave();
       createAnswer(remoteDescription);
