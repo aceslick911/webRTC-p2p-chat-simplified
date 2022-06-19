@@ -212,11 +212,11 @@ export const AppContext = createContext<AppContextValue>(null as AppContextValue
 export const AppProvider: FC = ({ children }) => {
   const { AppData, ConnectionData, service } = useApp();
 
-  useLayoutEffect(
-    useCallback(() => {
-      ConnectionData.send('CONNECT');
-    }, []),
-  );
+  // useLayoutEffect(
+  //   useCallback(() => {
+  //     ConnectionData.send('CONNECT');
+  //   }, []),
+  // );
 
   const context = useMemo(
     () =>

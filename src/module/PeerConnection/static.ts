@@ -3,10 +3,10 @@ import { CreatePeerConnectionResponse } from './createPeerConnection';
 const CHANNEL_LABEL = 'P2P_CHAT_CHANNEL_LABEL';
 
 export const funcMode = ({ dispatch, iceServers, onChannelOpen, onMessageReceived, remoteDescription }) => {
-  const disp = (type, payload?) => {
-    dispatch({ type, payload: payload || {} });
-  };
-  disp('CONNECT');
+  // const disp = (type, payload?) => {
+  //   dispatch({ type, payload: payload || {} });
+  // };
+  // disp('CONNECT');
   const peerConnection = new RTCPeerConnection({
     iceServers,
   });
@@ -22,7 +22,7 @@ export const funcMode = ({ dispatch, iceServers, onChannelOpen, onMessageReceive
 
       channelInstance.onopen = () => {
         console.log('>>HOST.onopen', {});
-        disp('channelInstance.onopen');
+        // disp('channelInstance.onopen');
         onChannelOpen();
       };
 
@@ -30,7 +30,6 @@ export const funcMode = ({ dispatch, iceServers, onChannelOpen, onMessageReceive
         console.log('>>HOST.onmessage', { event });
         onMessageReceived(event.data);
       };
-      // disp('setupChannelAsAHost', { channelInstance } as any);
     } catch (e) {
       console.error('No data channel (peerConnection)', e);
     }
@@ -41,7 +40,7 @@ export const funcMode = ({ dispatch, iceServers, onChannelOpen, onMessageReceive
     const description = await peerConnection.createOffer();
     peerConnection.setLocalDescription(description);
 
-    disp('CREATE_OFFER');
+    // disp('CREATE_OFFER');
   };
 
   const setupChannelAsASlave = () => {
@@ -70,7 +69,7 @@ export const funcMode = ({ dispatch, iceServers, onChannelOpen, onMessageReceive
   const setAnswerDescription = (answerDescription: string) => {
     console.log('>>setAnswerDescription', { answerDescription });
     peerConnection.setRemoteDescription(JSON.parse(answerDescription));
-    disp('setAnswerDescription', { answerDescription } as any);
+    // disp('setAnswerDescription', { answerDescription } as any);
   };
 
   const sendMessage = (message: string) => {

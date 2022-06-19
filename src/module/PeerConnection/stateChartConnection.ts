@@ -13,9 +13,9 @@ export const stMode = ({
   connectionActor,
 }: CreatePeerConnectionProps) => {
   const disp = (type, payload?) => {
+    console.log('DISPATCHED', { type, payload });
     dispatch({ type, payload: payload || {} });
   };
-  disp('CONNECT');
   // const peerConnection = new RTCPeerConnection({
   //   iceServers,
   // });
@@ -95,10 +95,11 @@ export const stMode = ({
   };
 
   return new Promise<CreatePeerConnectionResponse>(async (res) => {
+    disp('CONNECT');
     console.log('Started st async');
     const actor = connectionActor();
     console.log('WAITFOR', actor);
-    const connectionRead = await waitFor(
+    await waitFor(
       actor,
       (state) => {
         console.log('WAITING', state.hasTag('peerConnection'), state);
