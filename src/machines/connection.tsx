@@ -56,8 +56,16 @@ export const ConnectionMachine =
                       },
                     ],
                   },
-                  initial: 'services',
+                  initial: 'creatingPeerConnection',
                   states: {
+                    creatingPeerConnection: {
+                      on: {
+                        START_PEER_CONNECTION: {
+                          actions: 'setPeerConnection',
+                          target: 'services',
+                        },
+                      },
+                    },
                     services: {
                       type: 'parallel',
 
@@ -262,12 +270,6 @@ export const ConnectionMachine =
                           },
                         },
                       },
-                    },
-                  },
-                  on: {
-                    START_PEER_CONNECTION: {
-                      actions: 'setPeerConnection',
-                      target: '.services',
                     },
                   },
                 },
