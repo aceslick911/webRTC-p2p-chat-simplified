@@ -309,9 +309,12 @@ export const ConnectionMachine =
         setLocalDescriptor: assign({
           localDescriptor: (c, e: any) => e.localDescriptor,
           localDescriptionString: (c, e: any) => encodePeerConnection(e.localDescriptor),
-          localDescriptorConfigured: (c, e) => e.localDescriptor.description.sdp.replace('b=AS:30', 'b=AS:1638400'),
+          localDescriptorConfigured: (c, e) => ({
+            ...e.localDescriptor,
+            sdp: e.localDescriptor.sdp.replace('b=AS:30', 'b=AS:1638400'),
+          }),
           localDescriptorConfiguredString: (c, e: any) =>
-            encodePeerConnection(e.localDescriptor.description.sdp.replace('b=AS:30', 'b=AS:1638400')),
+            encodePeerConnection(e.localDescriptor.sdp.replace('b=AS:30', 'b=AS:1638400')),
         }),
         setChannelInstance: assign({
           channelInstance: (c, e: any) => e.channelInstance,
@@ -335,7 +338,7 @@ export const ConnectionMachine =
             if (context.peerConnection) {
               const description = await context.peerConnection.createOffer();
 
-              onCallback({ type: 'SET_LOCAL_DESCRIPTOR', localDescriptor: { description } });
+              onCallback({ type: 'SET_LOCAL_DESCRIPTOR', localDescriptor: description });
             }
           },
           endEvent: 'SET_LOCAL_DESCRIPTOR',

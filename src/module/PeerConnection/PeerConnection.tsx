@@ -2,7 +2,7 @@ import React, { createContext, FC, useState, useRef, useCallback, useEffect, use
 import { Subject } from 'rxjs';
 import { AppContext } from '../../machines';
 
-import { createPeerConnection, CreatePeerConnectionResponse } from './createPeerConnection';
+import { createPeerConnection, CreatePeerConnectionResponse, useStatechart } from './createPeerConnection';
 
 export type ConnectionDescription = {
   description: string;
@@ -78,7 +78,15 @@ export const PeerConnectionProvider: FC = ({ children }) => {
 
     console.log('HOST - 2 - setLocalDescription', { peerConnectionRef });
     // console.log({ localDescription: peerConnectionRef.current.localDescription });
-    setLocalDescription(Base64.encode(peerConnectionRef.current.localDescription));
+    if (useStatechart) {
+      const { context } = connectionActor().state;
+      console.log('LOC', context.localDescriptorConfiguredString);
+      setLocalDescription(context.localDescriptorConfiguredString);
+    } else {
+      console.log('NOO');
+      setLocalDescription(Base64.encode(peerConnectionRef.current.localDescription));
+    }
+
     // console.groupEnd();
   }, [app.mode, app.startAsHost, onMessageReceived, onChannelOpen, setLocalDescription]);
 
@@ -101,7 +109,13 @@ export const PeerConnectionProvider: FC = ({ children }) => {
       });
       // console.log({ localDescription: peerConnectionRef.current.localDescription });
       console.log('SLAVE - 2 - setLocalDescription', { peerConnectionRef });
-      setLocalDescription(Base64.encode(peerConnectionRef.current.localDescription));
+      if (useStatechart) {
+        const { context } = connectionActor().state;
+        console.log('LOC2', context.localDescriptorConfiguredString);
+      } else {
+        console.log('NOO2');
+        setLocalDescription(Base64.encode(peerConnectionRef.current.localDescription));
+      }
     },
     [app.mode, app.startAsSlave, onMessageReceived, onChannelOpen, setLocalDescription],
   );

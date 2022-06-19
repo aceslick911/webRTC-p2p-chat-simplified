@@ -10,6 +10,7 @@ import { useChat } from '../module/useChat/useChat';
 import { ConnectionDescription } from '../module/PeerConnection/PeerConnection';
 
 import { QRCodeSVG } from 'qrcode.react';
+import { useStatechart } from '../module/PeerConnection/createPeerConnection';
 
 const CopyButton = styled(Button)`
   width: 70%;
@@ -46,7 +47,9 @@ export const Slave: FC = memo(function Slave() {
   const { localConnectionDescription } = useChat();
   const copyTextAreaRef = createRef<HTMLTextAreaElement>();
 
-  const encodedConnectionDescription = encode(localConnectionDescription as ConnectionDescription);
+  const encodedConnectionDescription = useStatechart
+    ? (localConnectionDescription as ConnectionDescription)?.description
+    : encode(localConnectionDescription as ConnectionDescription);
 
   const handleCopyClick = () => {
     if (!copyTextAreaRef.current) return;

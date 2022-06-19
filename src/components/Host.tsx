@@ -11,6 +11,7 @@ import { useChat } from '../module/useChat/useChat';
 import { ConnectionDescription } from '../module/PeerConnection/PeerConnection';
 
 import { QRCodeSVG } from 'qrcode.react';
+import { useStatechart } from '../module/PeerConnection/createPeerConnection';
 
 const ErrorMessage = styled.div``;
 const StyledTextArea = styled(TextArea)`
@@ -88,7 +89,9 @@ export const Host: FC = memo(function Host() {
   const [error, setError] = useState<string>('');
   const copyTextAreaRef = createRef<HTMLTextAreaElement>();
 
-  const encodedConnectionDescription = encode(localConnectionDescription as ConnectionDescription);
+  const encodedConnectionDescription = useStatechart
+    ? localConnectionDescription?.description
+    : encode(localConnectionDescription as ConnectionDescription);
 
   const [pasteDone, setPasteDone] = useState(false);
 

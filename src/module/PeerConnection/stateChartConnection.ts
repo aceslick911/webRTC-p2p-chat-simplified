@@ -115,9 +115,9 @@ export const stMode = ({
 
       await waitFor(connectionActor(), (state) => state.hasTag('hostOffer'));
       const { context } = connectionActor().state;
-
+      console.log('OFFER DONE', context);
       res({
-        localDescription: context.localDescription, //JSON.stringify(peerConnection().localDescription),
+        localDescription: context.localDescriptorConfigured, //JSON.stringify(peerConnection().localDescription),
         setAnswerDescription,
         sendMessage,
       });
