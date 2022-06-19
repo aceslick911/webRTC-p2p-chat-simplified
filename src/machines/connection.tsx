@@ -34,6 +34,7 @@ export const ConnectionMachine =
               initial: 'peerConnection',
               states: {
                 peerConnection: {
+                  tags: ['peerConnection'],
                   invoke: {
                     src: 'createRTCPeerConnection',
                     id: 'host-rtc-connection',

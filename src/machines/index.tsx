@@ -203,22 +203,14 @@ interface AppContextValue {
   dispatch: (event: any) => void;
   onConnectionEvent: (handler: (event: any) => void | any) => void;
   connectionState: () => ConnectionState;
-
-  //mode: any; //PEER_CONNECTION_MODE | undefined;
-  // isConnected: boolean;
-  // localConnectionDescription: ConnectionDescription | undefined;
-  // startAsHost: () => void;
-  // startAsSlave: (connectionDescription: ConnectionDescription) => void;
-  // setRemoteConnectionDescription: (connectionDescription: ConnectionDescription) => void;
-  // sendMessage: (message: any) => void;
-  // peerConnectionSubject: typeof peerConnectionSubject;
+  connectionActor: () => any;
 }
 
 //const AppContext = createContext<AppContextValue>({} as AppContextValue);
 export const AppContext = createContext<AppContextValue>(null as AppContextValue);
 
 export const AppProvider: FC = ({ children }) => {
-  const { AppData, ConnectionData } = useApp();
+  const { AppData, ConnectionData, service } = useApp();
 
   useLayoutEffect(
     useCallback(() => {
@@ -242,9 +234,16 @@ export const AppProvider: FC = ({ children }) => {
         onConnectionEvent: (handler) => {
           console.log('REGISTERED HANDLER', handler);
         },
-        connectionState: () => ConnectionData.state,
+        connectionState: () => {
+          const snap = service.children.get('ConnectionMachine').getSnapshot();
+          console.log('SNAP', snap);
+          return snap?.context;
+        },
+        connectionActor: () => {
+          return service.children.get('ConnectionMachine');
+        },
       } as AppContextValue),
-    [AppData, ConnectionData, AppData.send, ConnectionData.send, AppData.state, ConnectionData.state],
+    [AppData, ConnectionData, AppData.send, ConnectionData.send, AppData.state, ConnectionData.state, service],
   );
   return <AppContext.Provider value={context}>{children}</AppContext.Provider>;
 };

@@ -49,7 +49,7 @@ export const PeerConnectionProvider: FC = ({ children }) => {
 
   const peerConnectionRef = useRef<CreatePeerConnectionResponse>();
 
-  const { onConnecting, onChannelOpen, dispatch, onConnectionEvent, connectionState } = app;
+  const { onConnecting, onChannelOpen, dispatch, onConnectionEvent, connectionState, connectionActor } = app;
 
   const onMessageReceived = useCallback((messageString: string) => {
     try {
@@ -73,6 +73,7 @@ export const PeerConnectionProvider: FC = ({ children }) => {
       dispatch,
       onConnectionEvent,
       connectionState,
+      connectionActor,
     });
 
     console.log('HOST - 2 - setLocalDescription', { peerConnectionRef });
@@ -96,6 +97,7 @@ export const PeerConnectionProvider: FC = ({ children }) => {
         dispatch,
         onConnectionEvent,
         connectionState,
+        connectionActor,
       });
       // console.log({ localDescription: peerConnectionRef.current.localDescription });
       console.log('SLAVE - 2 - setLocalDescription', { peerConnectionRef });
