@@ -13,7 +13,7 @@ export const machineService = <ContextType>({
     event,
     context,
   }: {
-    onCallback?: (ev: any) => void;
+    onCallback?: (ev: any) => any;
     event: any;
     context: ContextType;
   }) => Promise<any> | Promise<void>;

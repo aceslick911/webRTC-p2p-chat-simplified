@@ -4,6 +4,7 @@ export interface Typegen0 {
   '@@xstate/typegen': true;
   eventsCausingActions: {
     setPeerConnection: 'START_PEER_CONNECTION';
+    setChannelInstance: 'SET_CHANNEL_INSTANCE';
     'channel.onOpen': 'onOpen';
     'channel.onMessage': 'onMessage';
     setLocalDescriptor: 'SET_LOCAL_DESCRIPTOR';
@@ -16,6 +17,12 @@ export interface Typegen0 {
       __tip: 'See the XState TS docs to learn how to strongly type this.';
     };
     'error.platform.host-rtc-connection': { type: 'error.platform.host-rtc-connection'; data: unknown };
+    'done.invoke.data-channel': {
+      type: 'done.invoke.data-channel';
+      data: unknown;
+      __tip: 'See the XState TS docs to learn how to strongly type this.';
+    };
+    'error.platform.data-channel': { type: 'error.platform.data-channel'; data: unknown };
     'done.invoke.create-offer': {
       type: 'done.invoke.create-offer';
       data: unknown;
@@ -25,13 +32,13 @@ export interface Typegen0 {
   };
   invokeSrcNameMap: {
     createRTCPeerConnection: 'done.invoke.host-rtc-connection';
-    createDataChannel: 'done.invoke.ConnectionMachine.connecting.webRTC.peerConnection.services.channel:invocation[0]';
+    createDataChannel: 'done.invoke.data-channel';
     createOffer: 'done.invoke.create-offer';
     sendFile: 'done.invoke.ConnectionMachine.connecting.webRTC.peerConnection.services.flows.chatting.fileTransfer.sendingFile:invocation[0]';
     receiveFile: 'done.invoke.ConnectionMachine.connecting.webRTC.peerConnection.services.flows.chatting.fileTransfer.receivingFile:invocation[0]';
   };
   missingImplementations: {
-    actions: 'channel.onOpen' | 'channel.onMessage';
+    actions: 'setChannelInstance' | 'channel.onOpen' | 'channel.onMessage';
     services: 'sendFile' | 'receiveFile';
     guards: never;
     delays: never;

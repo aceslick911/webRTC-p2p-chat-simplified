@@ -9,7 +9,7 @@ const context = {
       urls: 'stun:stun.l.google.com:19302',
     },
   ] as RTCIceServer[],
-  channelLabel = P2P_CHAT_CHANNEL_LABEL,
+  channelLabel: 'P2P_CHAT_CHANNEL_LABEL',
   peerConnection: null as RTCPeerConnection,
   channelInstance: null as RTCDataChannel,
   localDescriptor: null as string,
@@ -60,19 +60,20 @@ export const ConnectionMachine =
                   states: {
                     services: {
                       type: 'parallel',
-         
+
                       states: {
                         channel: {
                           invoke: {
                             src: 'createDataChannel',
-                            id:'data-channel',
+                            id: 'data-channel',
                           },
                           initial: 'created',
                           states: {
                             created: {
                               on: {
-
-                    
+                                SET_CHANNEL_INSTANCE: {
+                                  actions: 'setChannelInstance',
+                                },
                                 onOpen: {
                                   actions: 'channel.onOpen',
                                   target: 'open',
@@ -290,9 +291,9 @@ export const ConnectionMachine =
         setLocalDescriptor: assign({
           localDescriptor: (c, e: any) => e.localDescriptor,
         }),
-        setChannelInstance: assign({
-          channelInstance: (c, e: any) => e.channelInstance,
-        }),
+        // setChannelInstance: assign({
+        //   channelInstance: (c, e: any) => e.channelInstance,
+        // }),
       },
       services: {
         createOffer: (c, invokingEvent) => async (callback: (ev: any) => void, onReceive) => {
@@ -322,20 +323,20 @@ export const ConnectionMachine =
           run: async ({ onCallback, event, context }) => {
             const channelInstance = context.peerConnection.createDataChannel(context.channelLabel);
 
-            onCallback({'set'})
+            onCallback({ type: 'SET_CHANNEL_INSTANCE', channelInstance });
 
-            channelInstance.onopen = (_this: RTCDataChannel, ev: Event) => {
+            channelInstance.onopen = ((_this: RTCDataChannel, ev: Event) => {
               console.log('>>HOST.onopen', { this: _this, ev });
-              onCallback({ type: 'channelInstance.onopen', this: _this, ev: ev });
+              return onCallback({ type: 'channelInstance.onopen', this: _this, ev: ev });
 
               // onChannelOpen();
-            };
+            }) as any;
 
-            channelInstance.onmessage = (_this: RTCDataChannel, ev: MessageEvent<any>) => {
+            channelInstance.onmessage = ((_this: RTCDataChannel, ev: MessageEvent<any>) => {
               console.log('>>HOST.onmessage', { ev: ev });
-              onCallback({ type: 'channelInstance.onopen', this: _this, ev });
+              return onCallback({ type: 'channelInstance.onopen', this: _this, ev });
               //onMessageReceived(event.data);
-            };
+            }) as any;
           },
           onEnd: (event) => {},
           onReceive: (event) => {},
