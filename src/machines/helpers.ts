@@ -64,6 +64,7 @@ export const machineService = <ContextType>({
             .then(() => end(onEnd))
             .catch((err) => {
               throwError(err);
+              throw err;
             });
         }
       });
