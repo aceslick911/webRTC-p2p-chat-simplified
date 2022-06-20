@@ -24,9 +24,16 @@ const context = {
   remoteDescriptionString: null as string,
 
   remoteAnswer: null as string,
+
+  ICECandidates: [] as RTCIceCandidate[],
 };
 
 export type ConnectionState = typeof context;
+
+interface ICE_CANDIDATE extends EventObject {
+  type: 'ICE_CANDIDATE';
+  candidate: RTCIceCandidate | null;
+}
 
 interface SET_LOCAL_DESCRIPTOR extends EventObject {
   type: 'SET_LOCAL_DESCRIPTOR';
@@ -94,6 +101,11 @@ export const ConnectionMachine =
                     ],
                   },
                   tags: 'peerConnection',
+                  on: {
+                    ICE_CANDIDATE: {
+                      actions: ['alertICE', 'updateICECandidate'],
+                    },
+                  },
                   initial: 'creatingPeerConnection',
                   states: {
                     creatingPeerConnection: {
@@ -101,9 +113,6 @@ export const ConnectionMachine =
                         START_PEER_CONNECTION: {
                           actions: 'setPeerConnection',
                           target: 'services',
-                        },
-                        ICE_CANDIDATE: {
-                          actions: 'alertICE',
                         },
                       },
                     },
@@ -343,7 +352,7 @@ export const ConnectionMachine =
         hasValidAnswer: (c, e) => c.remoteAnswer != null,
       },
       actions: {
-        alertICE: (c, e: any) => {
+        alertICE: (c, e: ICE_CANDIDATE) => {
           console.log(`❄️ ${e.type}`, e);
         },
         setPeerConnection: assign({
@@ -355,21 +364,24 @@ export const ConnectionMachine =
             return (e as SET_LOCAL_DESCRIPTOR).descriptor;
           },
           localDescriptionString: (c, e) => encodePeerConnection((e as SET_LOCAL_DESCRIPTOR).descriptor),
-          // localDescriptorConfigured: (c, e) => ({
-          //   ...(e as SET_LOCAL_DESCRIPTOR).descriptor,
-          //   sdp: (e as SET_LOCAL_DESCRIPTOR).descriptor.sdp.replace('b=AS:30', 'b=AS:1638400'),
-          // }),
-          // localDescriptorConfiguredString: (c, e) => {
-          //   return encodePeerConnection({
-          //     type: (e as SET_LOCAL_DESCRIPTOR).descriptor.type,
-          //     sdp: (e as SET_LOCAL_DESCRIPTOR).descriptor.sdp.replace('b=AS:30', 'b=AS:1638400'),
-          //   });
         }),
         setChannelInstance: assign({
           channelInstance: (c, e: any) => e.channelInstance,
         }),
         setClientAnswer: assign({
           remoteAnswer: (c, e) => (e as CLIENT_ANSWER).answer,
+        }),
+        updateICECandidate: assign({
+          peerConnection: (c, e) => {
+            const event = e as ICE_CANDIDATE;
+            if (event.candidate === null && c.peerConnection.localDescription) {
+              c.peerConnection.localDescription.sdp.replace('b=AS:30', 'b=AS:1638400');
+            }
+            return c.peerConnection;
+          },
+          ICECandidates: (c, e: ICE_CANDIDATE) => {
+            return [...c.ICECandidates, e.candidate];
+          },
         }),
       },
       services: {
@@ -386,17 +398,6 @@ export const ConnectionMachine =
           endEvent: 'ANSWER_SUCCESS',
           onEnd: () => {},
           onReceive: () => {},
-          // try {
-          //   console.log('DECODING CLIENT ANSWER', { answer: (e as CLIENT_ANSWER).answer });
-          //   const desc = Base64.decode(((e as CLIENT_ANSWER).answer as any).description);
-          //   const decoded = decodePeerConnection((e as CLIENT_ANSWER).answer);
-          //   console.log('VALS', { desc, decoded });
-          //   c.peerConnection.setRemoteDescription(decoded);
-          //   return decoded;
-          // } catch (err) {
-          //   console.log('ERR', err);
-          // }
-          // return null;
         }),
         createRTCPeerConnection: machineService<ConnectionState>({
           serviceName: 'createRTCPeerConnection',
@@ -408,16 +409,11 @@ export const ConnectionMachine =
             peerConnection.onicecandidate = (e) => {
               console.log('>>onicecandidate', { e });
               console.log('ICE', e, e?.candidate?.address);
-
-              if (e.candidate === null && peerConnection.localDescription) {
-                peerConnection.localDescription.sdp.replace('b=AS:30', 'b=AS:1638400');
-
-                onCallback({
-                  type: 'ICE_CANDIDATE',
-                  address: e?.candidate?.address,
-                  localDescription: JSON.stringify(peerConnection.localDescription),
-                });
-              }
+              onCallback({
+                type: 'ICE_CANDIDATE',
+                address: e?.candidate,
+                candidate: e?.candidate,
+              });
             };
             onCallback({ type: 'START_PEER_CONNECTION', peerConnection });
           },
