@@ -1,7 +1,9 @@
-import { assign, createMachine, send } from 'xstate';
+import { assign, createMachine, Event, EventObject, send } from 'xstate';
 import { log, sendParent } from 'xstate/lib/actions';
 import { isPromiseLike } from 'xstate/lib/utils';
 import { machineService } from './helpers';
+
+type ValueOf<T> = T[keyof T];
 
 const context = {
   ICEServers: [
@@ -13,9 +15,9 @@ const context = {
   peerConnection: null as RTCPeerConnection,
   channelInstance: null as RTCDataChannel,
 
-  localDescriptor: null as any,
-  localDescriptorConfigured: null as any,
-  remoteDescriptor: null as any,
+  localDescriptor: null as RTCSessionDescriptionInit,
+  localDescriptorConfigured: null as RTCSessionDescriptionInit,
+  remoteDescriptor: null as RTCSessionDescriptionInit,
 
   localDescriptionString: null as string,
   localDescriptorConfiguredString: null as string,
@@ -24,8 +26,24 @@ const context = {
 
 export type ConnectionState = typeof context;
 
-const encodePeerConnection = (desc: any) => {
-  return Base64.encode(JSON.stringify(desc));
+interface SET_LOCAL_DESCRIPTOR extends EventObject {
+  type: 'SET_LOCAL_DESCRIPTOR';
+  descriptor: RTCSessionDescriptionInit;
+}
+interface START_PEER_CONNECTION {
+  type: 'START_PEER_CONNECTION';
+  peerConnection: RTCPeerConnection;
+}
+
+type EventTypes = SET_LOCAL_DESCRIPTOR | START_PEER_CONNECTION;
+
+const encodePeerConnection = (descriptor: RTCSessionDescriptionInit) => {
+  const encoded = Base64.encode(JSON.stringify({ description: Base64.encode(JSON.stringify(descriptor)) }));
+
+  const decoded = JSON.parse(Base64.decode(JSON.parse(Base64.decode(encoded)).description));
+
+  console.log('ENCODING', { descriptor, encoded, decoded });
+  return encoded;
 };
 const decodePeerConnection = (desc) => {
   return JSON.parse(Base64.decode(desc));
@@ -300,37 +318,35 @@ export const ConnectionMachine =
     {
       actions: {
         setPeerConnection: assign({
-          peerConnection: (c, e: any) => e.peerConnection,
+          peerConnection: (c, e) => (e as START_PEER_CONNECTION).peerConnection,
         }),
         setLocalDescriptor: assign({
-          localDescriptor: (c, e: any) => e.localDescriptor,
-          localDescriptionString: (c, e: any) => encodePeerConnection(e.localDescriptor),
+          localDescriptor: (c, e) => (e as SET_LOCAL_DESCRIPTOR).descriptor,
+          localDescriptionString: (c, e) => encodePeerConnection((e as SET_LOCAL_DESCRIPTOR).descriptor),
           localDescriptorConfigured: (c, e) => ({
-            ...e.localDescriptor,
-            description: encodePeerConnection({
-              ...e.localDescriptor.description,
-              sdp: e.localDescriptor.description.sdp.replace('b=AS:30', 'b=AS:1638400'),
-            }),
+            ...(e as SET_LOCAL_DESCRIPTOR).descriptor,
+            sdp: (e as SET_LOCAL_DESCRIPTOR).descriptor.sdp.replace('b=AS:30', 'b=AS:1638400'),
           }),
-          localDescriptorConfiguredString: (c, e: any) => {
-            console.log('PROCESS', e);
-            const targ = e.localDescriptor.description;
-
-            console.log('PROCESSe', { targ });
-            const internal = {
-              type: targ.type,
-              sdp: targ.sdp.replace('b=AS:30', 'b=AS:1638400'),
-            };
-
-            const inner = {
-              description: encodePeerConnection(internal),
-            };
-            const output = encodePeerConnection({
-              ...inner,
+          localDescriptorConfiguredString: (c, e) => {
+            return encodePeerConnection({
+              type: (e as SET_LOCAL_DESCRIPTOR).descriptor.type,
+              sdp: (e as SET_LOCAL_DESCRIPTOR).descriptor.sdp.replace('b=AS:30', 'b=AS:1638400'),
             });
-            console.log('PROCESSe', { internal, inner, output });
-
-            return output;
+            // console.log('PROCESS', e);
+            // const targ = e.localDescriptor.description;
+            // console.log('PROCESSe', { targ });
+            // const internal = {
+            //   type: targ.type,
+            //   sdp: targ.sdp.replace('b=AS:30', 'b=AS:1638400'),
+            // };
+            // const inner = {
+            //   description: encodePeerConnection(internal),
+            // };
+            // const output = encodePeerConnection({
+            //   ...inner,
+            // });
+            // console.log('PROCESSe', { internal, inner, output });
+            // return output;
           },
         }),
         setChannelInstance: assign({
@@ -354,8 +370,9 @@ export const ConnectionMachine =
           run: async ({ onCallback, event, context }) => {
             if (context.peerConnection) {
               const description = await context.peerConnection.createOffer();
+              console.log('ORIGINAL offer', description);
 
-              onCallback({ type: 'SET_LOCAL_DESCRIPTOR', localDescriptor: { description } });
+              onCallback({ type: 'SET_LOCAL_DESCRIPTOR', descriptor: description } as EventTypes);
             }
           },
           endEvent: 'SET_LOCAL_DESCRIPTOR',
@@ -370,7 +387,7 @@ export const ConnectionMachine =
 
             onCallback({ type: 'SET_CHANNEL_INSTANCE', channelInstance });
 
-            channelInstance.onopen = ((_this: RTCDataChannel, ev: Event) => {
+            channelInstance.onopen = ((_this: RTCDataChannel, ev) => {
               console.log('>>HOST.onopen', { this: _this, ev });
               return onCallback({ type: 'channelInstance.onopen', this: _this, ev: ev });
 
