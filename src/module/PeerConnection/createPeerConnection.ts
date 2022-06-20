@@ -20,7 +20,7 @@ export interface CreatePeerConnectionResponse {
   sendMessage: (message: string) => void;
 }
 
-export const useStatechart = true;
+export const useStatechart = false;
 
 export const createPeerConnection = async ({
   remoteDescription,
