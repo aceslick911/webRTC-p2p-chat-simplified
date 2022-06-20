@@ -4,9 +4,11 @@ import { AppContext } from '../../machines';
 
 import { createPeerConnection, CreatePeerConnectionResponse, useStatechart } from './createPeerConnection';
 
-export type ConnectionDescription = {
-  description: string;
-};
+export type ConnectionDescription =
+  | {
+      description: string;
+    }
+  | string;
 // export enum PEER_CONNECTION_MODE {
 //   HOST = 'HOST',
 //   SLAVE = 'SLAVE',
@@ -109,7 +111,9 @@ export const PeerConnectionProvider: FC = ({ children }) => {
       console.log('SLAVE - 1 - createPeerConnection');
       peerConnectionRef.current = await createPeerConnection({
         iceServers,
-        remoteDescription: Base64.decode(connectionDescription.description),
+        remoteDescription: Base64.decode(
+          useStatechart ? connectionDescription : (connectionDescription as any).description,
+        ),
         onMessageReceived,
         onChannelOpen,
 
@@ -135,7 +139,7 @@ export const PeerConnectionProvider: FC = ({ children }) => {
     if (!peerConnectionRef.current) return;
 
     console.log('?? - 3 - setAnswerDescription', { connectionDescription });
-    peerConnectionRef.current.setAnswerDescription(Base64.decode(connectionDescription.description));
+    peerConnectionRef.current.setAnswerDescription(Base64.decode((connectionDescription as any).description));
   }, []);
 
   const sendMessage = useCallback((message) => {
@@ -146,12 +150,14 @@ export const PeerConnectionProvider: FC = ({ children }) => {
     peerConnectionRef.current.sendMessage(messageString);
   }, []);
 
-  const localConnectionDescription: ConnectionDescription | undefined = useMemo(
+  const localConnectionDescription: ConnectionDescription | string | undefined = useMemo(
     () =>
       localDescription
-        ? {
-            description: localDescription, //Base64.encode(localDescription),
-          }
+        ? useStatechart
+          ? localDescription
+          : {
+              description: localDescription, //Base64.encode(localDescription),
+            }
         : undefined,
     [localDescription],
   );

@@ -48,16 +48,14 @@ export const Slave: FC = memo(function Slave() {
   const copyTextAreaRef = createRef<HTMLTextAreaElement>();
 
   const encodedConnectionDescription = useStatechart
-    ? encode({
-        description: encode(localConnectionDescription?.description as any),
-      } as ConnectionDescription)
+    ? localConnectionDescription
     : encode(localConnectionDescription as ConnectionDescription);
 
   const handleCopyClick = () => {
     if (!copyTextAreaRef.current) return;
 
     copyTextAreaRef.current.select();
-    copy(encodedConnectionDescription);
+    copy(encodedConnectionDescription as any);
   };
 
   return (
@@ -65,8 +63,8 @@ export const Slave: FC = memo(function Slave() {
       <PageHeader>Joining a chat</PageHeader>
       <Card>
         <Instruction>Send back this code to your buddy:</Instruction>
-        <QRCodeSVG value={encodedConnectionDescription} />
-        <StyledTextArea ref={copyTextAreaRef} value={encodedConnectionDescription} readOnly />
+        <QRCodeSVG value={encodedConnectionDescription as string} />
+        <StyledTextArea ref={copyTextAreaRef} value={encodedConnectionDescription as string} readOnly />
         <CopyButton onClick={handleCopyClick}>Copy to clipboard</CopyButton>
       </Card>
     </Container>

@@ -4,6 +4,7 @@ import { ConnectionDescription } from '../module/PeerConnection/PeerConnection';
 
 export function encode(connectionDescription: ConnectionDescription): string {
   // console.log({ connectionDescription });
+  console.log('ENCODED!@#!@#!', connectionDescription);
   return Base64.encode(JSON.stringify(connectionDescription));
 }
 

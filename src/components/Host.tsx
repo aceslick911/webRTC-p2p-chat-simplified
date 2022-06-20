@@ -90,7 +90,7 @@ export const Host: FC = memo(function Host() {
   const copyTextAreaRef = createRef<HTMLTextAreaElement>();
 
   const encodedConnectionDescription = useStatechart
-    ? encode({ description: localConnectionDescription?.description })
+    ? localConnectionDescription
     : encode(localConnectionDescription as ConnectionDescription);
 
   const [pasteDone, setPasteDone] = useState(false);
@@ -99,7 +99,7 @@ export const Host: FC = memo(function Host() {
     if (!copyTextAreaRef.current) return;
 
     copyTextAreaRef.current.select();
-    copy(encodedConnectionDescription);
+    copy(encodedConnectionDescription as any);
   };
 
   const handleRemoteConnectionDescriptionInputChange: React.ChangeEventHandler<HTMLTextAreaElement> = (event) => {
@@ -149,8 +149,8 @@ export const Host: FC = memo(function Host() {
           <span>1</span>
         </Step>
         <Instruction>Send this code to your buddy:</Instruction>
-        <QRCodeSVG value={encodedConnectionDescription} />
-        <StyledTextArea ref={copyTextAreaRef} value={encodedConnectionDescription} readOnly />
+        <QRCodeSVG value={encodedConnectionDescription as string} />
+        <StyledTextArea ref={copyTextAreaRef} value={encodedConnectionDescription as string} readOnly />
         <CopyButton onClick={handleCopyClick}>Copy to clipboard</CopyButton>
       </Card>
       <Card>
