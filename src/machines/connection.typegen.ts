@@ -7,8 +7,15 @@ export interface Typegen0 {
     setChannelInstance: 'SET_CHANNEL_INSTANCE';
     'channel.onMessage': 'onMessage';
     setLocalDescriptor: 'SET_LOCAL_DESCRIPTOR';
+    setClientAnswer: 'CLIENT_ANSWER';
   };
   internalEvents: {
+    'done.invoke.answer-check': {
+      type: 'done.invoke.answer-check';
+      data: unknown;
+      __tip: 'See the XState TS docs to learn how to strongly type this.';
+    };
+    'error.platform.answer-check': { type: 'error.platform.answer-check'; data: unknown };
     'xstate.init': { type: 'xstate.init' };
     'done.invoke.host-rtc-connection': {
       type: 'done.invoke.host-rtc-connection';
@@ -33,6 +40,7 @@ export interface Typegen0 {
     createRTCPeerConnection: 'done.invoke.host-rtc-connection';
     createDataChannel: 'done.invoke.data-channel';
     createOffer: 'done.invoke.create-offer';
+    checkAnswer: 'done.invoke.answer-check';
     sendFile: 'done.invoke.ConnectionMachine.connecting.webRTC.peerConnection.services.flows.chatting.fileTransfer.sendingFile:invocation[0]';
     receiveFile: 'done.invoke.ConnectionMachine.connecting.webRTC.peerConnection.services.flows.chatting.fileTransfer.receivingFile:invocation[0]';
   };
@@ -46,6 +54,7 @@ export interface Typegen0 {
     createRTCPeerConnection: 'xstate.init';
     createDataChannel: 'xstate.init';
     createOffer: 'setupChannelAsAHost';
+    checkAnswer: 'CLIENT_ANSWER' | 'done.invoke.answer-check' | 'error.platform.answer-check';
     sendFile: 'START_TRANSFER';
     receiveFile: 'TRANSFER_START';
   };
@@ -66,6 +75,7 @@ export interface Typegen0 {
     | 'connecting.webRTC.peerConnection.services.flows.Host'
     | 'connecting.webRTC.peerConnection.services.flows.Host.creatingOffer'
     | 'connecting.webRTC.peerConnection.services.flows.Host.waitingForAnswer'
+    | 'connecting.webRTC.peerConnection.services.flows.Host.checkingAnswer'
     | 'connecting.webRTC.peerConnection.services.flows.Host.waitingForChannel'
     | 'connecting.webRTC.peerConnection.services.flows.Client'
     | 'connecting.webRTC.peerConnection.services.flows.Client.waitingForOffer'
@@ -108,7 +118,11 @@ export interface Typegen0 {
                                   | 'finishedChatting'
                                   | 'new state 1'
                                   | {
-                                      Host?: 'creatingOffer' | 'waitingForAnswer' | 'waitingForChannel';
+                                      Host?:
+                                        | 'creatingOffer'
+                                        | 'waitingForAnswer'
+                                        | 'checkingAnswer'
+                                        | 'waitingForChannel';
                                       Client?: 'waitingForOffer' | 'createdAnswer' | 'waitingForChannel';
                                       chatting?:
                                         | 'fileTransfer'

@@ -114,9 +114,15 @@ export const Host: FC = memo(function Host() {
       try {
         event?.stopPropagation();
         event?.preventDefault();
-        const connectionDescriptionObject = decode(remoteConnectionDescriptionInputValue);
-        if (connectionDescriptionValidator(connectionDescriptionObject)) throw new Error();
-        setRemoteConnectionDescription(connectionDescriptionObject as ConnectionDescription);
+        if (useStatechart) {
+          console.log('SNDING', { remoteConnectionDescriptionInputValue });
+          setRemoteConnectionDescription(remoteConnectionDescriptionInputValue);
+        } else {
+          console.log('BYP');
+          const connectionDescriptionObject = decode(remoteConnectionDescriptionInputValue);
+          if (connectionDescriptionValidator(connectionDescriptionObject)) throw new Error();
+          setRemoteConnectionDescription(connectionDescriptionObject as ConnectionDescription);
+        }
       } catch (error) {
         setError('Connection Description invalid!');
       }

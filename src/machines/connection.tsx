@@ -22,6 +22,8 @@ const context = {
   localDescriptionString: null as string,
   localDescriptorConfiguredString: null as string,
   remoteDescriptionString: null as string,
+
+  remoteAnswer: null as string,
 };
 
 export type ConnectionState = typeof context;
@@ -30,9 +32,14 @@ interface SET_LOCAL_DESCRIPTOR extends EventObject {
   type: 'SET_LOCAL_DESCRIPTOR';
   descriptor: RTCSessionDescriptionInit;
 }
-interface START_PEER_CONNECTION {
+interface START_PEER_CONNECTION extends EventObject {
   type: 'START_PEER_CONNECTION';
   peerConnection: RTCPeerConnection;
+}
+
+interface CLIENT_ANSWER extends EventObject {
+  type: 'CLIENT_ANSWER';
+  answer: string;
 }
 
 type EventTypes = SET_LOCAL_DESCRIPTOR | START_PEER_CONNECTION;
@@ -46,7 +53,7 @@ const encodePeerConnection = (descriptor: RTCSessionDescriptionInit) => {
   return encoded;
 };
 const decodePeerConnection = (desc) => {
-  return JSON.parse(Base64.decode(desc));
+  return JSON.parse(Base64.decode(JSON.parse(Base64.decode(desc)).description));
 };
 
 export const ConnectionMachine =
@@ -164,7 +171,20 @@ export const ConnectionMachine =
                                   tags: ['hostOffer'],
                                   on: {
                                     CLIENT_ANSWER: {
-                                      target: 'waitingForChannel',
+                                      actions: 'setClientAnswer',
+                                      target: 'checkingAnswer',
+                                    },
+                                  },
+                                },
+                                checkingAnswer: {
+                                  invoke: {
+                                    src: 'checkAnswer',
+                                    id: 'answer-check',
+                                    onDone: {
+                                      target: '..waitingForChannel',
+                                    },
+                                    onError: {
+                                      target: '..waitingForAnswer',
                                     },
                                   },
                                 },
@@ -316,6 +336,9 @@ export const ConnectionMachine =
       },
     },
     {
+      guards: {
+        hasValidAnswer: (c, e) => c.remoteAnswer != null,
+      },
       actions: {
         setPeerConnection: assign({
           peerConnection: (c, e) => (e as START_PEER_CONNECTION).peerConnection,
@@ -352,8 +375,34 @@ export const ConnectionMachine =
         setChannelInstance: assign({
           channelInstance: (c, e: any) => e.channelInstance,
         }),
+        setClientAnswer: assign({
+          remoteAnswer: (c, e) => (e as CLIENT_ANSWER).answer,
+        }),
       },
       services: {
+        checkAnswer: machineService<ConnectionState>({
+          serviceName: 'checkClientAnswer',
+          run: async ({ onCallback, event, context }) => {
+            console.log('DECODING CLIENT ANSWER', { answer: context.remoteAnswer });
+            // const desc = Base64.decode((context.remoteAnswer as any).description);
+            const decoded = decodePeerConnection(context.remoteAnswer);
+            console.log('VALS', { decoded });
+            return await context.peerConnection.setRemoteDescription(decoded);
+          },
+          onEnd: () => {},
+          onReceive: () => {},
+          // try {
+          //   console.log('DECODING CLIENT ANSWER', { answer: (e as CLIENT_ANSWER).answer });
+          //   const desc = Base64.decode(((e as CLIENT_ANSWER).answer as any).description);
+          //   const decoded = decodePeerConnection((e as CLIENT_ANSWER).answer);
+          //   console.log('VALS', { desc, decoded });
+          //   c.peerConnection.setRemoteDescription(decoded);
+          //   return decoded;
+          // } catch (err) {
+          //   console.log('ERR', err);
+          // }
+          // return null;
+        }),
         createRTCPeerConnection: machineService<ConnectionState>({
           serviceName: 'createRTCPeerConnection',
           run: async ({ onCallback, event, context }) => {

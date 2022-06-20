@@ -82,8 +82,10 @@ export const stMode = ({
 
   const setAnswerDescription = (answerDescription: string) => {
     console.log('>>setAnswerDescription', { answerDescription });
-    peerConnection().setRemoteDescription(JSON.parse(answerDescription));
-    disp('setAnswerDescription', { answerDescription } as any);
+    // peerConnection().setRemoteDescription(JSON.parse(answerDescription));
+    //disp('setAnswerDescription', { answerDescription } as any);
+
+    disp('CLIENT_ANSWER', { answer: answerDescription });
   };
 
   const sendMessage = (message: string) => {

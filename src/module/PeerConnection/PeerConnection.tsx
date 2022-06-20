@@ -136,10 +136,15 @@ export const PeerConnectionProvider: FC = ({ children }) => {
   );
 
   const setRemoteConnectionDescription = useCallback((connectionDescription: ConnectionDescription) => {
-    if (!peerConnectionRef.current) return;
+    if (useStatechart) {
+      console.log('DIRECT', connectionDescription);
+      peerConnectionRef.current.setAnswerDescription(connectionDescription as string);
+    } else {
+      if (!peerConnectionRef.current) return;
 
-    console.log('?? - 3 - setAnswerDescription', { connectionDescription });
-    peerConnectionRef.current.setAnswerDescription(Base64.decode((connectionDescription as any).description));
+      console.log('?? - 3 - setAnswerDescription', { connectionDescription });
+      peerConnectionRef.current.setAnswerDescription(Base64.decode((connectionDescription as any).description));
+    }
   }, []);
 
   const sendMessage = useCallback((message) => {
