@@ -181,10 +181,10 @@ export const ConnectionMachine =
                                     src: 'checkAnswer',
                                     id: 'answer-check',
                                     onDone: {
-                                      target: '..waitingForChannel',
+                                      target: 'waitingForChannel',
                                     },
                                     onError: {
-                                      target: '..waitingForAnswer',
+                                      target: 'waitingForAnswer',
                                     },
                                   },
                                 },

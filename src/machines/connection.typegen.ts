@@ -10,12 +10,6 @@ export interface Typegen0 {
     setClientAnswer: 'CLIENT_ANSWER';
   };
   internalEvents: {
-    'done.invoke.answer-check': {
-      type: 'done.invoke.answer-check';
-      data: unknown;
-      __tip: 'See the XState TS docs to learn how to strongly type this.';
-    };
-    'error.platform.answer-check': { type: 'error.platform.answer-check'; data: unknown };
     'xstate.init': { type: 'xstate.init' };
     'done.invoke.host-rtc-connection': {
       type: 'done.invoke.host-rtc-connection';
@@ -35,6 +29,12 @@ export interface Typegen0 {
       __tip: 'See the XState TS docs to learn how to strongly type this.';
     };
     'error.platform.create-offer': { type: 'error.platform.create-offer'; data: unknown };
+    'done.invoke.answer-check': {
+      type: 'done.invoke.answer-check';
+      data: unknown;
+      __tip: 'See the XState TS docs to learn how to strongly type this.';
+    };
+    'error.platform.answer-check': { type: 'error.platform.answer-check'; data: unknown };
   };
   invokeSrcNameMap: {
     createRTCPeerConnection: 'done.invoke.host-rtc-connection';
@@ -54,7 +54,7 @@ export interface Typegen0 {
     createRTCPeerConnection: 'xstate.init';
     createDataChannel: 'xstate.init';
     createOffer: 'setupChannelAsAHost';
-    checkAnswer: 'CLIENT_ANSWER' | 'done.invoke.answer-check' | 'error.platform.answer-check';
+    checkAnswer: 'CLIENT_ANSWER';
     sendFile: 'START_TRANSFER';
     receiveFile: 'TRANSFER_START';
   };
