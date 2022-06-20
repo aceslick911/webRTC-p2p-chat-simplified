@@ -13,8 +13,9 @@ export const stMode = ({
   connectionActor,
 }: CreatePeerConnectionProps) => {
   const disp = (type, payload?) => {
-    console.log('DISPATCHED', { type, payload });
-    dispatch({ type, payload: payload || {} });
+    const ev = { type, ...(payload || {}) };
+    console.log('DISPATCHED', ev);
+    dispatch(ev);
   };
   // const peerConnection = new RTCPeerConnection({
   //   iceServers,

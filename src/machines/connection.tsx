@@ -387,8 +387,10 @@ export const ConnectionMachine =
             // const desc = Base64.decode((context.remoteAnswer as any).description);
             const decoded = decodePeerConnection(context.remoteAnswer);
             console.log('VALS', { decoded });
-            return await context.peerConnection.setRemoteDescription(decoded);
+            await context.peerConnection.setRemoteDescription(decoded);
+            onCallback('ANSWER_SUCCESS');
           },
+          endEvent: 'ANSWER_SUCCESS',
           onEnd: () => {},
           onReceive: () => {},
           // try {
