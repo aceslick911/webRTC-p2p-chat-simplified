@@ -3,6 +3,8 @@ import { isPromiseLike } from 'xstate/lib/utils';
 const defaultServiceEnd = 'SERVICE_END';
 const defaultEndEvent = 'ERROR';
 
+export const isPromise = (p): p is Promise<any> => typeof p === 'object' && typeof p.then === 'function';
+
 export const machineService = <ContextType>({
   serviceName,
   run,
@@ -42,12 +44,8 @@ export const machineService = <ContextType>({
       const result = run({ onCallback: callbackMethod, event: invokingEvent, context: invokingContext });
 
       // Wait until end called
-      return await new Promise((end) => {
+      return await new Promise((end, throwError) => {
         resolveEnd = end;
-
-        if (isPromiseLike(result)) {
-          result.then(() => end(onEnd));
-        }
 
         receive(async (ev) => {
           console.log(`🗒 🚜 ${serviceName} << ${ev.type}`, ev);
@@ -60,6 +58,14 @@ export const machineService = <ContextType>({
             end(onEnd(ev));
           }
         });
+
+        if (isPromise(result)) {
+          return result
+            .then(() => end(onEnd))
+            .catch((err) => {
+              throwError(err);
+            });
+        }
       });
     } catch (err) {
       callback({ type: errEvent || defaultEndEvent, err });
