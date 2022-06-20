@@ -193,7 +193,7 @@ export const ConnectionMachine =
                                 },
                                 waitingForChannel: {
                                   on: {
-                                    'channel.onOpen': {
+                                    'channelInstance.onOpen': {
                                       target:
                                         '#ConnectionMachine.connecting.webRTC.peerConnection.services.flows.chatting',
                                     },
@@ -219,7 +219,7 @@ export const ConnectionMachine =
                                 },
                                 waitingForChannel: {
                                   on: {
-                                    'channel.onOpen': {
+                                    'channelInstance.onOpen': {
                                       target:
                                         '#ConnectionMachine.connecting.webRTC.peerConnection.services.flows.chatting',
                                     },
@@ -350,7 +350,10 @@ export const ConnectionMachine =
           peerConnection: (c, e) => (e as START_PEER_CONNECTION).peerConnection,
         }),
         setLocalDescriptor: assign({
-          localDescriptor: (c, e) => (e as SET_LOCAL_DESCRIPTOR).descriptor,
+          localDescriptor: (c, e) => {
+            c.peerConnection.setLocalDescription((e as SET_LOCAL_DESCRIPTOR).descriptor);
+            return (e as SET_LOCAL_DESCRIPTOR).descriptor;
+          },
           localDescriptionString: (c, e) => encodePeerConnection((e as SET_LOCAL_DESCRIPTOR).descriptor),
           // localDescriptorConfigured: (c, e) => ({
           //   ...(e as SET_LOCAL_DESCRIPTOR).descriptor,
@@ -446,14 +449,14 @@ export const ConnectionMachine =
 
             channelInstance.onopen = ((_this: RTCDataChannel, ev) => {
               console.log('>>HOST.onopen', { this: _this, ev });
-              return onCallback({ type: 'channelInstance.onopen', this: _this, ev: ev });
+              return onCallback({ type: 'channelInstance.onOpen', this: _this, ev: ev });
 
               // onChannelOpen();
             }) as any;
 
             channelInstance.onmessage = ((_this: RTCDataChannel, ev: MessageEvent<any>) => {
               console.log('>>HOST.onmessage', { ev: ev });
-              return onCallback({ type: 'channelInstance.onopen', this: _this, ev });
+              return onCallback({ type: 'channelInstance.onOpen', this: _this, ev });
               //onMessageReceived(event.data);
             }) as any;
           },

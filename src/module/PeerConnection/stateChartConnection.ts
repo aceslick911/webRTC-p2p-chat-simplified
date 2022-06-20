@@ -131,23 +131,23 @@ export const stMode = ({
       createAnswer(remoteDescription);
     }
 
-    peerConnection().onicecandidate = (e) => {
-      console.log('>>onicecandidate', { e });
-      console.log('ICE', e, e?.candidate?.address);
+    // peerConnection().onicecandidate = (e) => {
+    //   console.log('>>onicecandidate', { e });
+    //   console.log('ICE', e, e?.candidate?.address);
 
-      if (e.candidate === null && peerConnection().localDescription) {
-        peerConnection().localDescription.sdp.replace('b=AS:30', 'b=AS:1638400');
-        res({
-          localDescription: connectionActor().context.localDescriptorConfigured,
-          setAnswerDescription,
-          sendMessage,
-        });
-        // res({
-        //   localDescription: JSON.stringify(peerConnection().localDescription),
-        //   setAnswerDescription,
-        //   sendMessage,
-        // });
-      }
-    };
+    //   if (e.candidate === null && peerConnection().localDescription) {
+    //     peerConnection().localDescription.sdp.replace('b=AS:30', 'b=AS:1638400');
+    //     res({
+    //       localDescription: connectionActor().context.localDescriptorConfigured,
+    //       setAnswerDescription,
+    //       sendMessage,
+    //     });
+    //     // res({
+    //     //   localDescription: JSON.stringify(peerConnection().localDescription),
+    //     //   setAnswerDescription,
+    //     //   sendMessage,
+    //     // });
+    //   }
+    // };
   });
 };
