@@ -64,7 +64,7 @@ const decodePeerConnection = (desc) => {
 };
 
 export const ConnectionMachine =
-  /** @xstate-layout N4IgpgJg5mDOIC5QGED2A7dYDGAXAlhgLICG2AFvlgHT4QA2YAxMgPIBy7AosgCqKgADqlj4CGASAAeiAMwBGagE4ATAHYALCpUA2AByy18lfPkAaEAE9EAWh1qd1TQAZnsjfI16NGnfIC+-hZomDji6KQUVGDU2BhYeFRQ1ADuYABGAEq8yNSCYGAATiEJ4bGFYCQE6FAACgXF8WGE6EwAyrwAgtkA+rVcXJk9bJw8vACSHJLCouGSMggqAKyy1MZqrvJG3ip68noW1gg2CqtqSj4qGmqnrrKBwU2JxGSUNHGhiTWpGdm5+UUSs0MNRYEUAG74bBwWLkEihejlSq4SDtLi8YYACU6owAMj1xuwOjjkFxpiIxC15oh5PZFEsdBolDcNM55LJZCpZIcaUZqLI9GolkslM4lMylmyVA8QEDnhFXtFYk9qsk0lkcnkGnKymDCpDobBYfCsIjsBUqqiKCawPRxuhYLh4dDqBhWPl0OTZlSkNIaXo9I4jCpnIHzgHWToeQglPTBRpDEsNvJnDolDoZTqWpE3jEPqUkj8Nf9tSqWqCIVCYdaEa6PUxiHBYCQYF7KRJfQstko9E5mam-KmLrtowolmsdDoVEoGVtfGo1Jmyy8ou8y991X8tYDl+gK-qq0aAGb0VApI2CKEAayYYNwAFdBMg4QjOrBOpiRLg23NO4gFyo1BLHspg6MBbhqHoKjRjYWzUCG5yxhowFLL46YaEunzhDmSr5s0G6-JqAKNFh5Z6gaMInmeF7XreYAPk+L6mm+nRtPQJDgmAP4+qAXamM4fYhmywpJoK0FWLYcEIeKngoWhjKYQWK65sqpEEcW24kUpe7kYe1BUee1Cfo6SJVEkrBHkeRRMBAGAxFQ4KoFeeYWiiNioJZRTcR2vH-t4-Kxs4072HobhLOYEmLAoayGJOeiinc5yKcCCqrnm65qoRJY7qRIK6Ya+mnoZxm4KZqoWVZhRohiuKsMgnT4gAIlwbTIJk4y1LwrCZN5np-gg1zjnokpLCYwrOGoVxXNG7KAe4mhMmKQUiRhQSyruOFrmpmUacRWZ5ZWBUGUaJWpCQlI1AAYqghSdA6aRVcguLjFw7AYjibQAOqDL11IIOcAkhl4-GhpKBjRkyqwBsGw3eGmIrJfKm3pdtRZbntu77hRx5FSdX5nRdUDXcUTG2kwNamq66DumAfVCBSv6+f9qjUPoo1Cs4Wj7Fo0ZgYoyzaLIU7AUo7jSmt+2pSpeFfDt6OlrlOmHZRuPUMg9D4LTpUpOdqrExV1mYqwHQ9Kwl2XT9vozO2dN+ggpgJn2zIBrGorxqObKswODjikK3hLIj2GKltBbqfLOXaVjenHWrGta2VkB3bAD1MB932ZFwjU9EbHS-f1pjqGso1JgKIpi2oEOyAJ6YXD4KyMrS9wSxtwco6HctEQrkf5Sr1Gx5r6Da7rSTE8+Nr0OTpOIm6Hp50zpgcvBHKsmyDuGNykV8-Bo1csL8Vi4H2at6p7do53EcpVHR2q9auCqvp+CMLwhTwrAlXULgL8OpVmRgAAjveOAuAmAVAAFZhEgHPO26xq6QSZAmSCo0DiRWGqscUu8fD2AUs3RWyMT74Q7tlLSl8e44z7rfe+R5H5gGfq-d+n86FFF-gAoBTAyDQkELgWh38vJWwZjxaBoY1D8kgqLcKXhhpLBmgXfkrhgzqElFXAOODtJ4JlvfTc59iHyivr3QyFDCxUKfl-N+RQKzoAgCPahNk7K0HQI5ZyasW5pXwbLM+RDJa6LIfouEd9DHUO4aYwo5jLFXWoQgByqBsBmQwAAbWcAAXSgQsAMihJqSPjJOYUG8jieCFvBAwwFAxeF8JzQ+ylcIZXcZpTxpDCrkN8ZQgJJj35ggsVYxgTAiiFBunkdiuAjw3QALZONwcfdRhZNEeMxnUmOBjvhGJoS0sxbTQlE3CZE6J4R4lJL4d6HydsbhKGoJzWkrgxSjQirkhMjhdhC3jB4JCyjHhjJcRMsOWjanK28UaeZyRFmBPfpebAV5LoBNQG0WmEA6IWMBUw-+gDHTJMQHDZQhh9jnIXCmJQM0JqOHZDoKukNAy7EXColKaiqlTJqTM759SfFVCacYxhwT0CoDhVVVZYLGDIoQPFAS9yrg3GMBcqRkUZyOB8KyYwgoAzOGeetV50sqVZRpYrLx9LfmNP8cynhrL2XLKqsRSF7Swk8r2TbP6KYoJrCuOmRRzJ5AXGjBK6gPhZA9lMOyYU05ylS0qajalGN1WzJvtqhZzSWUE1VLwCFTpCjAN4JkD6FshjEmyLylMDgYqoSdbK3NUZIrGGQkBEU6ThT+yFn6ylgbVXBu7nSuZ4b-mRr1dGpIsbOjYA4cA9NGIk0pstvTfZtsUlJjWOyVw6hpynJxUWkwjgVgCnlSsVwvgm4vNUeMlVu0u4kMbWGxlOqllRoqNCfAkIzXMFsjQSJjjJY1tPkGvdOjQ0NKPRG3VQTqBnrABejpYAIn2KiTE9AOzM1OuEYSka+hMEChyTSG5BT7kLSdfIBVD7t21t3RfV9B731+M-Settv7-1Xq6YUHpwTBD9MGYUEZmG3k7vDto3U+GGWEZbV+9+pHL3rMYEBxyWyWjgYtYzQRrJqD+2QqobwHhfAzSQ3c-QqGnnVqw0+utL62MHmvgR1ULBaptC4MMDg3A+CTHYJmhMxzNDDSdchNCE1owbA0EBLYnNzioWnAmdTTHsMsa+bpvRsAbE0EdJaUZW7-OaZw6xsi7H4BiYEV2Sc-MGRuFFOydDtJoypP5MDDmCgQxTj88qgLnzdxhfssBxx5Avw2ATdgGwEyDnW3EwsMa44biiV2IS2Mhajg6CCsoAMCgoK6F8GVgNsXAtVe6b0mjVQ6MjPq46RruBmutdtu1lLiAxrCK5OmD1xhDBSujKNRwsYFx0gcPFFYgQ1psogHASQjGVJ0HNcOy1-VYKc2UEmLB1wthOtDDBfQqwrgevcKg0KSZpshwIdU+tl9zTIiSPUXD4ndsHIWCcccuhXAinCqLSaU4YJVwEnsdQZ2FwOHUGSzdFKNNI+fVjhLwWtXjwThATNRgCdChnCdmc8rkFHGGicwpkp2T3fFKtJnSMWduLZ-Fg6nPjS1lQLPZLuOaRiP5ALcUzIjCigQ-bfyQtRZKOMKLd1CO26s60+ztX2MNemkzYyYRDImQsjZByLkFPewGCgj2LQ1whZOow848rs3KshsS3ka8vLxS9gXDOdk6ZPCBiubYKcTtdCEr8FyeKARyWK5i47uLQXXcx1OmjsyNQDaFF5Sbpwi1hxCgZ+JXJrh+T6GnAlEwFxStl6DhX5XTvVdK3V7X-GOtCbEyTg9FvaY3Xp9CuhoU5xu9yE5KzKCRf0NchFNce3riNGT+r9HVWp1596xumPBEK-xy+EubOeV6YxeIGFG58KPqZy+BZKl4K5j4x6V5zbx4z435fi8rISKDDTypdYTRTQaDRiFwerwyjTG4kqEpn7vKEJqoNpQF9zqwDxDwL43RN4QZwRC4+AQShjA5oFXCswchCiGDLAeDTgbqKrRZgET5V60rEGGSkHxz14ogQBL68LfYdY0imDHLZYLhuBMj2Y74IAR5upHbjYhgk54HMZx5EE16qwiGDztpXQP5TwQapgnLsinDXaA5zpHA-7ubZLDRW7xTy48HM7j4X4CGQGGEkFxyDyZqhiAR+62FbD2EzThSsxTiyDiISJwK6EVbTJ+HX76bHocofyGrMKIrfg66jo0iphuZBTDbe5FE9hf72ycxuYbATQpgMhgSjRJGx4pEGFpEcZMrEbfqrIAa8r+xSZHbDbIQcHnAzRVzHJTpiIMgerXDiwgFHzeGTKX6CH+EdEZGGqJ4grco0IQpQp9HXDwQzikrxTeBDi4opgiLh4eCiIziM6eHl58E+EQFtF6ZrFEaZFsocrJ4S6BgJScyOqC55YHESLITLS+CBjNHgH6H7pCFc6cYPzcZmJ34dpxokAJrBEbBrCQQeqhgipzjSJ8ilKeBshaAMhCiQn8HPEwmrFwmdGZHIk1CdrdpgCcL7GAQiRpisiGA9jpjSJxFAT2CgxciQaTQUlPHQl4awnGjwkAobG8a9H5FWrypBjh7nBpiTYchjFignJBRTH9azFilLG+EvEhbSl0mGot7oYnIeDDauBHE57-SaDuZpjuGpjLRzH3GgEzZQmtHUntG0lJC8ppiKCnK2kXImAuaeyoTe5Jhsh+BpiGkfK+mSk0kPzoD4CwDkCQBjycbWaSboaSKcg9giixhAnCIgmSgcH6AZij4LGPFGlUkpn+nUBYApAAAEEWKIbZ8gwR-JE0NwYkU4E0hgvMExRO+goUyYJWiZBBKOTZrxSW0he2A0hcCBb+kok0YeME3qTgGwg4qY3uk0UeSq3plJEpOm2MsBbgUmI0SBm500kUNgIYqejyKwihK6NZ8xFSiOZ5yZ2O-CuuxwIo8EtpxOTq7B5Oj5vgaSrgsGJeCg7Idx72p54pyAvKNgBgIFRO6epOugqhNgKwbmdIvsypAYugM56FWaWFH+JOEF+Fw2UGCYQsaeyEegZ+KI9GVAlovOip-U2gwobqtI6YDclOlRLp1hpw+wC4pwZ+R450jAEAsaOovKgsjgU68UnJ5wCmkUYebqjRVcnI7gsRn5npdZ0QlF0UhONF4FZO+FQotyR+qgE0XgwEZKgQQAA */
+  /** @xstate-layout N4IgpgJg5mDOIC5QGED2A7dYDGAXAlhgLICG2AFvlgHT4QA2YAxMgPIBy7AosgCqKgADqlj4CGASAAeiAMwBGagE4ATAHYALCpUA2AByy18lfPkAaEAE9EAWh1qd1TQAZnsjfI16NGnfIC+-hZomDji6KQUVGDU2BhYeFRQ1ADuYABGAEq8yNSCYGAATiEJ4bGFYCQE6FAACgXF8WGE6EwAyrwAgtkA+rVcXJk9bJw8vACSHJLCouGSMggqAKyy1MZqrvJG3ip68noW1gg2CqtqSj4qGmqnrrKBwU2JxGSUNHGhiTWpGdm5+UUSs0MNRYEUAG74bBwWLkEihejlSq4SDtLi8YYACU6owAMj1xuwOjjkFxpiIxC15oh5PZFEsdBolDcNM55LJZCpZIcaUZqLI9GolkslM4lMylmyVA8QEDnhFXtFYk9qsk0lkcnkGnKymDCpDobBYfCsIjsBUqqiKCawPRxuhYLh4dDqBhWPl0OTZlSkNIaXo9I4jCpnIHzgHWToeQglPTBRpDEsNvJnDolDoZTqWpE3jEPqUkj8Nf9tSqWqCIVCYdaEa6PUxiHBYCQYF7KRJfQstko9E5mam-KmLrtowolmsdDoVEoGVtfGo1Jmyy8ou8y991X8tYDl+gK-qq0aAGb0VApI2CKEAayYYNwAFdBMg4QjOrBOpiRLg23NO4gFyo1BLHsIayKKaghkK0Y2Ay1DTisehuLGxhjkunzhDmSr5s0G6-JqAKNOh5Z6gaMInmeF7XreYAPk+L6mm+nRtPQJDgmAP4+qAXamM4fbyBckp7G4yzQbB8ECkhphcvISxoQWK65sqRG4cW26EfJe4kYe1Dkee1Cfo6SJVEkrBHkeRRMBAGAxFQ4KoFeeYWiiNioGZRQcR2XH-t4-Kxs4072IhshLOYViINJayGJOeiinc5xycCCqrnm65qnhJY7kRIJaYaOmnnpBm4EZqqmeZhRohiuKsMgnT4gAIlwbTIJk4y1LwrCZB5np-gg1zjnokpLCYwrOBBWgaNG7KAe4mhMmK-nCksGgJfKmFrspaWqQRWbZZWuW6UahWpCQlI1AAYqghSdA6aTlcguLjFw7AYjibQAOqDF11IIOcvEhl4shstcsZDdGviOCY2xchcYo3CtGGKutBYqVu227vupHHvlh1frCOBXkk12wLdlnWbQ6B2Q51DwsTRQ2BQ+NfT1AqON4xhbM4Hhsgy0Y+TNPiiqKyzCstQSyrua0pRtRao6WWWaXtZHY-puMM9gBM1ETJNFIUl15CxuBHpdAC21M3XTatXkzXkICz1Bs5DnMpjJUZhYs+zKPsnj6Jo9hKIY8PZojUvI5tsuZRpGPaQdKuGSkJ2qhdxT0baTA1qa9qOs6MRuh61t+j9OirL4rgLvsUX6NGRcaHB1w6KNA0c8KgcKVhqUy-hcuRzlSsUdQyD0PgYDoEV8enVASelRZmKsB0PSsGdZ2fb6Mztt1NumAmfbMgGsaivGo5stQ9eTg44pCt4sliztSWKdhXxh53EeJVH+3KwPQ8j8VkBaxZr0fZkLgdUegzw6Pnbi6g1hDSTAKEU7h1Bg0BsoNMPgNArEZLSe418JbByUqHDuGV1Ivx7ljPuH9h6jwTkkJOz4bT0DTinO0DonToBdLnYe4CaQphrq4RCQp1DqHgVXEKx8hT6BBnsc4V9Hjy0lngnCj9CE31fr3PS1pcCqh0vgRgvBCg0zKtQXAeiHRlUyGAAAjveOAuAmAVAAFZhEgJwhAKFAK6CWnodQPgDhuxhsoDwk5jAhinEoFut827S03E-Ih8oVGkLUXCDRhYjzaLALo-RRRDHGNgKYixVjHRMDINCQQuB0kmPcivCkv4N6c17JOEUXIQohQQW7Uw4o4KSlcELRC-EMzYNkbg++miolKPRiQvKfd1GaJSTo7JBiwToAgNQ1JpMaC2XsjEG+cihmFhGWpZR4yY5TOSakspOTMkLKWedVJCB1nYGMhgAA2s4AAus47wqxuZLSMMYVQNxJpDVWFyXYA1WSeCZNI8WAzkryIfgQ-ZYzFbxKNMc74My0lzIucPK5E8Vk6z1oIA2RtCimy2YM9uey0byziRMhJVRpmnMxYUCsizlmMFuRTVA9zwjPLeZU70nkC4bF4pyAaEY-BeBUACrkcFOQ9g8BcUUsg+kyI0tsil6UEXUsOcrVFyR0VnIMZedWZ1TmoDaNi6iizDVFDMZY6x7zQxwSuLSAwNwezTkmpg6goYGRsjTLSLYi5+lqvJZEzVVLu5ItpSixJDLZkZOZegVANryqXNNYwd5IidDCkaYFZVUFWmc1WGBDkYoi7di0GE9V4atpd2IdGo5caTkJvKUmlNTKmAEQtay65mb+Vr2+tw4ubSVishFLGCaRat6lvUGoQMOatABBDYlGt+DKX1tiTqyZza0WMsTcdcevBzVOkKDY3gmRXpLyGMSbIziUyGGoFoK4oYrheHZK7I47JORAXmssBQ4L1DVrDeuiNm7dSNt1bu-V+622HtVMezo2Bik2NvRiC9V7l5CCqZxAuexexgXFH5GcpwlCTUBsXAwKZtAGDcEtYDMKdko2iQcyDO76UtoxQeio0J8CQj7cwKyazOVUzJYxjVdbn5brY3SpJe7W3nOZTxsAfG2VgA5XZblLReX3pkr2VQ-0hopj8tyVpgLZXTjZoqzmDG74SfDjEiDB437sbkzBhTBjlOqYE0wfFzLCVVGJaSnB4na0OdY851RsaOPya43Brz-HcXsruQ89AOmB3VILimfykU30OElPoSc0qgVyqs3NZVtmImgck454iMnotuZYFVNoXBhgcG4HwSY7B70JiUE4LwIUBK+HAuR4CPqloySHEKb2lWkYKPhZGhtkXkWrJiFnFE-cQt2bCyxxFy2Y33sCR0+uYE2RjlpLzPY-J31CjcMYVM0oV2rRA-NjdUnwirfJpTGI5Avw2DPdgemu5nHDXHDcJMnjAxgQu27eugEexUc8boXws2Q6vbA+9lovnCi6380Sk21BfuOn+7gQHOzBWr0ywsYaahZXpmh1yWaU6jhDUcLGBcdIHAxRWKj2FwyMe1YwEwcYpJhg4jquMOqnReBkgy7hrsfhlCs9GvOfhzPbCBTgvsJHIYRTAT0IEMWyaIBwEkGJxSdB+3YYFevAuNhuFK4cA4a4Wx+KhmgvoIFvX3ADQkkmXnTHFFasjuaZESR6iY4pzhwVCwTjjl0K4PX-FDC6ClW7E4rh7brEMNcDnc6A-2d29q6N6dbTfwgPeow8ehQkb3oNHxRwBo+oMCNdk3PxSi1Vaul7cK3uC4Vvt0viJUB5zlzHmk-txyciGkRsuSrJp8zTGW5p-sfBYK7890L1Xwt7cxsaBEh3rhAUZMydwZ3OSmaOCcXsBgDCijTCC4CneoWhq3+jmrEW98x2NVbMftuFg9h9aJjlxvqqBFbp5Tjby6BFx+BcgxTLob4Ixv694C6f7RzKxHSh7GQ1BTyFDOJGB9aaCCxaD8IASTSZ7KqeLiiuAmAXBTgF47ajLF77YxxHRjyJyXS-x4F-7fRnxPozj7DcxCjnBp5HAciAT6C6DsyAoijXAMHb5F5RosEYGqzkD4yEzmzcHW6Do9TODRgQ5AQyQz5LSTg5oIEv7d7IH84f677oF9xsFULnSXS0IH48E9T5ZPo5rDSDgiiVxuwiyGG5ozjgxmHyHv477MFf4qGOjOI2BXBer8gODOArDnAJgQoBhhEoE2GRF2F6TkJfzsHUKXS4G6ZbBK7uCsiGChgu7RjaA1xFyJgp4TbTjr4WGb7bYKFMFKFRFkKDwULl5cGlF9bshBpuBMiNyiFyCK5aClr7C678SZHWERHdG5FGj5GULjw0KMK6apg+rfrsjs5Jhpj6FLSBEIRwICgXCLG7KoG2EuZ5F9Ejz3qvp7EcgHFbBHFkZmaKCTiNI7AzhDgG5PZIEdHhGKFLY9GybxpxaKZZKJp2r5LfhuE1LLD8jsicy55zru6tIjHHydKjQKDBGmDXHMZdEQmrHGhuZaIeZYq9pJbsTIl4ajRrDGZeD4Z7DijkYzhK7aAX60j+xFwklB6LbSbKGubQmpp5DXgZppLmrYqOq9jATaAODI6BRfFfqwz8gvqAz+z8TeDBqIFBxWE3HZErH3ENYSlMrUDJqprOIXC05GEI5Q4+DnDRir5PqGCaDCpO4hRCkLbgZ1ZilQmcaSmFE1DHptCnpInaFU40h3aeEpHs6Q4XCTTLC9isgXCUEzjCiTh+l95oHmmUmWkHphlQCIbIZgAlKOqrA7CSGshaB+Cfo0jaCAQhRFwcneDpiCnAlGmglZHLHkmFl6rUkwmeY4AqaJYynPEexjGUHJHwErBcnjgzi8nSRL7dmGmtxzb9ngmimQkWkhlMrOL2COCir66+CeCeK8zTGTjBSu5bABp5m3E5FDnQbUDGxNgthJDHkOD8i+G+qIQz4N6ICIQiqcjTisi7Bpj0E9lblo47lkl7kUl6rHlDRalireASpXluwQS07KopgNKBieBihPmmmDlRZaLoD4CwBqEQC0JuY9ashQKCiAxcj1xBLSps7VxTTIQOCkUDlIXmmxFeDQTshg4bBKnc4oSeL8W7lOaYyxEQTQQhi9iaD7Ad7Ti8JwywXhLblLFyW4aU7y62DpjQQXlOCuABoCypgeCQrm5VZgnICxH3bQTTZrCij7AQShgLg9hCnOU+DQSeI1yBoMgJggozS84ogkpUCWgV6MnU7CxPr8mTgeCAzYlHBpi9hnYjGCg3Dsi85HgnSMAQDHo6gg5sU+r+QxQoKpFNm9RXAJkrDCTuBTgVY6WSzOV+FX4xQOlyoeDeK7zBqBBAA */
   createMachine(
     {
       context: context as ConnectionState,
@@ -101,11 +101,6 @@ export const ConnectionMachine =
                     ],
                   },
                   tags: 'peerConnection',
-                  on: {
-                    ICE_CANDIDATE: {
-                      actions: ['alertICE', 'updateICECandidate'],
-                    },
-                  },
                   initial: 'creatingPeerConnection',
                   states: {
                     creatingPeerConnection: {
@@ -164,11 +159,6 @@ export const ConnectionMachine =
                               initial: 'creatingOffer',
                               states: {
                                 creatingOffer: {
-                                  on: {
-                                    SET_LOCAL_DESCRIPTOR: {
-                                      actions: 'setLocalDescriptor',
-                                    },
-                                  },
                                   invoke: {
                                     src: 'createOffer',
                                     id: 'create-offer',
@@ -178,9 +168,14 @@ export const ConnectionMachine =
                                       },
                                     ],
                                   },
+                                  on: {
+                                    SET_LOCAL_DESCRIPTOR: {
+                                      actions: 'setLocalDescriptor',
+                                    },
+                                  },
                                 },
                                 waitingForAnswer: {
-                                  tags: ['hostOffer'],
+                                  tags: 'hostOffer',
                                   on: {
                                     CLIENT_ANSWER: {
                                       actions: 'setClientAnswer',
@@ -192,12 +187,16 @@ export const ConnectionMachine =
                                   invoke: {
                                     src: 'checkAnswer',
                                     id: 'answer-check',
-                                    onDone: {
-                                      target: 'waitingForChannel',
-                                    },
-                                    onError: {
-                                      target: 'waitingForAnswer',
-                                    },
+                                    onDone: [
+                                      {
+                                        target: 'waitingForChannel',
+                                      },
+                                    ],
+                                    onError: [
+                                      {
+                                        target: 'waitingForAnswer',
+                                      },
+                                    ],
                                   },
                                 },
                                 waitingForChannel: {
@@ -315,6 +314,7 @@ export const ConnectionMachine =
                                     },
                                   },
                                 },
+                                messaging: {},
                               },
                               on: {
                                 CLOSE_CONNECTION: {
@@ -325,13 +325,17 @@ export const ConnectionMachine =
                             finishedChatting: {
                               type: 'final',
                             },
-                            'new state 1': {},
                           },
                           onDone: {
                             target: '#ConnectionMachine.terminated',
                           },
                         },
                       },
+                    },
+                  },
+                  on: {
+                    ICE_CANDIDATE: {
+                      actions: ['alertICE', 'updateICECandidate'],
                     },
                   },
                 },

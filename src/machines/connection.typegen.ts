@@ -92,8 +92,8 @@ export interface Typegen0 {
     | 'connecting.webRTC.peerConnection.services.flows.chatting.fileTransfer.waitingToStart'
     | 'connecting.webRTC.peerConnection.services.flows.chatting.fileTransfer.waitingToAccept'
     | 'connecting.webRTC.peerConnection.services.flows.chatting.fileTransfer.receivingFile'
+    | 'connecting.webRTC.peerConnection.services.flows.chatting.messaging'
     | 'connecting.webRTC.peerConnection.services.flows.finishedChatting'
-    | 'connecting.webRTC.peerConnection.services.flows.new state 1'
     | 'terminated'
     | 'failedToConnect'
     | {
@@ -118,7 +118,6 @@ export interface Typegen0 {
                                   | 'Client'
                                   | 'chatting'
                                   | 'finishedChatting'
-                                  | 'new state 1'
                                   | {
                                       Host?:
                                         | 'creatingOffer'
@@ -128,6 +127,7 @@ export interface Typegen0 {
                                       Client?: 'waitingForOffer' | 'createdAnswer' | 'waitingForChannel';
                                       chatting?:
                                         | 'fileTransfer'
+                                        | 'messaging'
                                         | {
                                             fileTransfer?:
                                               | 'transferRequest'
