@@ -82,7 +82,7 @@ export const PeerConnectionProvider: FC = ({ children }) => {
     // console.log({ localDescription: peerConnectionRef.current.localDescription });
     if (useStatechart) {
       const { context } = connectionActor().state;
-      console.log('LOC', context.localDescriptorConfiguredString);
+      console.log('LOC', context.localDescriptionString);
       // console.log('LOC2', Base64.decode(context.localDescriptorConfiguredString));
       // console.log('LOC3', JSON.parse(Base64.decode(context.localDescriptorConfiguredString)));
       // console.log(
@@ -94,7 +94,7 @@ export const PeerConnectionProvider: FC = ({ children }) => {
       //   JSON.parse(Base64.decode(JSON.parse(Base64.decode(context.localDescriptorConfiguredString)).description)),
       // );
 
-      setLocalDescription(context.localDescriptorConfiguredString);
+      setLocalDescription(context.localDescriptionString);
     } else {
       console.log('NOO');
       setLocalDescription(Base64.encode(peerConnectionRef.current.localDescription));

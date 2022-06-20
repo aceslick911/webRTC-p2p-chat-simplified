@@ -4,6 +4,7 @@ export interface Typegen0 {
   '@@xstate/typegen': true;
   eventsCausingActions: {
     setPeerConnection: 'START_PEER_CONNECTION';
+    alertICE: 'ICE_CANDIDATE';
     setChannelInstance: 'SET_CHANNEL_INSTANCE';
     'channel.onMessage': 'onMessage';
     setLocalDescriptor: 'SET_LOCAL_DESCRIPTOR';

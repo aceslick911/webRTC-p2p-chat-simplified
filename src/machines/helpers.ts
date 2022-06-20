@@ -59,6 +59,7 @@ export const machineService = <ContextType>({
           }
         });
 
+        // If async, acknowledge the finish of the async method as DONE
         if (isPromise(result)) {
           return result
             .then(() => end(onEnd))

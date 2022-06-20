@@ -16,11 +16,11 @@ const context = {
   channelInstance: null as RTCDataChannel,
 
   localDescriptor: null as RTCSessionDescriptionInit,
-  localDescriptorConfigured: null as RTCSessionDescriptionInit,
+  // localDescriptorConfigured: null as RTCSessionDescriptionInit,
   remoteDescriptor: null as RTCSessionDescriptionInit,
 
   localDescriptionString: null as string,
-  localDescriptorConfiguredString: null as string,
+  // localDescriptorConfiguredString: null as string,
   remoteDescriptionString: null as string,
 
   remoteAnswer: null as string,
@@ -101,6 +101,9 @@ export const ConnectionMachine =
                         START_PEER_CONNECTION: {
                           actions: 'setPeerConnection',
                           target: 'services',
+                        },
+                        ICE_CANDIDATE: {
+                          actions: 'alertICE',
                         },
                       },
                     },
@@ -340,37 +343,24 @@ export const ConnectionMachine =
         hasValidAnswer: (c, e) => c.remoteAnswer != null,
       },
       actions: {
+        alertICE: (c, e: any) => {
+          console.log(`❄️ ${e.type}`, e);
+        },
         setPeerConnection: assign({
           peerConnection: (c, e) => (e as START_PEER_CONNECTION).peerConnection,
         }),
         setLocalDescriptor: assign({
           localDescriptor: (c, e) => (e as SET_LOCAL_DESCRIPTOR).descriptor,
           localDescriptionString: (c, e) => encodePeerConnection((e as SET_LOCAL_DESCRIPTOR).descriptor),
-          localDescriptorConfigured: (c, e) => ({
-            ...(e as SET_LOCAL_DESCRIPTOR).descriptor,
-            sdp: (e as SET_LOCAL_DESCRIPTOR).descriptor.sdp.replace('b=AS:30', 'b=AS:1638400'),
-          }),
-          localDescriptorConfiguredString: (c, e) => {
-            return encodePeerConnection({
-              type: (e as SET_LOCAL_DESCRIPTOR).descriptor.type,
-              sdp: (e as SET_LOCAL_DESCRIPTOR).descriptor.sdp.replace('b=AS:30', 'b=AS:1638400'),
-            });
-            // console.log('PROCESS', e);
-            // const targ = e.localDescriptor.description;
-            // console.log('PROCESSe', { targ });
-            // const internal = {
-            //   type: targ.type,
-            //   sdp: targ.sdp.replace('b=AS:30', 'b=AS:1638400'),
-            // };
-            // const inner = {
-            //   description: encodePeerConnection(internal),
-            // };
-            // const output = encodePeerConnection({
-            //   ...inner,
-            // });
-            // console.log('PROCESSe', { internal, inner, output });
-            // return output;
-          },
+          // localDescriptorConfigured: (c, e) => ({
+          //   ...(e as SET_LOCAL_DESCRIPTOR).descriptor,
+          //   sdp: (e as SET_LOCAL_DESCRIPTOR).descriptor.sdp.replace('b=AS:30', 'b=AS:1638400'),
+          // }),
+          // localDescriptorConfiguredString: (c, e) => {
+          //   return encodePeerConnection({
+          //     type: (e as SET_LOCAL_DESCRIPTOR).descriptor.type,
+          //     sdp: (e as SET_LOCAL_DESCRIPTOR).descriptor.sdp.replace('b=AS:30', 'b=AS:1638400'),
+          //   });
         }),
         setChannelInstance: assign({
           channelInstance: (c, e: any) => e.channelInstance,
@@ -411,6 +401,21 @@ export const ConnectionMachine =
             const peerConnection = new RTCPeerConnection({
               iceServers: context.ICEServers,
             });
+
+            peerConnection.onicecandidate = (e) => {
+              console.log('>>onicecandidate', { e });
+              console.log('ICE', e, e?.candidate?.address);
+
+              if (e.candidate === null && peerConnection.localDescription) {
+                peerConnection.localDescription.sdp.replace('b=AS:30', 'b=AS:1638400');
+
+                onCallback({
+                  type: 'ICE_CANDIDATE',
+                  address: e?.candidate?.address,
+                  localDescription: JSON.stringify(peerConnection.localDescription),
+                });
+              }
+            };
             onCallback({ type: 'START_PEER_CONNECTION', peerConnection });
           },
           onEnd: (event) => {},
