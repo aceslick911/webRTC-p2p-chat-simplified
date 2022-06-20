@@ -20,7 +20,7 @@ export const machineService = <ContextType>({
     onCallback?: (ev: any) => void;
     event: any;
     context: ContextType;
-  }) => Promise<any> | Promise<void>;
+  }) => any | void | Promise<any> | Promise<void>;
   onReceive: (event, invokingContext, invokingEvent) => any;
   onEnd: (event: any) => void;
   endEvent?: string;
@@ -39,10 +39,16 @@ export const machineService = <ContextType>({
         }
         return callback(callbackEvent);
       };
-      await run({ onCallback: callbackMethod, event: invokingEvent, context: invokingContext });
+      const result = run({ onCallback: callbackMethod, event: invokingEvent, context: invokingContext });
+
       // Wait until end called
       return await new Promise((end) => {
         resolveEnd = end;
+
+        if (isPromiseLike(result)) {
+          result.then(() => end(onEnd));
+        }
+
         receive(async (ev) => {
           console.log(`🗒 🚜 ${serviceName} << ${ev.type}`, ev);
           const waiting = onReceive(ev, invokingContext, invokingEvent);

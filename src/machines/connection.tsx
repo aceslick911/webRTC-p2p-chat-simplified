@@ -407,7 +407,7 @@ export const ConnectionMachine =
         }),
         createRTCPeerConnection: machineService<ConnectionState>({
           serviceName: 'createRTCPeerConnection',
-          run: async ({ onCallback, event, context }) => {
+          run: ({ onCallback, event, context }) => {
             const peerConnection = new RTCPeerConnection({
               iceServers: context.ICEServers,
             });
@@ -424,6 +424,7 @@ export const ConnectionMachine =
               console.log('ORIGINAL offer', description);
 
               onCallback({ type: 'SET_LOCAL_DESCRIPTOR', descriptor: description } as EventTypes);
+              return;
             }
           },
           endEvent: 'SET_LOCAL_DESCRIPTOR',
@@ -433,7 +434,7 @@ export const ConnectionMachine =
 
         createDataChannel: machineService<ConnectionState>({
           serviceName: 'createDataChannel',
-          run: async ({ onCallback, event, context }) => {
+          run: ({ onCallback, event, context }) => {
             const channelInstance = context.peerConnection.createDataChannel(context.channelLabel);
 
             onCallback({ type: 'SET_CHANNEL_INSTANCE', channelInstance });
